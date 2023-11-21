@@ -1,0 +1,22 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.experimental.useFlatConfig": true,
+  "editor.formatOnSave": false,
+  "prettier.requireConfig": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "prettier.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    // "json",
+    // "jsonc",
+    // "json5",
+    "vue"],
+  "editor.tabSize": 2,
+  // "css.customData": [".vscode/css.json"],
+  "volar.inlayHints.eventArgumentInInlineHandlers": false
+}
