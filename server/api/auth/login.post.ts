@@ -20,7 +20,7 @@ export default defineEventHandler(async event => {
     const isValid =  await bcrypt.compareSync(password, res.password)
     if(!isValid)  throw new Error('password invalid')
 
-    token = jwt.sign({id:email}, config.secretKey, {
+    token = jwt.sign({id:email, name: res.name}, config.secretKey, {
       expiresIn: 86400 // expires in 24 hours
     });
 
