@@ -61,7 +61,7 @@ function toggleLeftDrawer() {
       </div>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="bg-grey-2" style="min-height: 100vh;">
       <slot />
     </q-page-container>
   </q-layout>

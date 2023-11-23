@@ -1,5 +1,6 @@
 <template>
     <div>
-        account
+        <scraping-account-form-input/>
+        <scraping-account-table/>
     </div>
 </template>
