@@ -21,7 +21,11 @@ export default defineNuxtConfig({
     mongodbUri: process.env.MONGODB_URI || 'mongodb+srv://satalesmana:SY1COKkW7A98vSzk@cluster0.oe59k.mongodb.net/puppet',
     secretKey: process.env.SECRET_KEY || 'asdf'
   },
-  modules: ['nuxt-quasar-ui'],
+  modules: [
+    'nuxt-quasar-ui',
+    '@pinia/nuxt',
+    '@sidebase/nuxt-auth'
+  ],
   quasar: {
     plugins: [
       'BottomSheet',
@@ -40,6 +44,12 @@ export default defineNuxtConfig({
           unelevated: true,
         },
       },
+    },
+  },
+  auth: {
+    globalAppMiddleware: true,
+    provider: {
+      type: 'local',
     },
   },
 });

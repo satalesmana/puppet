@@ -6,12 +6,12 @@ import bcrypt from 'bcryptjs'
 export default defineEventHandler(async event => {
   try{
     const config = useRuntimeConfig();
-    const body = await readFormData(event)
-    const email = body.get("email")
-    const password = body.get("password")
+    const body = await readBody(event);
+    const email = body.username
+    const password = body.password
     let token;
 
-    if(email === '') throw new Error('email harus di isi')
+    if(email === '') throw new Error('username harus di isi')
     if(password === '') throw new Error('password harus di isi')
 
     const res = await User.findOne({ email })
@@ -24,7 +24,7 @@ export default defineEventHandler(async event => {
       expiresIn: 86400 // expires in 24 hours
     });
 
-    return {data: { token, email, ...{ name: res.name } }, message:'login berhasil'} as ApiResponse<{}, string>
+    return { data: {email, ...{ name: res.name } },token, message:'login berhasil'} as ApiResponse<{}, string>
   }catch(error){
     return error as ApiResponse<[],string>;
   }

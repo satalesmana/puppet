@@ -14,6 +14,7 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/eslint-module": "^4.1.0",
+    "@sidebase/nuxt-auth": "^0.6.2",
     "eslint": "^8.54.0",
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-vue": "^9.18.1",
@@ -24,6 +25,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
     "@quasar/extras": "^1.16.8",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",

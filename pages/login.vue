@@ -1,7 +1,27 @@
-<script setup>
-    definePageMeta({ layout: 'empty' })
-    const email = ref('')
-    const password = ref('')
+<script setup lang="ts">
+  definePageMeta({
+    layout: 'empty',
+    pageTransition: {
+    name: 'fade',
+    mode: 'out-in',
+  },
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: '/',
+  },
+ })
+  const email = ref('')
+  const password = ref('')
+  const { status, signIn } = useAuth()
+
+  const submitLogin = async () =>{
+    try {
+       await signIn({ username: email.value, password: password.value }, { callbackUrl: '/' })
+    } catch (error) {
+      console.log('error', error)
+    }
+
+  }
 </script>
 <template>
     <q-layout view="lHh Lpr lFf">
@@ -17,7 +37,7 @@
             <q-input dense outlined class="q-mt-md" v-model="password" type="password" label="Password"></q-input>
           </q-card-section>
           <q-card-section>
-            <q-btn style="border-radius: 8px;" color="dark" rounded size="md" label="Sign in" no-caps class="full-width"></q-btn>
+            <q-btn style="border-radius: 8px;" @click="submitLogin" color="dark" rounded size="md" label="Sign in" no-caps class="full-width"></q-btn>
           </q-card-section>
           <q-card-section class="text-center q-pt-none">
             <div class="text-grey-8">Don't have an account yet?
