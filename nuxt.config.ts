@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   css: ['@/assets/custom.scss'],
   devtools: { enabled: false },
   plugins:[
+    {src:'~/plugins/fetch-api.ts',  mode: 'client'},
     {src:'~/plugins/vue-awesome-sidebar.ts',  mode: 'client'}
   ],
   nitro: {

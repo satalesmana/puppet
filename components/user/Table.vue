@@ -1,46 +1,37 @@
 <script setup lang="ts">
-  const rows = ref([
+import { useUsersStore } from '~/stores/user'
+const user = useUsersStore()
+
+
+onMounted(()=>{
+  fetTchData()
+})
+
+const fetTchData=async ()=>{
+  const { value }  = await user.fetchUsers();
+  user.listTable.data =  value?.data || []
+}
+
+const columns = ref([
   {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: '14%',
-    iron: '1%'
+    name: 'name',
+    label: 'NAME',
+    field: 'name' ,
+    align: 'left',
+  },{
+    name: 'email',
+    label: 'EMAIL',
+    field: 'email',
+    align: 'left',
+  },{
+    name: 'action',
+    label: 'ACTION',
+    field: '_id',
+    align: 'center',
+    headerStyle: 'width: 200px',
   },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: '8%',
-    iron: '1%'
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: '6%',
-    iron: '7%'
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: '3%',
-    iron: '8%'
-  }
-  ])
+])
+
 </script>
 
 <template>
@@ -48,10 +39,21 @@
     <q-card class="my-card">
       <q-card-section>
         <q-table
-          :rows="rows"
+          :rows="user.listTable.data"
           row-key="name"
+          table-header-class="text-white bg-blue"
+          virtual-scroll
           flat bordered
-        />
+          :columns="columns">
+          <template v-slot:body-cell-action="props">
+            <q-td :props="props">
+              <div class="row justify-between">
+                <q-btn size="xs"  rounded color="primary" icon="edit" label="Edit" />
+                 <q-btn size="xs"  rounded color="red-14" icon="delete" label="Delete"  />
+              </div>
+            </q-td>
+          </template>
+       </q-table>
       </q-card-section>
     </q-card>
   </div>
