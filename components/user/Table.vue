@@ -2,6 +2,11 @@
 import { useUsersStore } from '~/stores/user'
 const user = useUsersStore()
 const rowTable = computed(()=> user.getListData)
+const columns = ref([
+  { name: 'name', label: 'NAME', field: 'name' , align: 'left' },
+  { name: 'email', label: 'EMAIL', field: 'email', align: 'left' },
+  { name: 'action', label: 'ACTION', field: '_id', align: 'center', headerStyle: 'width: 200px' }
+])
 
 onNuxtReady(()=>{
   fetTchData()
@@ -12,25 +17,12 @@ const fetTchData=async ()=>{
   user.setListData(value?.data)
 }
 
-const columns = ref([
-  {
-    name: 'name',
-    label: 'NAME',
-    field: 'name' ,
-    align: 'left',
-  },{
-    name: 'email',
-    label: 'EMAIL',
-    field: 'email',
-    align: 'left',
-  },{
-    name: 'action',
-    label: 'ACTION',
-    field: '_id',
-    align: 'center',
-    headerStyle: 'width: 200px',
-  },
-])
+const onDeleteItem = async (params:any) =>{
+  await user.deleteUsers(params.value);
+  fetTchData()
+}
+
+
 
 </script>
 
@@ -49,7 +41,7 @@ const columns = ref([
             <q-td :props="props">
               <div class="row justify-between">
                 <q-btn size="xs"  rounded color="primary" icon="edit" label="Edit" />
-                 <q-btn size="xs"  rounded color="red-14" icon="delete" label="Delete"  />
+                 <q-btn size="xs" @click="onDeleteItem(props)" rounded color="red-14" icon="delete" label="Delete"  />
               </div>
             </q-td>
           </template>

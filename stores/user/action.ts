@@ -14,3 +14,10 @@ export const submitUser = async (payload:any) =>{
 
   return users
 }
+
+export const deleteUsers = async (id:any) =>{
+  const { $useApiFetch } = useNuxtApp()
+  const { data: users } = await $useApiFetch(`/api/user/${id}`, { method: 'delete' })
+
+  return users
+}
