@@ -2,9 +2,16 @@
 import { useUsersStore } from '~/stores/user'
 const user = useUsersStore()
 
-const onSubmit =()=>{
+const onSubmit =async ()=>{
   const formInput = user.getFormInput
-  user.submitUser(formInput);
+  await user.submitUser(formInput);
+  user.clearFormInput()
+  fetTchData()
+}
+
+const fetTchData=async ()=>{
+  const { value }  = await user.fetchUsers();
+  user.setListData(value?.data)
 }
 
 </script>

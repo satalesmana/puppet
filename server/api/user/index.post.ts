@@ -3,12 +3,14 @@ import type { ApiResponse }  from '~/server/types/apiresponse.interface';
 import bcrypt from 'bcryptjs'
 
 export default defineEventHandler(async event => {
-  const body = await readFormData(event);
+  //const body = await readFormData(event);
+  const body = await readBody(event);
+
   const config = useRuntimeConfig();
   try{
-    const name = body.get("name")
-    const email = body.get("email")
-    const password = body.get("password")
+    const name = body.name
+    const email = body.email
+    const password = body.password
 
     if(name === '') throw new Error('name harus di isi')
     if(password === '') throw new Error('password harus di isi')

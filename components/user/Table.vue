@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useUsersStore } from '~/stores/user'
 const user = useUsersStore()
+const rowTable = computed(()=> user.getListData)
 
-
-onMounted(()=>{
+onNuxtReady(()=>{
   fetTchData()
 })
 
 const fetTchData=async ()=>{
   const { value }  = await user.fetchUsers();
-  user.listTable.data =  value?.data || []
+  user.setListData(value?.data)
 }
 
 const columns = ref([
@@ -39,7 +39,7 @@ const columns = ref([
     <q-card class="my-card">
       <q-card-section>
         <q-table
-          :rows="user.listTable.data"
+          :rows="rowTable"
           row-key="name"
           table-header-class="text-white bg-blue"
           virtual-scroll
