@@ -5,9 +5,7 @@
         <div class="text-h6">Scraping Task</div>
       </q-card-section>
       <q-separator />
-      <q-card-section>
-        asdf
-      </q-card-section>
+      <q-card-section> asdf </q-card-section>
       <q-separator />
       <q-card-actions align="right">
         <q-btn outline color="red">Cancel</q-btn>

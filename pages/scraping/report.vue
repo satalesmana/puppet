@@ -1,5 +1,3 @@
 <template>
-    <div>
-        report
-    </div>
+  <div>report</div>
 </template>

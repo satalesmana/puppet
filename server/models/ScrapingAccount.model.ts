@@ -1,7 +1,7 @@
-import { UserSchema } from '~/server/models/User.model'
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
+import { UserSchema } from '~/server/models/User.model';
 
-export const allowType = ['jobstreet','facebook']
+export const allowType = ['jobstreet', 'facebook'];
 
 export const ScrapingAccountSchema = new Schema({
   name: { type: String },
@@ -12,4 +12,7 @@ export const ScrapingAccountSchema = new Schema({
   created_by: { type: UserSchema },
 });
 
-export const ScrapingAccount = model<any>("scraping_account", ScrapingAccountSchema);
+export const ScrapingAccount = model<any>(
+  'scraping_account',
+  ScrapingAccountSchema,
+);

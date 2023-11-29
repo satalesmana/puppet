@@ -23,3 +23,6 @@ logs
 .env.*
 !.env.example
 
+
+# TypeScript v1 declaration files
+typings/

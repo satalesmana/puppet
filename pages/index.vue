@@ -2,8 +2,7 @@
 import { useQuasar } from 'quasar';
 import type { QBtnProps, QNotifyOptions } from 'quasar';
 
-const { dialog, bottomSheet, loading, loadingBar, notify, dark, screen } =
-  useQuasar();
+const { dialog, bottomSheet, loading, loadingBar, notify, dark } = useQuasar();
 
 loadingBar.setDefaults({
   color: 'green',
@@ -11,7 +10,7 @@ loadingBar.setDefaults({
   position: 'bottom',
 });
 
-const themeIcon = computed(() => (dark.isActive ? 'dark_mode' : 'light_mode'));
+//const themeIcon = computed(() => (dark.isActive ? 'dark_mode' : 'light_mode'));
 
 const showBottomsheet = () =>
   bottomSheet({
@@ -89,7 +88,6 @@ const buttons: QBtnProps[] = [
 ];
 </script>
 <template>
-
   <q-page class="q-pl-lg">
     <p class="text-h6 q-pt-md">Plugin Showcase</p>
     <q-list>

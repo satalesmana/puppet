@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  const rows = ref([
+const rows = ref([
   {
     name: 'Frozen Yogurt',
     calories: 159,
@@ -8,7 +8,7 @@
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: 'Ice cream sandwich',
@@ -18,7 +18,7 @@
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: 'Eclair',
@@ -28,7 +28,7 @@
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: 'Cupcake',
@@ -38,28 +38,23 @@
     protein: 4.3,
     sodium: 413,
     calcium: '3%',
-    iron: '8%'
-  }
-  ])
+    iron: '8%',
+  },
+]);
 </script>
 
 <template>
   <div class="q-pa-lg">
     <q-card class="my-card">
       <q-card-section>
-        <q-table
-          :rows="rows"
-          row-key="name"
-          flat bordered
-        />
+        <q-table :rows="rows" row-key="name" flat bordered />
       </q-card-section>
     </q-card>
   </div>
 </template>
 
 <style lang="scss" scoped>
-
-::v-deep .q-card__section--vert{
-  padding:0
+::v-deep .q-card__section--vert {
+  padding: 0;
 }
 </style>

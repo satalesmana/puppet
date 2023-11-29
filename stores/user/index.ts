@@ -4,6 +4,6 @@ import * as getters from './getters';
 
 export const useUsersStore = defineStore('users', {
   state,
-  getters:{ ...getters },
-  actions:{ ...actions }
-})
+  getters: { ...getters },
+  actions: { ...actions },
+});

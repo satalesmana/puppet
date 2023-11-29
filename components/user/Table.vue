@@ -1,29 +1,32 @@
 <script setup lang="ts">
-import { useUsersStore } from '~/stores/user'
-const user = useUsersStore()
-const rowTable = computed(()=> user.getListData)
+import { useUsersStore } from '~/stores/user';
+const user = useUsersStore();
+const rowTable = computed(() => user.getListData);
 const columns = ref([
-  { name: 'name', label: 'NAME', field: 'name' , align: 'left' },
+  { name: 'name', label: 'NAME', field: 'name', align: 'left' },
   { name: 'email', label: 'EMAIL', field: 'email', align: 'left' },
-  { name: 'action', label: 'ACTION', field: '_id', align: 'center', headerStyle: 'width: 200px' }
-])
+  {
+    name: 'action',
+    label: 'ACTION',
+    field: '_id',
+    align: 'center',
+    headerStyle: 'width: 200px',
+  },
+]);
 
-onNuxtReady(()=>{
-  fetTchData()
-})
+onNuxtReady(() => {
+  fetTchData();
+});
 
-const fetTchData=async ()=>{
-  const { value }  = await user.fetchUsers();
-  user.setListData(value?.data)
-}
+const fetTchData = async () => {
+  const { value } = await user.fetchUsers();
+  user.setListData(value?.data);
+};
 
-const onDeleteItem = async (params:any) =>{
+const onDeleteItem = async (params: any) => {
   await user.deleteUsers(params.value);
-  fetTchData()
-}
-
-
-
+  fetTchData();
+};
 </script>
 
 <template>
@@ -35,25 +38,39 @@ const onDeleteItem = async (params:any) =>{
           row-key="name"
           table-header-class="text-white bg-blue"
           virtual-scroll
-          flat bordered
-          :columns="columns">
-          <template v-slot:body-cell-action="props">
+          flat
+          bordered
+          :columns="columns"
+        >
+          <template #body-cell-action="props">
             <q-td :props="props">
               <div class="row justify-between">
-                <q-btn size="xs"  rounded color="primary" icon="edit" label="Edit" />
-                 <q-btn size="xs" @click="onDeleteItem(props)" rounded color="red-14" icon="delete" label="Delete"  />
+                <q-btn
+                  size="xs"
+                  rounded
+                  color="primary"
+                  icon="edit"
+                  label="Edit"
+                />
+                <q-btn
+                  size="xs"
+                  rounded
+                  color="red-14"
+                  icon="delete"
+                  label="Delete"
+                  @click="onDeleteItem(props)"
+                />
               </div>
             </q-td>
           </template>
-       </q-table>
+        </q-table>
       </q-card-section>
     </q-card>
   </div>
 </template>
 
 <style lang="scss" scoped>
-
-::v-deep .q-card__section--vert{
-  padding:0
+::v-deep .q-card__section--vert {
+  padding: 0;
 }
 </style>

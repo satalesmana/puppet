@@ -1,30 +1,29 @@
 interface State {
-  formInput: FormInput
-  listTable: ListTable
+  formInput: FormInput;
+  listTable: ListTable;
 }
 
 interface FormInput {
-  name: String,
-  email:String,
-  password:String
+  name: String;
+  email: String;
+  password: String;
 }
 
 interface ListTable {
-  data: Array<[]>,
-  pagination: Object
+  data: Array<[]>;
+  pagination: Object;
 }
 
-
-export default function ():State {
-  return{
-    formInput:{
-      name:'',
-      email:'',
-      password:''
+export default function (): State {
+  return {
+    formInput: {
+      name: '',
+      email: '',
+      password: '',
     },
-    listTable:{
-      data:[],
-      pagination:{}
-    }
-  }
+    listTable: {
+      data: [],
+      pagination: {},
+    },
+  };
 }
