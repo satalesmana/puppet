@@ -4,14 +4,14 @@ import { ScrapingAccount } from '~/server/models/ScrapingAccount.model';
 import type { ApiResponse } from '~/server/types/apiresponse.interface';
 
 export default defineEventHandler(async (event) => {
-  const body = await readFormData(event);
+  const body = await readBody(event);
 
   try {
-    const accountScraping = body.get('scraping_account') as string;
-    const initialId = body.get('initial_id');
-    const initialPage = body.get('initial_page');
-    const counter = body.get('counter');
-    const status = body.get('status');
+    const accountScraping = body.scraping_account as string;
+    const initialId = body.initial_id;
+    const initialPage = body.initial_page;
+    const counter = body.counter;
+    const status = body.status;
 
     if (accountScraping === '') throw new Error('account harus di isi');
     if (initialId === '') throw new Error('initial id harus di isi');

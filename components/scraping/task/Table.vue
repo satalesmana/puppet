@@ -1,53 +1,124 @@
 <script setup lang="ts">
-const rows = ref([
+import { useScrapingTaskStore } from '~/stores/scrapingTask';
+const scrapingTask = useScrapingTaskStore();
+const rowTable = computed(() => scrapingTask.getListData);
+const columns = ref([
   {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: '14%',
-    iron: '1%',
+    name: 'scraping_account',
+    label: 'ACCOUNT TO SCRAP',
+    field: '_id',
+    align: 'left',
   },
   {
-    name: 'Ice cream sandwich',
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: '8%',
-    iron: '1%',
+    name: 'initial_id',
+    label: 'INITIAL ID',
+    field: 'initial_id',
+    align: 'left',
   },
   {
-    name: 'Eclair',
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: '6%',
-    iron: '7%',
+    name: 'initial_page',
+    label: 'INITIAL PAGE',
+    field: 'initial_page',
+    align: 'left',
   },
   {
-    name: 'Cupcake',
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: '3%',
-    iron: '8%',
+    name: 'counter',
+    label: 'COUNTER',
+    field: 'counter',
+    align: 'left',
+  },
+  {
+    name: 'created_by',
+    label: 'CRATED BY',
+    field: '_id',
+    align: 'left',
+  },
+  {
+    name: 'status',
+    label: 'STATUS',
+    field: 'status',
+    align: 'left',
+  },
+  {
+    name: 'action',
+    label: 'ACTION',
+    field: '_id',
+    align: 'center',
+    headerStyle: 'width: 200px',
   },
 ]);
+
+onNuxtReady(() => {
+  fetTchData();
+});
+
+const fetTchData = async () => {
+  const { value } = await scrapingTask.fetchScrapingTask();
+  scrapingTask.setListData(value?.data);
+};
+
+const onDeleteItem = async (params: any) => {
+  await scrapingTask.deleteScrapingTask(params.value);
+  fetTchData();
+};
 </script>
 
 <template>
   <div class="q-pa-lg">
     <q-card class="my-card">
       <q-card-section>
-        <q-table :rows="rows" row-key="name" flat bordered />
+        <q-table
+          :rows="rowTable"
+          row-key="name"
+          table-header-class="text-white bg-blue"
+          virtual-scroll
+          flat
+          bordered
+          :columns="columns"
+        >
+          <template #body-cell-scraping_account="props">
+            <q-td :props="props">
+              <div class="text-body2 text-weight-medium">
+                {{ props.row.scraping_account.email }}
+              </div>
+              <div class="text-caption">
+                {{ props.row.scraping_account.type }}
+              </div>
+            </q-td>
+          </template>
+
+          <template #body-cell-counter="props">
+            <q-td :props="props"> {{ props.row.counter }} Times </q-td>
+          </template>
+
+          <template #body-cell-created_by="props">
+            <q-td :props="props">
+              {{ props.row.created_by.name }}
+            </q-td>
+          </template>
+
+          <template #body-cell-action="props">
+            <q-td :props="props">
+              <div class="row justify-between">
+                <q-btn
+                  size="xs"
+                  rounded
+                  color="primary"
+                  icon="edit"
+                  label="Edit"
+                />
+                <q-btn
+                  size="xs"
+                  rounded
+                  color="red-14"
+                  icon="delete"
+                  label="Delete"
+                  @click="onDeleteItem(props)"
+                />
+              </div>
+            </q-td>
+          </template>
+        </q-table>
       </q-card-section>
     </q-card>
   </div>

@@ -63,6 +63,7 @@ const onSubmit = async () => {
                     dense
                     filled
                     emit-value
+                    map-options
                     hide-bottom-space
                     requird
                     :options="optAccounttype"
