@@ -10,7 +10,7 @@ loadingBar.setDefaults({
   position: 'bottom',
 });
 
-//const themeIcon = computed(() => (dark.isActive ? 'dark_mode' : 'light_mode'));
+// const themeIcon = computed(() => (dark.isActive ? 'dark_mode' : 'light_mode'));
 
 const showBottomsheet = () =>
   bottomSheet({

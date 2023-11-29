@@ -1,53 +1,70 @@
 <script setup lang="ts">
-const rows = ref([
+import { useScrapingAccountStore } from '~/stores/scrapingAccount';
+const scrapingAccount = useScrapingAccountStore();
+const rowTable = computed(() => scrapingAccount.getListData);
+const columns = ref([
+  { name: 'name', label: 'NAME', field: 'name', align: 'left' },
+  { name: 'email', label: 'EMAIL', field: 'email', align: 'left' },
+  { name: 'type', label: 'ACCOUNT TYPE', field: 'type', align: 'left' },
   {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: '14%',
-    iron: '1%',
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: '8%',
-    iron: '1%',
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: '6%',
-    iron: '7%',
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: '3%',
-    iron: '8%',
+    name: 'action',
+    label: 'ACTION',
+    field: '_id',
+    align: 'center',
+    headerStyle: 'width: 200px',
   },
 ]);
+
+onNuxtReady(() => {
+  fetTchData();
+});
+
+const fetTchData = async () => {
+  const { value } = await scrapingAccount.fetchScrapingAccount();
+  scrapingAccount.setListData(value?.data);
+};
+
+const onDeleteItem = async (params: any) => {
+  await scrapingAccount.deleteScrapingAccount(params.value);
+  fetTchData();
+};
 </script>
 
 <template>
   <div class="q-pa-lg">
     <q-card class="my-card">
       <q-card-section>
-        <q-table :rows="rows" row-key="name" flat bordered />
+        <q-table
+          :rows="rowTable"
+          row-key="name"
+          table-header-class="text-white bg-blue"
+          virtual-scroll
+          flat
+          bordered
+          :columns="columns"
+        >
+          <template #body-cell-action="props">
+            <q-td :props="props">
+              <div class="row justify-between">
+                <q-btn
+                  size="xs"
+                  rounded
+                  color="primary"
+                  icon="edit"
+                  label="Edit"
+                />
+                <q-btn
+                  size="xs"
+                  rounded
+                  color="red-14"
+                  icon="delete"
+                  label="Delete"
+                  @click="onDeleteItem(props)"
+                />
+              </div>
+            </q-td>
+          </template>
+        </q-table>
       </q-card-section>
     </q-card>
   </div>

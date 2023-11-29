@@ -3,3 +3,10 @@
 .q-btn--rectangle {
   border-radius: 6px;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .text-right{
+    text-align:left !important
+  }
+}

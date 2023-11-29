@@ -2,13 +2,13 @@ import { ScrapingAccount } from '~/server/models/ScrapingAccount.model';
 import type { ApiResponse } from '~/server/types/apiresponse.interface';
 
 export default defineEventHandler(async (event) => {
-  const body = await readFormData(event);
+  const body = await readBody(event);
 
   try {
-    const account = body.get('name');
-    const email = body.get('email');
-    const password = body.get('password');
-    const type = body.get('type');
+    const account = body.name;
+    const email = body.email;
+    const password = body.password;
+    const type = body.type;
 
     if (account === '') throw new Error('name harus di isi');
     if (email === '') throw new Error('email harus di isi');
