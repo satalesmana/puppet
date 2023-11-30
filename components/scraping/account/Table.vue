@@ -28,6 +28,10 @@ const onDeleteItem = async (params: any) => {
   await scrapingAccount.deleteScrapingAccount(params.value);
   fetTchData();
 };
+
+const onLoaginAccount = async (params: any) => {
+  await scrapingAccount.loginScrapingAccount(params.value);
+};
 </script>
 
 <template>
@@ -45,23 +49,34 @@ const onDeleteItem = async (params: any) => {
         >
           <template #body-cell-action="props">
             <q-td :props="props">
-              <div class="row justify-between">
-                <q-btn
-                  size="xs"
-                  rounded
-                  color="primary"
-                  icon="edit"
-                  label="Edit"
-                />
-                <q-btn
-                  size="xs"
-                  rounded
-                  color="red-14"
-                  icon="delete"
-                  label="Delete"
-                  @click="onDeleteItem(props)"
-                />
-              </div>
+              <q-btn-dropdown
+                split
+                color="primary"
+                rounded
+                icon="login"
+                label="Loagin Account"
+                @click="onLoaginAccount(props)"
+              >
+                <q-list>
+                  <q-item v-close-popup clickable>
+                    <q-item-section side>
+                      <q-icon name="edit" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>Edit</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item v-close-popup clickable @click="onDeleteItem(props)">
+                    <q-item-section side>
+                      <q-icon name="delete" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>Delete</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
             </q-td>
           </template>
         </q-table>
