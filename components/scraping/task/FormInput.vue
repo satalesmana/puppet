@@ -5,6 +5,8 @@ const scrapingTask = useScrapingTaskStore();
 const scrapingAccount = useScrapingAccountStore();
 
 const optScrapingAccount = computed(() => scrapingTask.getOptScrapingTask);
+const optPosition = computed(() => scrapingTask.getOptPosition);
+
 const optCounter = computed(() => {
   const opt = [];
   for (let i = 1; i <= 7; i++) {
@@ -31,6 +33,22 @@ const onSubmit = async () => {
   await scrapingTask.submitScrapingTask(formInput);
   scrapingTask.clearFormInput();
   fetTchData();
+};
+
+const filterPositionId = async (val, update) => {
+  const { data } = await scrapingTask.jobstreetFetchPosition(
+    scrapingTask.formInput.scraping_account,
+  );
+
+  update(() => {
+    if (data) {
+      scrapingTask.setOptPosition(data);
+    }
+  });
+};
+
+const onChangePositionId = () => {
+  scrapingTask.jobstreetFetchBiller();
 };
 
 onNuxtReady(() => {
@@ -61,14 +79,21 @@ onNuxtReady(() => {
                     v-model="scrapingTask.formInput.scraping_account"
                     outlined
                     dense
-                    filled
                     emit-value
                     map-options
                     hide-bottom-space
                     requird
                     :options="optScrapingAccount"
                     :options-dense="false"
-                  />
+                  >
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
                 </span>
               </div>
             </div>
@@ -78,16 +103,52 @@ onNuxtReady(() => {
                 class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
               >
                 <label>
-                  <b>Initial Id</b>
+                  <b>Position Id</b>
+                </label>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <span class="custom-input-32">
+                  <q-select
+                    v-model:model-value="scrapingTask.formInput.initial_id"
+                    outlined
+                    dense
+                    emit-value
+                    map-options
+                    hide-bottom-space
+                    requird
+                    :options="optPosition"
+                    :options-dense="false"
+                    @update:model-value="onChangePositionId"
+                    @filter="filterPositionId"
+                  >
+                    <template #no-option>
+                      <q-item>
+                        <q-item-section class="text-grey">
+                          No results
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </q-select>
+                </span>
+              </div>
+            </div>
+
+            <div class="row q-mb-sm items-center">
+              <div
+                class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
+              >
+                <label>
+                  <b>Biller Id</b>
                 </label>
               </div>
               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 <span class="custom-input-32">
                   <q-input
-                    v-model="scrapingTask.formInput.initial_id"
+                    v-model="scrapingTask.formInput.biller_id"
                     outlined
                     dense
                     filled
+                    disable
                     hide-bottom-space
                     requird
                   />
@@ -109,7 +170,6 @@ onNuxtReady(() => {
                     v-model="scrapingTask.formInput.initial_page"
                     outlined
                     dense
-                    filled
                     hide-bottom-space
                     requird
                   />
@@ -131,7 +191,6 @@ onNuxtReady(() => {
                     v-model="scrapingTask.formInput.counter"
                     outlined
                     dense
-                    filled
                     emit-value
                     map-options
                     hide-bottom-space

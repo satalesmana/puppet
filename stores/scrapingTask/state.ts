@@ -1,6 +1,7 @@
 interface FormInput {
   scraping_account: String;
   initial_id: String;
+  biller_id: String;
   initial_page: String;
   counter: String;
   status: String;
@@ -20,6 +21,7 @@ interface State {
   formInput: FormInput;
   listTable: ListTable;
   optScrapingAccount: Array<ScrapingAccoung>;
+  optPosition: Array<any>;
 }
 
 export default function (): State {
@@ -27,6 +29,7 @@ export default function (): State {
     formInput: {
       scraping_account: '',
       initial_id: '',
+      biller_id: '',
       initial_page: '',
       counter: '',
       status: 'open',
@@ -36,5 +39,6 @@ export default function (): State {
       pagination: {},
     },
     optScrapingAccount: [],
+    optPosition: [],
   };
 }

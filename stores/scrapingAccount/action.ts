@@ -41,7 +41,6 @@ export const submitUser = async (payload: any) => {
     Dialog.create({
       title: 'Info',
       message: scrapingAccount.value.message,
-      html: true,
     });
 
     return scrapingAccount;
@@ -82,6 +81,12 @@ export const deleteScrapingAccount = async (id: any) => {
       throw errDelete.value?.data;
     }
     Loading.hide();
+
+    Dialog.create({
+      title: 'Info',
+      message: scrapingAccount.value.message,
+    });
+
     return scrapingAccount;
   } catch (err) {
     Loading.hide();
@@ -109,6 +114,11 @@ export const loginScrapingAccount = async (id: any) => {
       throw errLoginScrapingAccount.value?.data;
     }
     Loading.hide();
+
+    Dialog.create({
+      title: 'Info',
+      message: loginScrapingAccount.value.message,
+    });
     return loginScrapingAccount;
   } catch (err) {
     Loading.hide();

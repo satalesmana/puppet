@@ -1,37 +1,25 @@
-import puppeteer from 'puppeteer';
+import { ScrapingAccount } from '~/server/models/ScrapingAccount.model';
+import type { ApiResponse } from '~/server/types/apiresponse.interface';
 
 export default defineEventHandler(async (event) => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    slowMo: 20,
-  });
-  const page = await browser.newPage();
-  await page.setDefaultNavigationTimeout(1000000);
-  await page.setViewport({ width: 1000, height: 600 });
-  await page.goto('https://id.employer.seek.com/id/oauth/login/');
-  await page.waitForSelector('#emailAddress');
-  await page.type('#emailAddress', 'mikaoktamirza@gmail.com');
-  await page.waitForSelector('#password');
-  await page.type('#password', 'Terusanlama1');
-  await page.click(`button[type='submit']`);
+  try {
+    const { params } = event.context;
+    const { email, password } = await ScrapingAccount.findById({
+      _id: params?.id,
+    });
 
-  await page.waitForNavigation();
-  await page.waitForTimeout(10000);
-  const authSession = await page.evaluate(() => {
-    let token;
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.includes('auth')) {
-        const json = localStorage.getItem(key);
-        const auth = JSON.parse(json);
-        token = auth.body.access_token;
-      }
+    const token = await jobstreetLoginAccount(email, password);
+    if (token === '') {
+      throw new Error('login gagal');
     }
-    return token || '';
-  });
 
-  console.log(authSession);
+    await ScrapingAccount.updateOne({ _id: params?.id }, { cookies: token });
 
-  browser.close();
+    return {
+      data: [],
+      message: 'login berhasil',
+    } as ApiResponse<[], string>;
+  } catch (error) {
+    return error as ApiResponse<[], string>;
+  }
 });

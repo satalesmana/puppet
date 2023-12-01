@@ -61,7 +61,6 @@ const isValidEmail = (email) => {
                       v-model="scrapingAccount.formInput.name"
                       outlined
                       dense
-                      filled
                       hide-bottom-space
                       :rules="[
                         (val) =>
@@ -86,7 +85,6 @@ const isValidEmail = (email) => {
                       v-model="scrapingAccount.formInput.type"
                       outlined
                       dense
-                      filled
                       emit-value
                       map-options
                       hide-bottom-space
@@ -116,7 +114,6 @@ const isValidEmail = (email) => {
                       v-model="scrapingAccount.formInput.email"
                       outlined
                       dense
-                      filled
                       hide-bottom-space
                       requird
                       :rules="[
@@ -143,7 +140,6 @@ const isValidEmail = (email) => {
                       v-model="scrapingAccount.formInput.password"
                       outlined
                       dense
-                      filled
                       hide-bottom-space
                       requird
                       :rules="[

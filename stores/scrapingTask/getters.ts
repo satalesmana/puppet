@@ -30,10 +30,26 @@ export const setOptScrapingAccount = (state: any) => (payload: any) => {
   const optList = payload.map((item) => {
     return {
       value: item._id,
-      label: item.name,
+      label: `${item.name} (${item.email})`,
       ...item,
     };
   });
 
   state.optScrapingAccount = optList;
+};
+
+export const getOptPosition = (state: any) => {
+  return state.optPosition;
+};
+
+export const setOptPosition = (state: any) => (payload: any) => {
+  const optList = payload.map((item) => {
+    return {
+      value: item.jobId,
+      label: `${item.jobId} ${item.title} (${item.status})`,
+      ...item,
+    };
+  });
+
+  state.optPosition = optList;
 };

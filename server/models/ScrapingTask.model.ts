@@ -7,6 +7,7 @@ export const ScrapingStatus = ['open', 'in progress', 'done', 'failed'];
 export const ScrapingTaskSchema = new Schema({
   scraping_account: { type: ScrapingAccountSchema },
   initial_id: { type: String },
+  biller_id: { type: Number },
   initial_page: { type: Number },
   counter: { type: Number },
   status: { type: String, enum: ScrapingStatus, default: 'open' },
