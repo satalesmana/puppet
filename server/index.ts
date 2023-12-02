@@ -7,6 +7,10 @@ export default async (_nitroApp: Nitro) => {
   try {
     await mongoose.connect(config.mongodbUri);
     console.log('Connected to MongoDB');
+
+    // setInterval(() => {
+    jobstreetFetchPelamar();
+    // }, 5000);
   } catch (e) {
     console.error(e);
   }
