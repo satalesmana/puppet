@@ -9,7 +9,7 @@ export default async (_nitroApp: Nitro) => {
     console.log('Connected to MongoDB');
 
     // setInterval(() => {
-    jobstreetFetchPelamar();
+    // jobstreetFetchPelamar();
     // }, 5000);
   } catch (e) {
     console.error(e);

@@ -39,7 +39,6 @@ const fetTchData = async () => {
                     v-model="user.formInput.name"
                     outlined
                     dense
-                    filled
                     hide-bottom-space
                     requird
                   />
@@ -61,7 +60,6 @@ const fetTchData = async () => {
                     v-model="user.formInput.email"
                     outlined
                     dense
-                    filled
                     hide-bottom-space
                     requird
                   />
@@ -83,7 +81,6 @@ const fetTchData = async () => {
                     v-model="user.formInput.password"
                     outlined
                     dense
-                    filled
                     hide-bottom-space
                     requird
                   />
