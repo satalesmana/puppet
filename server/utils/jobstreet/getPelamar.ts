@@ -43,9 +43,15 @@ export const jobstreetFetchPelamar = async () => {
 
       if (resJson.data) {
         if (resJson.data.prospectsWithPaginationByJobId.nodes !== null) {
-          ScrapingJobstreetPelamar.insertMany(
-            resJson.data.prospectsWithPaginationByJobId.nodes,
+          const data = resJson.data.prospectsWithPaginationByJobId.nodes.map(
+            (item: any) => {
+              return {
+                ...item,
+                scraping_task: resTask[0],
+              };
+            },
           );
+          ScrapingJobstreetPelamar.insertMany(data);
         }
       }
     }

@@ -5,9 +5,12 @@ export const getMetadata = (event: any) => {
   if (authorization) {
     const cleanToken = authorization.split(' ');
 
-    const { payload } = jwt.decode(cleanToken[1], { complete: true });
+    const { payload } =
+      cleanToken[1] != null
+        ? jwt.decode(cleanToken[1], { complete: true })
+        : null;
 
-    return payload || null;
+    return payload;
   }
   return null;
 };

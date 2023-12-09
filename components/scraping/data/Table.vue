@@ -4,12 +4,6 @@ const scrapingTask = useScrapingTaskStore();
 const rowTable = computed(() => scrapingTask.getListData);
 const columns = ref([
   {
-    name: 'code',
-    label: 'CODE',
-    field: 'code',
-    align: 'left',
-  },
-  {
     name: 'scraping_account',
     label: 'ACCOUNT TO SCRAP',
     field: '_id',

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Notify, Loading, QSpinnerFacebook } from 'quasar';
+
 definePageMeta({
   layout: 'empty',
   pageTransition: {
@@ -12,16 +14,27 @@ definePageMeta({
 });
 const email = ref('');
 const password = ref('');
-const { status, signIn } = useAuth();
+const { signIn } = useAuth();
 
-const submitLogin = async () => {
+const submitLogin = async (e) => {
   try {
+    e.preventDefault();
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading fetch data...',
+    });
+
     await signIn(
       { username: email.value, password: password.value },
       { callbackUrl: '/' },
     );
   } catch (error) {
-    console.log('error', error);
+    Notify.create({
+      color: 'negative',
+      message: 'Sign in failed. Check the details you provided are correct.',
+    });
+  } finally {
+    Loading.hide();
   }
 };
 </script>

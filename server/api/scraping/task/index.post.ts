@@ -26,28 +26,31 @@ export default defineEventHandler(async (event) => {
 
     const { id, name } = getMetadata(event);
 
+    const resTotal = (await ScrapingTask.countDocuments()) || 0;
+    const code = useAutoNumber(resTotal, 'TSK');
     const res = await ScrapingTask.create({
+      code,
+      initial_id: initialId,
+      initial_page: initialPage,
+      biller_id: billerId,
+      counter,
+      status,
       scraping_account: {
         _id: accountScraping,
         name: scrapingAccount.name,
         type: scrapingAccount.type,
         email: scrapingAccount.email,
       },
-      initial_id: initialId,
-      initial_page: initialPage,
-      biller_id: billerId,
-      counter,
-      status,
       created_by: {
         name,
         email: id,
       },
     });
 
-    return { data: res, message: 'data hasbeen saved' } as ApiResponse<
-      [],
-      string
-    >;
+    return {
+      data: res,
+      message: `data hasbeen saved`,
+    } as ApiResponse<[], string>;
   } catch (error) {
     const message = error?.message as string;
     if (

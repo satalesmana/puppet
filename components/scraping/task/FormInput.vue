@@ -116,6 +116,8 @@ onNuxtReady(() => {
                     map-options
                     hide-bottom-space
                     requird
+                    :disable="scrapingTask.formInput.scraping_account === ''"
+                    :filled="scrapingTask.formInput.scraping_account === ''"
                     :options="optPosition"
                     :options-dense="false"
                     @update:model-value="onChangePositionId"

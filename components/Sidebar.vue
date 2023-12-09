@@ -31,8 +31,12 @@ const testMenu = [
         name: 'Scraping Task',
       },
       {
-        href: '/scraping/report',
-        name: 'Scraping Report',
+        href: '/scraping/data',
+        name: 'Scraping Data',
+      },
+      {
+        href: '/scraping/logs',
+        name: 'Scraping Logs',
       },
     ],
   },

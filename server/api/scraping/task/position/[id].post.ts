@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const { params } = event.context;
     let responseData = [];
 
-    const { cookies } = await ScrapingAccount.findById({
+    const { cookies, email } = await ScrapingAccount.findById({
       _id: params?.id,
     });
 
@@ -24,7 +24,12 @@ export default defineEventHandler(async (event) => {
       },
       body: JSON.stringify(requestBody),
     });
-    const { data } = await response.json();
+    const { data, errors } = await response.json();
+
+    if (errors) {
+      throw new Error(`${errors[0].message}, lakukan login akun ${email} `);
+    }
+
     if (data.hirerDashboardJobs.jobs !== null) {
       responseData = data.hirerDashboardJobs.jobs;
     }

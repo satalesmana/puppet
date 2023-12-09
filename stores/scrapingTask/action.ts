@@ -1,3 +1,5 @@
+import { Loading, QSpinnerFacebook, Dialog } from 'quasar';
+
 export const fetchScrapingTask = async () => {
   const { $useApiFetch } = useNuxtApp();
   const { data: scrapingTask } = await $useApiFetch('/api/scraping/task');
@@ -5,13 +7,35 @@ export const fetchScrapingTask = async () => {
 };
 
 export const submitScrapingTask = async (payload: any) => {
-  const { $useApiFetch } = useNuxtApp();
-  const { data: scrapingTask } = await $useApiFetch('/api/scraping/task', {
-    method: 'post',
-    body: { ...payload },
-  });
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading submiting data...',
+    });
 
-  return scrapingTask;
+    const { $useApiFetch } = useNuxtApp();
+    const { data: scrapingTask } = await $useApiFetch('/api/scraping/task', {
+      method: 'post',
+      body: { ...payload },
+    });
+
+    Dialog.create({
+      title: 'Info',
+      message: scrapingTask.value.message,
+      html: true,
+    });
+
+    return scrapingTask;
+  } catch (err) {
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    });
+    throw err;
+  } finally {
+    Loading.hide();
+  }
 };
 
 export const deleteScrapingTask = async (id: any) => {
@@ -27,38 +51,73 @@ export const deleteScrapingTask = async (id: any) => {
 };
 
 export const jobstreetFetchPosition = async (id: any) => {
-  const { $useApiFetch, $pinia } = useNuxtApp();
+  try {
+    const { $useApiFetch, $pinia } = useNuxtApp();
 
-  const dataState = $pinia.state.value.scrapingTask.optPosition;
-  if (dataState.length > 0) {
-    return dataState;
+    const dataState = $pinia.state.value.scrapingTask.optPosition;
+    if (dataState.length > 0) {
+      return dataState;
+    }
+
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading fetch data...',
+    });
+
+    const { data: optJobtreetPosition, error: errorFetch } = await $useApiFetch(
+      `/api/scraping/task/position/${id}`,
+      {
+        method: 'post',
+      },
+    );
+
+    if (errorFetch.value !== null) {
+      throw errorFetch.value?.data;
+    }
+    Loading.hide();
+    return optJobtreetPosition.value;
+  } catch (err) {
+    Loading.hide();
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    });
+    throw err;
   }
-
-  const { data: optJobtreetPosition } = await $useApiFetch(
-    `/api/scraping/task/position/${id}`,
-    {
-      method: 'post',
-    },
-  );
-
-  return optJobtreetPosition.value;
 };
 
 export const jobstreetFetchBiller = async () => {
-  const { $useApiFetch, $pinia } = useNuxtApp();
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading fetch data...',
+    });
 
-  const state = $pinia.state.value.scrapingTask.formInput;
+    const { $useApiFetch, $pinia } = useNuxtApp();
 
-  const { data: optJobtreetPosition } = await $useApiFetch(
-    `/api/scraping/task/biller/${state.scraping_account}`,
-    {
-      method: 'post',
-      body: { position_id: state.initial_id },
-    },
-  );
+    const state = $pinia.state.value.scrapingTask.formInput;
 
-  const { data } = optJobtreetPosition.value;
-  $pinia.state.value.scrapingTask.formInput.biller_id = data.billingId;
+    const { data: optJobtreetPosition, error: errorFetch } = await $useApiFetch(
+      `/api/scraping/task/biller/${state.scraping_account}`,
+      {
+        method: 'post',
+        body: { position_id: state.initial_id },
+      },
+    );
 
-  return data;
+    const { data } = optJobtreetPosition.value;
+    $pinia.state.value.scrapingTask.formInput.biller_id = data.billingId;
+
+    Loading.hide();
+    return data;
+  } catch (err) {
+    Loading.hide();
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    });
+    throw err;
+  }
 };
