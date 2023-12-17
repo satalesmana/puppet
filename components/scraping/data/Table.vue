@@ -1,66 +1,61 @@
 <script setup lang="ts">
-import { useScrapingTaskStore } from '~/stores/scrapingTask';
-const scrapingTask = useScrapingTaskStore();
-const rowTable = computed(() => scrapingTask.getListData);
+import { useScrapingReportStore } from '~/stores/scrapingReport';
+const scrapingReport = useScrapingReportStore();
+const rowTable = computed(() => scrapingReport.getListData);
 const columns = ref([
   {
-    name: 'scraping_account',
-    label: 'ACCOUNT TO SCRAP',
-    field: '_id',
+    name: 'firstName',
+    label: 'FIRST NAME',
+    field: 'firstName',
     align: 'left',
   },
   {
-    name: 'initial_id',
-    label: 'INITIAL ID',
-    field: 'initial_id',
+    name: 'lastName',
+    label: 'LAST NAME',
+    field: 'lastName',
     align: 'left',
   },
   {
-    name: 'initial_page',
-    label: 'INITIAL PAGE',
-    field: 'initial_page',
+    name: 'email',
+    label: 'EMAIL',
+    field: 'email',
     align: 'left',
   },
   {
-    name: 'counter',
-    label: 'COUNTER',
-    field: 'counter',
+    name: 'phone',
+    label: 'PHONE',
+    field: 'phone',
     align: 'left',
   },
   {
-    name: 'created_by',
-    label: 'CRATED BY',
-    field: '_id',
+    name: 'mostRecentJobTitle',
+    label: 'RECENT JOB TITLE',
+    field: 'mostRecentJobTitle',
     align: 'left',
   },
   {
-    name: 'status',
-    label: 'STATUS',
-    field: 'status',
+    name: 'mostRecentCompanyName',
+    label: 'RECENT COMPANY',
+    field: 'mostRecentCompanyName',
     align: 'left',
   },
   {
-    name: 'action',
-    label: 'ACTION',
-    field: '_id',
-    align: 'center',
-    headerStyle: 'width: 200px',
+    name: 'mostRecentRoleMonths',
+    label: 'ROLE MONTH',
+    field: 'mostRecentRoleMonths',
+    align: 'left',
   },
 ]);
+
+const fetTchData = async () => {
+  const filter = {};
+  const { value } = await scrapingReport.fetchScrapingData(filter);
+  scrapingReport.setListData(value?.data);
+};
 
 onNuxtReady(() => {
   fetTchData();
 });
-
-const fetTchData = async () => {
-  const { value } = await scrapingTask.fetchScrapingTask();
-  scrapingTask.setListData(value?.data);
-};
-
-const onDeleteItem = async (params: any) => {
-  await scrapingTask.deleteScrapingTask(params.value);
-  fetTchData();
-};
 </script>
 
 <template>
@@ -97,7 +92,7 @@ const onDeleteItem = async (params: any) => {
             </q-td>
           </template>
 
-          <template #body-cell-action="props">
+          <!-- <template #body-cell-action="props">
             <q-td :props="props">
               <div class="row justify-between">
                 <q-btn
@@ -107,17 +102,9 @@ const onDeleteItem = async (params: any) => {
                   icon="edit"
                   label="Edit"
                 />
-                <q-btn
-                  size="xs"
-                  rounded
-                  color="red-14"
-                  icon="delete"
-                  label="Delete"
-                  @click="onDeleteItem(props)"
-                />
               </div>
             </q-td>
-          </template>
+          </template> -->
         </q-table>
       </q-card-section>
     </q-card>

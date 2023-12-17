@@ -43,13 +43,16 @@ export const getOptPosition = (state: any) => {
 };
 
 export const setOptPosition = (state: any) => (payload: any) => {
-  const optList = payload.map((item) => {
-    return {
-      value: item.jobId,
-      label: `${item.jobId} ${item.title} (${item.status})`,
-      ...item,
-    };
-  });
+  const optList = [];
+
+  for (let i = 0; i < payload.length; i++) {
+    if (payload[i].jobId != null)
+      optList.push({
+        value: payload[i].jobId,
+        label: `${payload[i].jobId} ${payload[i].title} (${payload[i].status})`,
+        ...payload[i],
+      });
+  }
 
   state.optPosition = optList;
 };

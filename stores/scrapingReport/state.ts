@@ -1,10 +1,7 @@
-interface FormInput {
+interface FormFilter {
   scraping_account: String;
-  initial_id: String;
-  biller_id: String;
-  initial_page: String;
-  counter: String;
-  status: String;
+  task_status: String;
+  task: String;
 }
 
 interface ListTable {
@@ -17,28 +14,37 @@ interface ScrapingAccoung {
   value: String;
 }
 
+interface TaskList {
+  label: String;
+  value: String;
+}
+
 interface State {
-  formInput: FormInput;
+  formFilter: FormFilter;
   listTable: ListTable;
   optScrapingAccount: Array<ScrapingAccoung>;
-  optPosition: Array<any>;
+  optStatus: Array<any>;
+  optTask: Array<TaskList>;
 }
 
 export default function (): State {
   return {
-    formInput: {
+    formFilter: {
       scraping_account: '',
-      initial_id: '',
-      biller_id: '',
-      initial_page: '',
-      counter: '',
-      status: 'open',
+      task_status: '',
+      task: '',
     },
     listTable: {
       data: [],
       pagination: {},
     },
     optScrapingAccount: [],
-    optPosition: [],
+    optStatus: [
+      { label: 'Open', value: 'open' },
+      { label: 'In Progress', value: 'in progress' },
+      { label: 'Done', value: 'done' },
+      { label: 'Failed', value: 'failed' },
+    ],
+    optTask: [],
   };
 }

@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import { useScrapingReportStore } from '~/stores/scrapingReport';
-const scrapingTask = useScrapingReportStore();
-const optScrapingAccount = computed(() => scrapingTask.getOptScrapingTask);
+const scrapingReport = useScrapingReportStore();
 
-const fetTchData = async () => {
-  const { value } = await scrapingTask.fetchScrapingTask();
-  scrapingTask.setOptScrapingAccount(value?.data);
+const optScrapingAccount = computed(() => scrapingReport.getOptScrapingAccount);
+const optScrapingTask = computed(() => scrapingReport.getOptScrapingTask);
+const optStatus = computed(() => scrapingReport.getScrapingStatus);
+
+const fetchData = async () => {
+  const { value } = await scrapingReport.fetchScrapingAccount();
+  scrapingReport.setOptScrapingAccount(value?.data);
+};
+
+const onChangeStatus = async (val: any) => {
+  const { value } = await scrapingReport.fetchScrapingTask({
+    'scraping_account._id': scrapingReport.formFilter.scraping_account,
+    status: val,
+  });
+  scrapingReport.setOptScrapingTask(value?.data);
 };
 
 onNuxtReady(() => {
-  fetTchData();
+  fetchData();
 });
 
 const onSubmit = () => {};
@@ -43,6 +54,7 @@ const onReset = () => {};
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                   <span class="custom-input-32">
                     <q-select
+                      v-model="scrapingReport.formFilter.scraping_account"
                       outlined
                       dense
                       emit-value
@@ -75,14 +87,16 @@ const onReset = () => {};
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                   <span class="custom-input-32">
                     <q-select
+                      v-model="scrapingReport.formFilter.task_status"
                       outlined
                       dense
                       emit-value
                       map-options
                       hide-bottom-space
                       requird
-                      :options="optScrapingAccount"
+                      :options="optStatus"
                       :options-dense="false"
+                      @update:model-value="onChangeStatus"
                     >
                       <template #no-option>
                         <q-item>
@@ -107,13 +121,14 @@ const onReset = () => {};
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                   <span class="custom-input-32">
                     <q-select
+                      v-model="scrapingReport.formFilter.task"
                       outlined
                       dense
                       emit-value
                       map-options
                       hide-bottom-space
                       requird
-                      :options="optScrapingAccount"
+                      :options="optScrapingTask"
                       :options-dense="false"
                     >
                       <template #no-option>
