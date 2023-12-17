@@ -48,13 +48,13 @@ const columns = ref([
 ]);
 
 const fetTchData = async () => {
-  const filter = {};
-  const { value } = await scrapingReport.fetchScrapingData(filter);
+  const form = scrapingReport.formFilter;
+  const { value } = await scrapingReport.fetchScrapingData(form);
   scrapingReport.setListData(value?.data);
 };
 
-onNuxtReady(() => {
-  fetTchData();
+defineExpose({
+  fetTchData,
 });
 </script>
 

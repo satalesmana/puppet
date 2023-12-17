@@ -45,12 +45,16 @@ export const fetchScrapingTask = async (filter: any) => {
   }
 };
 
-export const fetchScrapingData = async (filter: any) => {
+export const fetchScrapingData = async (form: any) => {
   try {
     Loading.show({
       spinner: QSpinnerFacebook,
       message: 'Loading fetch data...',
     });
+
+    const filter = {
+      'scraping_task._id': form.task,
+    };
 
     const { $useApiFetch } = useNuxtApp();
     const { data: scrapingTask } = await $useApiFetch(

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useScrapingReportStore } from '~/stores/scrapingReport';
 const scrapingReport = useScrapingReportStore();
+const emits = defineEmits(['on-submit-filter']);
 
 const optScrapingAccount = computed(() => scrapingReport.getOptScrapingAccount);
 const optScrapingTask = computed(() => scrapingReport.getOptScrapingTask);
@@ -16,6 +17,7 @@ const onChangeStatus = async (val: any) => {
     'scraping_account._id': scrapingReport.formFilter.scraping_account,
     status: val,
   });
+  scrapingReport.formFilter.task = '';
   scrapingReport.setOptScrapingTask(value?.data);
 };
 
@@ -148,7 +150,12 @@ const onReset = () => {};
         <q-separator />
         <q-card-actions align="right">
           <q-btn color="red">Cancel</q-btn>
-          <q-btn color="primary" type="submit">Filter</q-btn>
+          <q-btn
+            color="primary"
+            type="submit"
+            @click="() => emits('on-submit-filter')"
+            >Filter</q-btn
+          >
         </q-card-actions>
       </q-card>
     </q-form>
