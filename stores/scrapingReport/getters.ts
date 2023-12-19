@@ -41,3 +41,12 @@ export const getListData = (state: any) => {
 export const setListData = (state: any) => (payload: any) => {
   state.listTable.data = payload;
 };
+
+export const clearFormFilter = (state: any) => () => {
+  const INITIAL_STATE = {
+    scraping_account: '',
+    task_status: '',
+    task: '',
+  };
+  state.formFilter = { ...state.formFilter, ...INITIAL_STATE };
+};

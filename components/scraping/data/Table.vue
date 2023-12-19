@@ -71,6 +71,9 @@ defineExpose({
           bordered
           :columns="columns"
         >
+          <template #top>
+            <q-btn outline color="primary" label="Export to excel" />
+          </template>
           <template #body-cell-scraping_account="props">
             <q-td :props="props">
               <div class="text-body2 text-weight-medium">

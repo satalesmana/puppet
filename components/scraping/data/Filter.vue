@@ -21,12 +21,17 @@ const onChangeStatus = async (val: any) => {
   scrapingReport.setOptScrapingTask(value?.data);
 };
 
+const onSubmit = () => {
+  emits('on-submit-filter');
+};
+
+const onReset = () => {
+  scrapingReport.clearFormFilter();
+};
+
 onNuxtReady(() => {
   fetchData();
 });
-
-const onSubmit = () => {};
-const onReset = () => {};
 </script>
 
 <template>
@@ -149,13 +154,8 @@ const onReset = () => {};
         </q-card-section>
         <q-separator />
         <q-card-actions align="right">
-          <q-btn color="red">Cancel</q-btn>
-          <q-btn
-            color="primary"
-            type="submit"
-            @click="() => emits('on-submit-filter')"
-            >Filter</q-btn
-          >
+          <q-btn color="red" type="reset">Cancel</q-btn>
+          <q-btn color="primary" type="submit">Filter</q-btn>
         </q-card-actions>
       </q-card>
     </q-form>
