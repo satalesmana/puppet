@@ -38,8 +38,16 @@ export const getListData = (state: any) => {
   return state.listTable.data;
 };
 
+export const getListDataLogs = (state: any) => {
+  return state.listTableLogs.data;
+};
+
 export const setListData = (state: any) => (payload: any) => {
   state.listTable.data = payload;
+};
+
+export const setListDataLogs = (state: any) => (payload: any) => {
+  state.listTableLogs.data = payload;
 };
 
 export const clearFormFilter = (state: any) => () => {
@@ -49,4 +57,12 @@ export const clearFormFilter = (state: any) => () => {
     task: '',
   };
   state.formFilter = { ...state.formFilter, ...INITIAL_STATE };
+};
+
+export const getTaskInprogres = (state: any) => {
+  return state.taskInprogres;
+};
+
+export const setTaskInprogres = (state: any) => (payload: any) => {
+  state.taskInprogres = payload;
 };

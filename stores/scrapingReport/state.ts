@@ -19,9 +19,26 @@ interface TaskList {
   value: String;
 }
 
+interface TaskCreatedBy {
+  email: String;
+  name: String;
+  _id: String;
+}
+interface TaskInprogres {
+  _id: String;
+  code: String;
+  initial_id: Number;
+  biller_id: String;
+  initial_page: Number;
+  counter: Number;
+  status: String;
+  created_by: TaskCreatedBy;
+}
 interface State {
   formFilter: FormFilter;
   listTable: ListTable;
+  listTableLogs: ListTable;
+  taskInprogres: TaskInprogres | null;
   optScrapingAccount: Array<ScrapingAccoung>;
   optStatus: Array<any>;
   optTask: Array<TaskList>;
@@ -38,6 +55,11 @@ export default function (): State {
       data: [],
       pagination: {},
     },
+    listTableLogs: {
+      data: [],
+      pagination: {},
+    },
+    taskInprogres: null,
     optScrapingAccount: [],
     optStatus: [
       { label: 'Open', value: 'open' },

@@ -42,6 +42,7 @@
     "puppeteer": "^21.5.2",
     "quasar": "^2.14.0",
     "socket.io": "^4.7.2",
-    "vue-awesome-sidebar": "^1.2.3"
+    "vue-awesome-sidebar": "^1.2.3",
+    "write-excel-file": "^1.4.27"
   }
 }

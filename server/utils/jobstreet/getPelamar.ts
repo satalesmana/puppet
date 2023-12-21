@@ -1,7 +1,6 @@
 import { ScrapingAccount } from '~/server/models/ScrapingAccount.model';
 import { ScrapingTask } from '~/server/models/ScrapingTask.model';
 import { ScrapingJobstreetPelamar } from '~/server/models/ScrapingPelamarJobstreet.model';
-import type { ApiResponse } from '~/server/types/apiresponse.interface';
 
 export const jobstreetFetchPelamar = async () => {
   try {

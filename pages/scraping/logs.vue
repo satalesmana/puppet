@@ -1,53 +1,17 @@
 <script setup>
-const progress = ref(0.1);
-const columns = ref([
-  {
-    name: 'code',
-    label: 'CODE',
-    field: 'code',
-    align: 'left',
-  },
-  {
-    name: 'scraping_account',
-    label: 'ACCOUNT TO SCRAP',
-    field: '_id',
-    align: 'left',
-  },
-  {
-    name: 'initial_id',
-    label: 'INITIAL ID',
-    field: 'initial_id',
-    align: 'left',
-  },
-  {
-    name: 'initial_page',
-    label: 'INITIAL PAGE',
-    field: 'initial_page',
-    align: 'left',
-  },
-  {
-    name: 'counter',
-    label: 'COUNTER',
-    field: 'counter',
-    align: 'left',
-  },
-  {
-    name: 'created_by',
-    label: 'CRATED BY',
-    field: '_id',
-    align: 'left',
-  },
-]);
+import { useScrapingReportStore } from '~/stores/scrapingReport';
+const scrapingReport = useScrapingReportStore();
 
+const progress = ref(0.1);
+const scraingTaskTableRef = ref([]);
 const showLogs = ref(false);
 const togleShowLogs = () => {
   showLogs.value = !showLogs.value;
 };
-const logs = ref('');
 
 let nIntervId;
+const logs = ref('');
 const flashText = () => {
-  console.log('asdf');
   logs.value += '[2:37 PM, 12/19/2023] Account 1: asdf asdf \n';
 };
 const fetchLogs = () => {
@@ -64,9 +28,19 @@ const stopFetchLogs = () => {
   nIntervId = null;
 };
 
-onNuxtReady(() => {
+const inProgresTask = computed(() => scrapingReport.getTaskInprogres);
+const fetchInprogresTask = async () => {
+  const { value } = await scrapingReport.fetchScrapingTask({
+    status: 'in progress',
+  });
+  scrapingReport.setTaskInprogres(value?.data);
+};
+
+onNuxtReady(async () => {
   stopFetchLogs();
   fetchLogs();
+  await fetchInprogresTask();
+  scraingTaskTableRef.value.fetTchData();
 });
 
 onUnmounted(() => {
@@ -79,7 +53,12 @@ onUnmounted(() => {
     <q-card-section>
       <div class="q-ma-lg">
         <span class="text-h6">Task In Progres </span>
-        <p>TSK-00000001 - Total page 10 - expected data 120</p>
+        <p v-if="inProgresTask != null">
+          {{ inProgresTask[0]?.code }}- Counter page
+          {{ inProgresTask[0]?.counter }} - expected data
+          {{ inProgresTask[0]?.counter * 20 }} | Created by
+          {{ inProgresTask[0]?.created_by.name }}
+        </p>
         <q-linear-progress size="10px" :value="progress" />
         <a
           href="javascript:void(0);"
@@ -102,15 +81,7 @@ onUnmounted(() => {
 
       <div class="q-ma-lg">
         <span class="text-h6">Daftar antrian</span>
-        <q-table
-          :rows="[]"
-          row-key="name"
-          table-header-class="text-white bg-blue"
-          virtual-scroll
-          flat
-          bordered
-          :columns="columns"
-        />
+        <scraping-logs-task-table ref="scraingTaskTableRef" />
       </div>
     </q-card-section>
   </div>

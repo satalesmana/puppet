@@ -2,7 +2,7 @@ export default defineNuxtPlugin(() => {
   return {
     provide: {
       useApiFetch: async (url: string, options: any = {}) => {
-        return useFetch(url, {
+        return await useFetch(url, {
           baseURL: '/',
           async onRequest(ctx) {
             const accessToken = await useCookie('auth:token', {
