@@ -53,6 +53,15 @@ const fetTchData = async () => {
   scrapingReport.setListData(value?.data);
 };
 
+const onDownload = async () => {
+  const form = scrapingReport.formFilter;
+  const { value } = await scrapingReport.fetchDownload(form);
+  if (value?.data) {
+    const baseUrl = window.location.origin;
+    window.location.href = `${baseUrl}/${value?.data}`;
+  }
+};
+
 defineExpose({
   fetTchData,
 });
@@ -72,7 +81,12 @@ defineExpose({
           :columns="columns"
         >
           <template #top>
-            <q-btn outline color="primary" label="Export to excel" />
+            <q-btn
+              outline
+              color="primary"
+              label="Export to excel"
+              @click="onDownload"
+            />
           </template>
           <template #body-cell-scraping_account="props">
             <q-td :props="props">

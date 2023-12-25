@@ -72,3 +72,31 @@ export const fetchScrapingData = async (form: any) => {
     Loading.hide();
   }
 };
+
+export const fetchDownload = async (form: any) => {
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading fetch data...',
+    });
+
+    const filter = {
+      'scraping_task._id': form.task,
+    };
+
+    const { $useApiFetch } = useNuxtApp();
+    const { data: scrapingTask } = await $useApiFetch(
+      '/api/scraping/task/export-excel',
+      {
+        method: 'post',
+        body: { filter: { ...filter } },
+      },
+    );
+    return scrapingTask;
+  } catch (err) {
+    console.error('[ERR fetchScrapingAccount]', err);
+    throw err?.message;
+  } finally {
+    Loading.hide();
+  }
+};

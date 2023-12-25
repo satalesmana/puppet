@@ -27,13 +27,14 @@ export default defineEventHandler(async (event) => {
       },
     ];
 
-    const filePath = '/public/file.xlsx';
+    const timeer = Date.now();
+    const fileName = `downloads/phone_${timeer}.xlsx`;
     await writeXlsxFile(data, {
       schema,
-      filePath: `.${filePath}`,
+      filePath: `./public/${fileName}`,
     });
 
-    return { data: filePath, message: '' } as ApiResponse<string, string>;
+    return { data: fileName, message: '' } as ApiResponse<string, string>;
   } catch (error) {
     return error as ApiResponse<[], string>;
   }
