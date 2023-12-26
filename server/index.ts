@@ -10,6 +10,7 @@ export default async (_nitroApp: Nitro) => {
 
     // setInterval(() => {
     // jobstreetFetchPelamar();
+    // jobstreetUpdatePelamar();
     // }, 5000);
   } catch (e) {
     console.error(e);

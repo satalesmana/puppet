@@ -8,7 +8,7 @@ export const jobstreetUpdatePelamar = async () => {
 
   const pelamar = await ScrapingJobstreetPelamar.find({
     updateBucket: '0',
-    'scraping_task.positionId': pelamarGroup[0].scraping_task.positionId,
+    'scraping_task.positionId': pelamarGroup.scraping_task.positionId,
   }).limit(20);
 
   if (pelamar.length > 0) {
@@ -22,7 +22,7 @@ export const jobstreetUpdatePelamar = async () => {
       variables: {
         input: {
           prospectData,
-          positionId: pelamarGroup[0].scraping_task.positionId,
+          positionId: pelamarGroup.scraping_task.positionId,
           bucket: 'NOT_SUITABLE',
           statusChangeLocation: 'CandidateList',
         },
@@ -32,7 +32,7 @@ export const jobstreetUpdatePelamar = async () => {
     };
 
     const { cookies } = await ScrapingAccount.findOne({
-      _id: pelamarGroup[0].scraping_account._id,
+      _id: pelamarGroup.scraping_task.scraping_account._id,
     });
 
     const response = await fetch(
@@ -50,5 +50,15 @@ export const jobstreetUpdatePelamar = async () => {
     if (resJson.errors) {
       throw new Error(resJson.errors[0].message);
     }
+
+    prospectData.forEach((data: any) => {
+      (async () => {
+        const res = await ScrapingJobstreetPelamar.updateOne(
+          { id: data.prospectId },
+          { updateBucket: '1' },
+        );
+        //  console.log(res.modifiedCount);
+      })();
+    });
   }
 };
