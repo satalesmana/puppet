@@ -1,4 +1,5 @@
 import { launch } from 'puppeteer';
+let page: any;
 
 export const jobstreetLoginAccount = async (
   username: string,
@@ -9,7 +10,8 @@ export const jobstreetLoginAccount = async (
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
     slowMo: 20,
   });
-  const page = await browser.newPage();
+
+  page = await browser.newPage();
   await page.setDefaultNavigationTimeout(1000000);
   await page.setViewport({ width: 1000, height: 600 });
   await page.goto('https://id.employer.seek.com/id/oauth/login/');
@@ -26,7 +28,7 @@ export const jobstreetLoginAccount = async (
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key?.includes('auth')) {
-        const json = localStorage.getItem(key);
+        const json = localStorage.getItem(key) as string;
         const auth = JSON.parse(json);
         token = auth.body.access_token;
       }
@@ -35,5 +37,23 @@ export const jobstreetLoginAccount = async (
   });
 
   browser.close();
+  return authSession;
+};
+
+export const jobstreetReloadAccount = async () => {
+  await page.waitForNavigation();
+  await page.waitForTimeout(10000);
+  const authSession = await page.evaluate(() => {
+    let token;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.includes('auth')) {
+        const json = localStorage.getItem(key) as string;
+        const auth = JSON.parse(json);
+        token = auth.body.access_token;
+      }
+    }
+    return token || '';
+  });
   return authSession;
 };

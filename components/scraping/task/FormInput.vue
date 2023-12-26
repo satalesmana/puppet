@@ -30,6 +30,7 @@ const fetTchData = async () => {
 
 const onSubmit = async () => {
   const formInput = scrapingTask.getFormInput;
+  formInput.initial_id = scrapingTask.getFormInput.initial_id?.value;
   await scrapingTask.submitScrapingTask(formInput);
   scrapingTask.clearFormInput();
   fetTchData();
@@ -47,7 +48,8 @@ const filterPositionId = async (val, update) => {
   });
 };
 
-const onChangePositionId = () => {
+const onChangePositionId = (value: any) => {
+  scrapingTask.formInput.positionId = value.positionId;
   scrapingTask.jobstreetFetchBiller();
 };
 
@@ -112,7 +114,6 @@ onNuxtReady(() => {
                     v-model:model-value="scrapingTask.formInput.initial_id"
                     outlined
                     dense
-                    emit-value
                     map-options
                     hide-bottom-space
                     requird
@@ -147,6 +148,29 @@ onNuxtReady(() => {
                 <span class="custom-input-32">
                   <q-input
                     v-model="scrapingTask.formInput.biller_id"
+                    outlined
+                    dense
+                    filled
+                    disable
+                    hide-bottom-space
+                    requird
+                  />
+                </span>
+              </div>
+            </div>
+
+            <div class="row q-mb-sm items-center">
+              <div
+                class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
+              >
+                <label>
+                  <b>Position Id</b>
+                </label>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <span class="custom-input-32">
+                  <q-input
+                    v-model="scrapingTask.formInput.positionId"
                     outlined
                     dense
                     filled

@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     const billerId = body.biller_id;
     const counter = body.counter;
     const status = body.status;
+    const positionId = body.positionId;
 
     if (accountScraping === '') throw new Error('account harus di isi');
     if (initialId === '') throw new Error('initial id harus di isi');
@@ -20,6 +21,7 @@ export default defineEventHandler(async (event) => {
     if (counter === '') throw new Error('counter harus di isi');
     if (status === '') throw new Error('status harus di isi');
     if (billerId === '') throw new Error('biller id harus di isi');
+    if (positionId === '') throw new Error('Position id harus di isi');
 
     const scripingAccountId = new Types.ObjectId(accountScraping);
     const scrapingAccount = await ScrapingAccount.findById(scripingAccountId);
@@ -33,6 +35,7 @@ export default defineEventHandler(async (event) => {
       initial_id: initialId,
       initial_page: initialPage,
       biller_id: billerId,
+      positionId,
       counter,
       status,
       scraping_account: {

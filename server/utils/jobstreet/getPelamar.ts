@@ -47,6 +47,7 @@ export const jobstreetFetchPelamar = async () => {
               return {
                 ...item,
                 scraping_task: resTask[0],
+                updateBucket: 0,
               };
             },
           );

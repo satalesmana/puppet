@@ -2,6 +2,7 @@ interface FormInput {
   scraping_account: String;
   initial_id: String;
   biller_id: String;
+  positionId: String;
   initial_page: String;
   counter: String;
   status: String;
@@ -30,6 +31,7 @@ export default function (): State {
       scraping_account: '',
       initial_id: '',
       biller_id: '',
+      positionId: '',
       initial_page: '',
       counter: '',
       status: 'open',

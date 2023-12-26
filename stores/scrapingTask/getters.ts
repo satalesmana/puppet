@@ -6,6 +6,8 @@ export const clearFormInput = (state: any) => () => {
   const INITIAL_STATE = {
     scraping_account: '',
     initial_id: '',
+    biller_id: '',
+    positionId: '',
     initial_page: '',
     counter: '',
     status: 'open',

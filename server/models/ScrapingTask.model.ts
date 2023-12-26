@@ -7,6 +7,7 @@ export const ScrapingStatus = ['open', 'in progress', 'done', 'failed'];
 export const ScrapingTaskSchema = new Schema({
   code: { type: String },
   initial_id: { type: String },
+  positionId: { type: String },
   biller_id: { type: Number },
   initial_page: { type: Number },
   counter: { type: Number },
