@@ -38,7 +38,7 @@ interface State {
   formFilter: FormFilter;
   listTable: ListTable;
   listTableLogs: ListTable;
-  taskInprogres: TaskInprogres | null;
+  taskInprogres: Array<TaskInprogres>;
   optScrapingAccount: Array<ScrapingAccoung>;
   optStatus: Array<any>;
   optTask: Array<TaskList>;
@@ -59,7 +59,7 @@ export default function (): State {
       data: [],
       pagination: {},
     },
-    taskInprogres: null,
+    taskInprogres: [],
     optScrapingAccount: [],
     optStatus: [
       { label: 'Open', value: 'open' },

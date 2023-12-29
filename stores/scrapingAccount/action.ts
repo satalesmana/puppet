@@ -130,3 +130,35 @@ export const loginScrapingAccount = async (id: any) => {
     throw err;
   }
 };
+
+export const logOutScrapingAccount = async (id: any) => {
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading login account...',
+    });
+    const { $useApiFetch } = useNuxtApp();
+    const { data: logOutScrapingAccount, error: errLoginOutScrapingAccount } =
+      await $useApiFetch(`/api/scraping/account/logout/${id}`, {
+        method: 'post',
+      });
+    if (errLoginOutScrapingAccount.value !== null) {
+      throw errLoginOutScrapingAccount.value?.data;
+    }
+    Loading.hide();
+
+    Dialog.create({
+      title: 'Info',
+      message: logOutScrapingAccount.value.message,
+    });
+    return logOutScrapingAccount;
+  } catch (err) {
+    Loading.hide();
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    });
+    throw err;
+  }
+};

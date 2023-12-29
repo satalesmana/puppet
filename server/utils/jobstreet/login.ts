@@ -62,5 +62,5 @@ export const jobstreetReloadAccount = async (_id: string) => {
 };
 
 export const stopSession = async (_id: string) => {
-  await browser[_id].close();
+  if (browser[_id]) await browser[_id].close();
 };

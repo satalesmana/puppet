@@ -30,7 +30,13 @@ const onDeleteItem = async (params: any) => {
 };
 
 const onLoaginAccount = async (params: any) => {
-  await scrapingAccount.loginScrapingAccount(params.value);
+  if (params.row.cookies != null) {
+    await scrapingAccount.logOutScrapingAccount(params.value);
+  } else {
+    await scrapingAccount.loginScrapingAccount(params.value);
+  }
+
+  fetTchData();
 };
 </script>
 
@@ -51,10 +57,14 @@ const onLoaginAccount = async (params: any) => {
             <q-td :props="props">
               <q-btn-dropdown
                 split
-                color="primary"
+                :color="props.row.cookies != null ? 'warning' : 'primary'"
                 rounded
-                icon="login"
-                label="Loagin Account"
+                :label="
+                  props.row.cookies != null
+                    ? 'Log Out Account'
+                    : 'Loagin Account'
+                "
+                :icon="props.row.cookies != null ? 'logout' : 'login'"
                 @click="onLoaginAccount(props)"
               >
                 <q-list>

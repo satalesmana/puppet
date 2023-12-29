@@ -37,8 +37,8 @@ const fetchInprogresTask = async () => {
 };
 
 onNuxtReady(async () => {
-  stopFetchLogs();
-  fetchLogs();
+  // stopFetchLogs();
+  // fetchLogs();
   await fetchInprogresTask();
   scraingTaskTableRef.value.fetTchData();
 });
@@ -51,9 +51,9 @@ onUnmounted(() => {
 <template>
   <div>
     <q-card-section>
-      <div class="q-ma-lg">
+      <div v-if="inProgresTask.length > 0" class="q-ma-lg">
         <span class="text-h6">Task In Progres </span>
-        <p v-if="inProgresTask != null">
+        <p>
           {{ inProgresTask[0]?.code }}- Counter page
           {{ inProgresTask[0]?.counter }} - expected data
           {{ inProgresTask[0]?.counter * 20 }} | Created by
