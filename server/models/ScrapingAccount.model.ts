@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { UserSchema } from '~/server/models/User.model';
+import { UserSchema } from './User.model';
 
 export const allowType = ['jobstreet', 'facebook'];
 

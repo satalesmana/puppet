@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { ScrapingTaskSchema } from '~/server/models/ScrapingTask.model';
+import { ScrapingTaskSchema } from './ScrapingTask.model';
 
 export const ScrapingJobstreetPelamarSchema = new Schema({
   id: { type: String, default: null },

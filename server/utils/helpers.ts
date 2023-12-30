@@ -22,3 +22,14 @@ export function useAutoNumber(lastNumber: number, initial: string) {
 
   return `${initial}-${zeroSpace}${newNumber}`;
 }
+
+export const useLogMessages = (message: String) => {
+  const d = new Date();
+  const dateTime = d.toLocaleString();
+
+  return `[${dateTime}] ${message}`;
+};
+
+export const useSleep = (ms: number = 5000) => {
+  setTimeout(() => {}, ms);
+};

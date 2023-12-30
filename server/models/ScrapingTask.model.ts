@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { UserSchema } from '~/server/models/User.model';
-import { ScrapingAccountSchema } from '~/server/models/ScrapingAccount.model';
+import { UserSchema } from './User.model';
+import { ScrapingAccountSchema } from './ScrapingAccount.model';
 
 export const ScrapingStatus = ['open', 'in progress', 'done', 'failed'];
 

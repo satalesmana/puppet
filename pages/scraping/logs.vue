@@ -4,29 +4,12 @@ const scrapingReport = useScrapingReportStore();
 
 const progress = ref(0.1);
 const scraingTaskTableRef = ref([]);
-const showLogs = ref(false);
+const showLogs = ref(true);
 const togleShowLogs = () => {
   showLogs.value = !showLogs.value;
 };
 
-let nIntervId;
 const logs = ref('');
-const flashText = () => {
-  logs.value += '[2:37 PM, 12/19/2023] Account 1: asdf asdf \n';
-};
-const fetchLogs = () => {
-  // check if an interval has already been set up
-  if (!nIntervId) {
-    nIntervId = setInterval(flashText, 2000);
-  }
-};
-
-const stopFetchLogs = () => {
-  logs.value = '';
-  clearInterval(nIntervId);
-  // release our intervalID from the variable
-  nIntervId = null;
-};
 
 const inProgresTask = computed(() => scrapingReport.getTaskInprogres);
 const fetchInprogresTask = async () => {
@@ -35,24 +18,61 @@ const fetchInprogresTask = async () => {
   });
   scrapingReport.setTaskInprogres(value?.data);
 };
+let nIntervId;
+const loadingStart = () => {
+  const flashText = () => {
+    logs.value += '.';
+  };
+
+  // check if an interval has already been set up
+  if (!nIntervId) {
+    nIntervId = setInterval(flashText, 1000);
+  }
+};
+
+const loadingEnd = () => {
+  logs.value += '\n';
+  clearInterval(nIntervId);
+  // release our intervalID from the variable
+  nIntervId = null;
+};
 
 onNuxtReady(async () => {
-  // stopFetchLogs();
-  // fetchLogs();
   await fetchInprogresTask();
   scraingTaskTableRef.value.fetTchData();
+
+  $io.on('create logs', (data) => {
+    logs.value += `${data}`;
+  });
+
+  $io.on('done scraping', () => {
+    logs.value = '';
+  });
+
+  $io.on('loading start', () => {
+    loadingStart();
+  });
+
+  $io.on('loading end', () => {
+    loadingEnd();
+  });
 });
 
-onUnmounted(() => {
-  stopFetchLogs();
-});
+const { $io } = useNuxtApp();
+const startScraping = () => {
+  $io.emit('start scraping');
+};
 </script>
 
 <template>
   <div>
     <q-card-section>
-      <div v-if="inProgresTask.length > 0" class="q-ma-lg">
-        <span class="text-h6">Task In Progres </span>
+      <div class="q-ma-lg">
+        <q-btn color="primary" @click="startScraping">Start Scraping</q-btn>
+      </div>
+      <!-- v-if="inProgresTask.length > 0" -->
+      <div class="q-ma-lg">
+        <!-- <span class="text-h6">Task In Progres </span>
         <p>
           {{ inProgresTask[0]?.code }}- Counter page
           {{ inProgresTask[0]?.counter }} - expected data
@@ -67,7 +87,7 @@ onUnmounted(() => {
         >
           <q-spinner-ios />
           <p>fetched data 20</p>
-        </a>
+        </a> -->
 
         <transition
           name="custom-classes-transition"
