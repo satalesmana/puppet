@@ -5,7 +5,9 @@ export default defineEventHandler(async (event) => {
   try {
     const { id } = getMetadata(event);
 
-    const res = await ScrapingTask.find({ 'created_by.email': id });
+    const res = await ScrapingTask.find({ 'created_by.email': id }).sort({
+      code: 'descending',
+    });
 
     return { data: res, message: '' } as ApiResponse<[], string>;
   } catch (error) {

@@ -60,6 +60,7 @@ export default function (io: Server) {
         // LOOP WHEN FOUND TASK OPEN
         resTask.forEach(async (task: any) => {
           await updatingTaskStatus(task._id, 'in progress');
+          io.emit('update antrian');
 
           io.emit(
             'create logs',
@@ -79,7 +80,7 @@ export default function (io: Server) {
 
             io.emit(
               'create logs',
-              useLogMessages(`${task.code}: moving to NOT_SUITABLE `),
+              useLogMessages(`${task.code}: moving to NOT_SUITABLE (${i + 1})`),
             );
 
             io.emit('loading start');

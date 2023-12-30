@@ -9,7 +9,7 @@ const optPosition = computed(() => scrapingTask.getOptPosition);
 
 const optCounter = computed(() => {
   const opt = [];
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= 15; i++) {
     opt.push({
       label: `${i} Times`,
       value: i,
@@ -40,7 +40,7 @@ const filterPositionId = async (val, update) => {
   const { data } = await scrapingTask.jobstreetFetchPosition(
     scrapingTask.formInput.scraping_account,
   );
-
+  console.log(data);
   update(() => {
     if (data) {
       scrapingTask.setOptPosition(data);
@@ -50,6 +50,7 @@ const filterPositionId = async (val, update) => {
 
 const onChangePositionId = (value: any) => {
   scrapingTask.formInput.positionId = value.positionId;
+  scrapingTask.formInput.totaldata = value.numberOfCandidates;
   scrapingTask.jobstreetFetchBiller();
 };
 
@@ -148,6 +149,29 @@ onNuxtReady(() => {
                 <span class="custom-input-32">
                   <q-input
                     v-model="scrapingTask.formInput.biller_id"
+                    outlined
+                    dense
+                    filled
+                    disable
+                    hide-bottom-space
+                    requird
+                  />
+                </span>
+              </div>
+            </div>
+
+            <div class="row q-mb-sm items-center">
+              <div
+                class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
+              >
+                <label>
+                  <b>Total data</b>
+                </label>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <span class="custom-input-32">
+                  <q-input
+                    v-model="scrapingTask.formInput.totaldata"
                     outlined
                     dense
                     filled

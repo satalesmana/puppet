@@ -6,6 +6,7 @@ interface FormInput {
   initial_page: String;
   counter: String;
   status: String;
+  totaldata: string;
 }
 
 interface ListTable {
@@ -35,6 +36,7 @@ export default function (): State {
       initial_page: '',
       counter: '',
       status: 'open',
+      totaldata: '',
     },
     listTable: {
       data: [],

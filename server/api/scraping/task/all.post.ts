@@ -6,7 +6,9 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const filter = body?.filter || {};
 
-    const res = await ScrapingTask.find(filter);
+    const res = await ScrapingTask.find(filter).sort({
+      code: 'descending',
+    });
 
     return { data: res, message: '' } as ApiResponse<[], string>;
   } catch (error) {

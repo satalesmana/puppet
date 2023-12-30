@@ -137,6 +137,7 @@ onNuxtReady(() => {
                       requird
                       :options="optScrapingTask"
                       :options-dense="false"
+                      @filter="filterFn"
                     >
                       <template #no-option>
                         <q-item>

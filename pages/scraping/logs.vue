@@ -53,6 +53,10 @@ onNuxtReady(async () => {
     loadingStart();
   });
 
+  $io.on('update antrian', () => {
+    scraingTaskTableRef.value.fetTchData();
+  });
+
   $io.on('loading end', () => {
     loadingEnd();
   });
