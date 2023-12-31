@@ -8,7 +8,7 @@ export function useCheckExpiry(exp: number) {
 
 export function useAutoNumber(lastNumber: number, initial: string) {
   const newNumber = lastNumber + 1;
-  const length = newNumber.toString.length;
+  const length = newNumber.toString().length;
 
   const emptyValue = (maxloop: number) => {
     let zero = '';
