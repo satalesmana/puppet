@@ -2,7 +2,13 @@ import { Schema, model } from 'mongoose';
 import { UserSchema } from './User.model';
 import { ScrapingAccountSchema } from './ScrapingAccount.model';
 
-export const ScrapingStatus = ['open', 'in progress', 'done', 'failed'];
+export const ScrapingStatus = [
+  'open',
+  'in progress',
+  'done',
+  'failed',
+  'arsip',
+];
 
 export const ScrapingTaskSchema = new Schema({
   code: { type: String },

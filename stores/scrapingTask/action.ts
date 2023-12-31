@@ -50,6 +50,41 @@ export const deleteScrapingTask = async (id: any) => {
   return scrapingTask;
 };
 
+export const arsipkanTask = async (id: any) => {
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading submiting data...',
+    });
+
+    const { $useApiFetch } = useNuxtApp();
+    const { data: scrapingTask } = await $useApiFetch(
+      `/api/scraping/task/arsip/${id}`,
+      {
+        method: 'post',
+      },
+    );
+
+    console.log('scrapingTask', scrapingTask);
+    Dialog.create({
+      title: 'Info',
+      message: scrapingTask.value.message,
+      html: true,
+    });
+
+    return scrapingTask;
+  } catch (err) {
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    });
+    throw err;
+  } finally {
+    Loading.hide();
+  }
+};
+
 export const jobstreetFetchPosition = async (id: any) => {
   try {
     const { $useApiFetch, $pinia } = useNuxtApp();
