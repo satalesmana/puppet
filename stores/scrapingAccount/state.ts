@@ -33,6 +33,9 @@ export default function (): State {
       data: [],
       pagination: {},
     },
-    optAccountType: [{ label: 'Jobstreet.com', value: 'jobstreet' }],
+    optAccountType: [
+      { label: 'Jobstreet.com', value: 'jobstreet' },
+      { label: 'kupu.id', value: 'kupu' },
+    ],
   };
 }
