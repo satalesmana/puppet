@@ -39,6 +39,7 @@
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.1",
+    "nodemailer": "^6.9.8",
     "nuxt-internal-socket": "^1.0.3",
     "puppeteer": "^21.5.2",
     "quasar": "^2.14.0",
