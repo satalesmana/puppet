@@ -41,6 +41,11 @@ const testMenu = [
     ],
   },
   {
+    name: 'Mail',
+    icon: { class: 'material-symbols-outlined', text: 'Email' },
+    href: '/mail',
+  },
+  {
     name: 'User Account',
     icon: { class: 'material-symbols-outlined', text: 'manage_accounts' },
     href: '/account',

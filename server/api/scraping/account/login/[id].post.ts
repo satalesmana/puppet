@@ -4,21 +4,27 @@ import type { ApiResponse } from '~/server/types/apiresponse.interface';
 export default defineEventHandler(async (event) => {
   try {
     const { params } = event.context;
-    const { email, password, _id } = await ScrapingAccount.findById({
+    const { email, password, _id, type } = await ScrapingAccount.findById({
       _id: params?.id,
     });
 
-    const token = await jobstreetLoginAccount(email, password, _id);
-    if (token === '') {
-      throw new Error('login gagal');
+    if (type === 'jobstreet') {
+      const token = await jobstreetLoginAccount(email, password, _id);
+      if (token === '') {
+        throw new Error('login gagal');
+      }
+
+      await ScrapingAccount.updateOne({ _id: params?.id }, { cookies: token });
+
+      setInterval(async () => {
+        const newToken = await jobstreetReloadAccount(_id);
+        await ScrapingAccount.updateOne({ _id }, { cookies: newToken });
+      }, 60000); // 6 menit
     }
 
-    await ScrapingAccount.updateOne({ _id: params?.id }, { cookies: token });
-
-    setInterval(async () => {
-      const newToken = await jobstreetReloadAccount(_id);
-      await ScrapingAccount.updateOne({ _id }, { cookies: newToken });
-    }, 60000); // 6 menit
+    if (type === 'kupu') {
+      const kupuToken = await kupuLoginAccount(_id);
+    }
 
     return {
       data: [],
