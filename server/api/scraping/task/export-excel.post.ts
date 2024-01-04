@@ -11,6 +11,11 @@ export default defineEventHandler(async (event) => {
 
     const schema = [
       {
+        column: 'Telpon',
+        type: String,
+        value: (val: any) => val.phone.replace(/\s/g, ''),
+      },
+      {
         column: 'Name',
         type: String,
         value: (val: any) => `${val.firstName} ${val.lastName}`,
@@ -19,11 +24,6 @@ export default defineEventHandler(async (event) => {
         column: 'Email',
         type: String,
         value: (val: any) => val.email,
-      },
-      {
-        column: 'Telpon',
-        type: String,
-        value: (val: any) => val.phone.replace(/\s/g, ''),
       },
     ];
 
