@@ -1,3 +1,6 @@
+<script setup lang="ts">
+const selectAll = ref(false);
+</script>
 <template>
   <div class="q-pa-lg">
     <div class="q-pb-lg">
@@ -10,13 +13,23 @@
           <MailFormInput />
         </q-item-label>
 
-        <q-item v-ripple clickable :active="active">
+        <q-item v-ripple clickable>
+          <q-item-section avatar>
+            <q-icon name="timer" />
+          </q-item-section>
+          <q-item-section>Pending</q-item-section>
+          <q-item-section side>
+            <q-badge color="red">4</q-badge>
+          </q-item-section>
+        </q-item>
+
+        <q-item v-ripple clickable>
           <q-item-section avatar>
             <q-icon name="send" />
           </q-item-section>
-          <q-item-section>Sending</q-item-section>
+          <q-item-section>Terkirim</q-item-section>
           <q-item-section side>
-            <q-badge color="red">4</q-badge>
+            <!-- <q-badge color="red">4</q-badge> -->
           </q-item-section>
         </q-item>
 
@@ -26,7 +39,7 @@
           </q-item-section>
           <q-item-section>Deleted</q-item-section>
           <q-item-section side>
-            <q-badge color="red">4</q-badge>
+            <!-- <q-badge color="red">4</q-badge> -->
           </q-item-section>
         </q-item>
       </q-list>
@@ -35,7 +48,7 @@
         <q-list bordered class="rounded-borders bg-white">
           <q-item-label header>
             <div class="q-gutter-xs">
-              <q-checkbox />
+              <q-checkbox v-model="selectAll" />
 
               <q-chip class="q-ml-md" icon="delete" style="cursor: pointer">
                 Delete

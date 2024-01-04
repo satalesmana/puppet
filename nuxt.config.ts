@@ -74,5 +74,8 @@ export default defineNuxtConfig({
     provider: {
       type: 'local',
     },
+    endpoints: {
+      getSession: { path: '/api/auth/user' },
+    },
   },
 });
