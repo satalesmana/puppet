@@ -90,7 +90,6 @@ const onSendMail = async () => {
                   v-model="mailStore.compose.task"
                   outlined
                   dense
-                  emit-value
                   map-options
                   hide-bottom-space
                   requird
