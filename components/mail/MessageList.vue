@@ -36,6 +36,7 @@ const fetchMailData = async (page, status) => {
   });
   useMail.setMailList(value?.data);
   useMail.setMailPagination(value?.pagination);
+  onClerSelectAll();
 };
 
 const onRequest = (param) => {
