@@ -14,7 +14,8 @@ const setSelectAll = () => {
 };
 
 const onDeleteItem = () => {
-  console.log('listMailRef', listMailRef.value.selected);
+  listMailRef.value.onDeleteMailList();
+  selectAll.value = false;
 };
 
 onNuxtReady(() => {
@@ -54,17 +55,19 @@ onNuxtReady(() => {
       <div class="col-9 q-pl-md">
         <q-list bordered class="rounded-borders bg-white">
           <q-item-label header>
-            <div class="q-gutter-xs">
+            <div class="q-gutter-xs q-mb-sm">
               <q-checkbox v-model="selectAll" @click="setSelectAll" />
 
-              <q-chip
+              <q-btn
                 class="q-ml-md"
                 icon="delete"
+                outline
+                rounded
                 style="cursor: pointer"
                 @click="onDeleteItem"
               >
                 Delete
-              </q-chip>
+              </q-btn>
             </div>
           </q-item-label>
 
@@ -77,7 +80,7 @@ onNuxtReady(() => {
 
 <style lang="scss" scoped>
 .height {
-  min-height: 70vh;
+  min-height: 79vh;
 }
 ::v-deep .q-list {
   .q-item__label--header {

@@ -44,11 +44,22 @@ const onRequest = (param) => {
   fetchMailData(page, props.status);
 };
 
+const onDeleteMailList = async () => {
+  await useMail.deleteMailList(selected.value);
+  fetchMailData(1, props.status);
+};
+
+const onDeleteItem = async (item) => {
+  await useMail.deleteMailList([item]);
+  fetchMailData(1, props.status);
+};
+
 defineExpose({
   onSelectAll,
   onClerSelectAll,
   selected,
   fetchMailData,
+  onDeleteMailList,
 });
 </script>
 <template>
@@ -57,10 +68,12 @@ defineExpose({
       ref="tableListref"
       v-model:selected="selected"
       v-model:pagination="mailList.pagination"
+      style="height: 70vh"
       row-key="_id"
       :rows="mailList.data"
       :columns="columns"
       selection="multiple"
+      virtual-scroll
       :rows-per-page-options="[]"
       @request="onRequest"
     >
@@ -89,6 +102,7 @@ defineExpose({
                   dense
                   round
                   icon="delete"
+                  @click="onDeleteItem(props.row)"
                 />
                 <q-btn size="12px" flat dense round icon="more_vert" />
               </div>

@@ -64,3 +64,37 @@ export const fetchMailData = async (request: any) => {
     Loading.hide();
   }
 };
+
+export const deleteMailList = async (request: []) => {
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading deleting data...',
+    });
+    const { $useApiFetch } = useNuxtApp();
+
+    const deletedId = request.map((item: any) => item._id);
+
+    const { error: errDelete } = await $useApiFetch(`/api/mail`, {
+      method: 'delete',
+      body: { deleted: deletedId },
+    });
+    if (errDelete.value !== null) {
+      throw errDelete.value?.data;
+    }
+
+    Dialog.create({
+      title: 'Info',
+      message: 'data berhasil di hapus',
+    });
+  } catch (err) {
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    });
+    throw err;
+  } finally {
+    Loading.hide();
+  }
+};
