@@ -11,6 +11,7 @@ export const MailMessagesSchema = new Schema({
   task: { type: ScrapingTaskSchema },
   status: { type: String, enum: MailStatus, default: 'pending' },
   created_by: { type: UserSchema },
+  creted_at: { type: Date, default: new Date() },
 });
 
 export const MailMessages = model<any>('email_messages', MailMessagesSchema);

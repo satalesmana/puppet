@@ -36,3 +36,15 @@ export const setOptTask = (state: any) => (payload: any) => {
 export const getOptTask = (state: any) => {
   return state.optTask;
 };
+
+export const setMailList = (state: any) => (payload: any) => {
+  state.listTable.data = payload;
+};
+
+export const setMailPagination = (state: any) => (payload: any) => {
+  state.listTable.pagination = payload;
+};
+
+export const getMailList = (state: any) => {
+  return state.listTable;
+};

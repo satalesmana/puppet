@@ -33,3 +33,8 @@ export const useLogMessages = (message: String) => {
 export const useSleep = (ms: number = 5000) => {
   setTimeout(() => {}, ms);
 };
+
+export const dateFormat = (date: any) => {
+  const mDate = new Date(date).toDateString();
+  return mDate;
+};
