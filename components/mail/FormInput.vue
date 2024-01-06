@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useMailStore } from '~/stores/mail';
 import { useScrapingReportStore } from '~/stores/scrapingReport';
+const { $io } = useNuxtApp();
 const mailStore = useMailStore();
 const srapingTaskReort = useScrapingReportStore();
 const { getSession } = useAuth();
@@ -30,6 +31,7 @@ const onSendMail = async () => {
     await mailStore.submitSendMail(formInput);
 
     showModal.value = false;
+    $io.emit('start sendmail');
   } catch {}
 };
 </script>

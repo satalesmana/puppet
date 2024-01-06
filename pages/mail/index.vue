@@ -19,7 +19,7 @@ const onDeleteItem = () => {
 };
 
 onNuxtReady(() => {
-  listMailRef.value.fetchMailData();
+  listMailRef.value.fetchMailData(null, 'pending');
 });
 </script>
 <template>

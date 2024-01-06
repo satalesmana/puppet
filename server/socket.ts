@@ -5,6 +5,8 @@ import { ScrapingAccount } from './models/ScrapingAccount.model';
 import { ScrapingTask } from './models/ScrapingTask.model';
 import { jobstreetFetchPelamar } from './utils/jobstreet/getPelamar';
 import { jobstreetUpdatePelamar } from './utils/jobstreet/updatePelamar';
+import { useSendMail } from './utils/mailer/sendMail';
+import { MailMessages, MailStatus } from './models/MailMessages.model';
 
 connect(
   'mongodb+srv://satalesmana:SY1COKkW7A98vSzk@cluster0.oe59k.mongodb.net/puppet',
@@ -101,6 +103,30 @@ export default function (io: Server) {
 
     socket.on('disconnect', () => {
       io.emit('user disconnected', socket.id);
+    });
+
+    socket.on('start sendmail', async () => {
+      const mailMessages = await MailMessages.find({ status: MailStatus[0] });
+
+      mailMessages.map(async (item: any) => {
+        io.emit(
+          'create logs',
+          useLogMessages(`${item.task.code}: sending mail to ${item.to} \n`),
+        );
+
+        await useSendMail({
+          to: item.to,
+          subject: item.subject,
+          messages: item.message,
+        });
+
+        await MailMessages.updateOne(
+          { _id: item._id },
+          { status: MailStatus[1] },
+        );
+
+        useSleep();
+      });
     });
   });
 }
