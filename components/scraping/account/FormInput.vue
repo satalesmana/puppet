@@ -100,7 +100,10 @@ const isValidEmail = (email) => {
                 </div>
               </div>
 
-              <div class="row q-mb-sm items-center">
+              <div
+                v-if="!scrapingAccount.isKupuAccout"
+                class="row q-mb-sm items-center"
+              >
                 <div
                   class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
                 >
@@ -126,7 +129,10 @@ const isValidEmail = (email) => {
                 </div>
               </div>
 
-              <div class="row q-mb-sm items-center">
+              <div
+                v-if="!scrapingAccount.isKupuAccout"
+                class="row q-mb-sm items-center"
+              >
                 <div
                   class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
                 >
@@ -146,6 +152,31 @@ const isValidEmail = (email) => {
                         (val) =>
                           (val !== null && val !== '') ||
                           'Please type password',
+                      ]"
+                    />
+                  </span>
+                </div>
+              </div>
+
+              <div class="row q-mb-sm items-center">
+                <div
+                  class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                >
+                  <label>
+                    <b>Phone</b>
+                  </label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                  <span class="custom-input-32">
+                    <q-input
+                      v-model="scrapingAccount.formInput.phone"
+                      outlined
+                      dense
+                      hide-bottom-space
+                      requird
+                      :rules="[
+                        (val) =>
+                          (val !== null && val !== '') || 'Please type Phone',
                       ]"
                     />
                   </span>

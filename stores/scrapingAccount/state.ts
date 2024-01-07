@@ -3,6 +3,7 @@ interface FormInput {
   type: String;
   email: String;
   password: String;
+  phone: String;
 }
 
 interface ListTable {
@@ -28,6 +29,7 @@ export default function (): State {
       type: '',
       email: '',
       password: '',
+      phone: '',
     },
     listTable: {
       data: [],

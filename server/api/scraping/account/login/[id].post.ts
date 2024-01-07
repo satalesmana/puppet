@@ -4,9 +4,10 @@ import type { ApiResponse } from '~/server/types/apiresponse.interface';
 export default defineEventHandler(async (event) => {
   try {
     const { params } = event.context;
-    const { email, password, _id, type } = await ScrapingAccount.findById({
-      _id: params?.id,
-    });
+    const { email, password, _id, type, phone } =
+      await ScrapingAccount.findById({
+        _id: params?.id,
+      });
 
     if (type === 'jobstreet') {
       const token = await jobstreetLoginAccount(email, password, _id);
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (type === 'kupu') {
-      const kupuToken = await kupuLoginAccount(_id);
+      await kupuLoginAccount(_id, phone);
     }
 
     return {

@@ -4,7 +4,7 @@ const scrapingAccount = useScrapingAccountStore();
 const rowTable = computed(() => scrapingAccount.getListData);
 const columns = ref([
   { name: 'name', label: 'NAME', field: 'name', align: 'left' },
-  { name: 'email', label: 'EMAIL', field: 'email', align: 'left' },
+  { name: 'email', label: 'EMAIL / PHONE', field: 'email', align: 'left' },
   { name: 'type', label: 'ACCOUNT TYPE', field: 'type', align: 'left' },
   {
     name: 'action',
@@ -29,11 +29,11 @@ const onDeleteItem = async (params: any) => {
   fetTchData();
 };
 
-const onLoaginAccount = async (params: any) => {
-  if (params.row.cookies != null) {
-    await scrapingAccount.logOutScrapingAccount(params.value);
+const onLoaginAccount = async (row: any) => {
+  if (row.cookies != null) {
+    await scrapingAccount.logOutScrapingAccount(row._id);
   } else {
-    await scrapingAccount.loginScrapingAccount(params.value);
+    await scrapingAccount.loginScrapingAccount(row);
   }
 
   fetTchData();
@@ -53,6 +53,16 @@ const onLoaginAccount = async (params: any) => {
           bordered
           :columns="columns"
         >
+          <template #body-cell-email="props">
+            <q-td :props="props">
+              <span v-if="props.row.type !== 'kupu'">
+                {{ props.row.email }}
+              </span>
+              <span v-if="props.row.type === 'kupu'">
+                {{ props.row.phone }}
+              </span>
+            </q-td>
+          </template>
           <template #body-cell-action="props">
             <q-td :props="props">
               <q-btn-dropdown
@@ -65,7 +75,7 @@ const onLoaginAccount = async (params: any) => {
                     : 'Loagin Account'
                 "
                 :icon="props.row.cookies != null ? 'logout' : 'login'"
-                @click="onLoaginAccount(props)"
+                @click="onLoaginAccount(props.row)"
               >
                 <q-list>
                   <q-item v-close-popup clickable>

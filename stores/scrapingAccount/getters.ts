@@ -12,6 +12,7 @@ export const clearFormInput = (state: any) => () => {
     type: '',
     email: '',
     password: '',
+    phone: '',
   };
 
   state.formInput = INITIAL_STATE;
@@ -23,4 +24,11 @@ export const getListData = (state: any) => {
 
 export const setListData = (state: any) => (payload: any) => {
   state.listTable.data = payload;
+};
+
+export const isKupuAccout = (state: any) => {
+  if (state.formInput.type === 'kupu') {
+    return true;
+  }
+  return false;
 };

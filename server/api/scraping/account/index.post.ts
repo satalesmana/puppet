@@ -9,14 +9,22 @@ export default defineEventHandler(async (event) => {
     const email = body.email;
     const password = body.password;
     const type = body.type;
+    const phone = body.phone;
 
     if (account === '') throw new Error('name harus di isi');
-    if (email === '') throw new Error('email harus di isi');
-    if (password === '') throw new Error('password harus di isi');
     if (type === '') throw new Error('type harus di isi');
+    if (type === 'kupu') {
+      if (phone === '') throw new Error('type harus di isi');
 
-    const cekMail = await ScrapingAccount.findOne({ email });
-    if (cekMail) throw new Error('email already exist');
+      const cekPhone = await ScrapingAccount.findOne({ phone, type });
+      if (cekPhone) throw new Error('phone already exist');
+    } else {
+      if (email === '') throw new Error('email harus di isi');
+      if (password === '') throw new Error('password harus di isi');
+
+      const cekMail = await ScrapingAccount.findOne({ email, type });
+      if (cekMail) throw new Error('email already exist');
+    }
 
     const { id, name } = getMetadata(event);
 
@@ -25,6 +33,7 @@ export default defineEventHandler(async (event) => {
       email,
       password,
       type,
+      phone,
       created_by: {
         name,
         email: id,

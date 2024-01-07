@@ -99,7 +99,7 @@ export const deleteScrapingAccount = async (id: any) => {
   }
 };
 
-export const loginScrapingAccount = async (id: any) => {
+export const loginScrapingAccount = async (row: any) => {
   try {
     Loading.show({
       spinner: QSpinnerFacebook,
@@ -107,18 +107,36 @@ export const loginScrapingAccount = async (id: any) => {
     });
     const { $useApiFetch } = useNuxtApp();
     const { data: loginScrapingAccount, error: errLoginScrapingAccount } =
-      await $useApiFetch(`/api/scraping/account/login/${id}`, {
+      await $useApiFetch(`/api/scraping/account/login/${row._id}`, {
         method: 'post',
       });
     if (errLoginScrapingAccount.value !== null) {
       throw errLoginScrapingAccount.value?.data;
     }
-    Loading.hide();
 
-    Dialog.create({
-      title: 'Info',
-      message: loginScrapingAccount.value.message,
-    });
+    if (row.type === 'kupu') {
+      Dialog.create({
+        title: 'Prompt',
+        message: 'Please input token',
+        prompt: {
+          model: '',
+          isValid: (val) => val.length > 2,
+          type: 'text',
+        },
+        cancel: true,
+        persistent: true,
+      }).onOk(async (data) => {
+        await kupuSendOTPLogin(row._id, data);
+      });
+    }
+
+    if (row.type !== 'kupu') {
+      Dialog.create({
+        title: 'Info',
+        message: loginScrapingAccount.value.message,
+      });
+    }
+
     return loginScrapingAccount;
   } catch (err) {
     Loading.hide();
@@ -128,6 +146,45 @@ export const loginScrapingAccount = async (id: any) => {
       html: true,
     });
     throw err;
+  }
+};
+
+export const kupuSendOTPLogin = async (id: any, otp: string) => {
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Loading login account...',
+    });
+
+    const { $useApiFetch } = useNuxtApp();
+    const { data: loginKupu, error: errLoginKupu } = await $useApiFetch(
+      `/api/scraping/account/kupu/get-token`,
+      {
+        method: 'post',
+        body: { _id: id, otp },
+      },
+    );
+
+    if (errLoginKupu.value !== null) {
+      throw errLoginKupu.value?.data;
+    }
+
+    Dialog.create({
+      title: 'Info',
+      message: loginKupu.value.message,
+    });
+
+    return loginKupu;
+  } catch (err) {
+    Loading.hide();
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    });
+    throw err;
+  } finally {
+    Loading.hide();
   }
 };
 

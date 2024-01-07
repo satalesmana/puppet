@@ -7,6 +7,7 @@ export const ScrapingAccountSchema = new Schema({
   name: { type: String },
   type: { type: String, enum: allowType },
   email: { type: String },
+  phone: { type: String, default: null },
   password: { type: String },
   cookies: { type: String, default: null },
   created_by: { type: UserSchema },
