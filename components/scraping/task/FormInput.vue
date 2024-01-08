@@ -40,7 +40,7 @@ const filterPositionId = async (val, update) => {
   const { data } = await scrapingTask.jobstreetFetchPosition(
     scrapingTask.formInput.scraping_account,
   );
-  console.log(data);
+
   update(() => {
     if (data) {
       scrapingTask.setOptPosition(data);
@@ -77,6 +77,7 @@ onNuxtReady(() => {
                 </label>
               </div>
               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                {{ scrapingTask.formInput.scraping_account }}
                 <span class="custom-input-32">
                   <q-select
                     v-model="scrapingTask.formInput.scraping_account"

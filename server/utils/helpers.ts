@@ -38,3 +38,10 @@ export const dateFormat = (date: any) => {
   const mDate = new Date(date).toDateString();
   return mDate;
 };
+
+export const objToParam = (data: any) => {
+  const urlParameters = Object.entries(data)
+    .map((e) => e.join('='))
+    .join('&');
+  return urlParameters;
+};

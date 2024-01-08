@@ -29,10 +29,11 @@ export const getOptScrapingTask = (state: any) => {
 };
 
 export const setOptScrapingAccount = (state: any) => (payload: any) => {
-  const optList = payload.map((item) => {
+  const optList = payload.map((item: any) => {
+    const label = item.type === 'kupu' ? item.phone : item.email;
     return {
       value: item._id,
-      label: `${item.name} (${item.email})`,
+      label: `${item.name} (${label})`,
       ...item,
     };
   });
