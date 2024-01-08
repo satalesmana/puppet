@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
       name: 1,
       email: 1,
       phone: 1,
+      type: 1,
     });
 
     return { data: res, message: '' } as ApiResponse<[], string>;
