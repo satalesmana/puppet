@@ -72,7 +72,7 @@ const onLoaginAccount = async (row: any) => {
                 :label="
                   props.row.cookies != null
                     ? 'Log Out Account'
-                    : 'Loagin Account'
+                    : 'Log In Account'
                 "
                 :icon="props.row.cookies != null ? 'logout' : 'login'"
                 @click="onLoaginAccount(props.row)"

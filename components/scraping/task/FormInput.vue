@@ -77,13 +77,11 @@ onNuxtReady(() => {
                 </label>
               </div>
               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                {{ scrapingTask.formInput.scraping_account }}
                 <span class="custom-input-32">
                   <q-select
                     v-model="scrapingTask.formInput.scraping_account"
                     outlined
                     dense
-                    emit-value
                     map-options
                     hide-bottom-space
                     requird

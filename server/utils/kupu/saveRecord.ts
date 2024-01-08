@@ -1,4 +1,4 @@
-export const getResumeDetail = async ({ cookies, applyId, jobId }: any) => {
+export const getSaveRecord = async ({ cookies, applyId, jobId }: any) => {
   try {
     const requestBody = { applyId, jobId };
 
@@ -22,7 +22,7 @@ export const getResumeDetail = async ({ cookies, applyId, jobId }: any) => {
 
     return resJson;
   } catch (error) {
-    console.log('getResumeDetail ', error);
+    console.log('getSaveRecord ', error);
     throw error;
   }
 };

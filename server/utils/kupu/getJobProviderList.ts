@@ -39,7 +39,7 @@ export const getJobProviderList = async ({ cookies }: any) => {
       throw new Error(resJson.message);
     }
 
-    return resJson.body.records as JobProvider[];
+    return resJson.body.list as JobProvider[];
   } catch (error) {
     console.log('kupuFetchList ', error);
     throw error;

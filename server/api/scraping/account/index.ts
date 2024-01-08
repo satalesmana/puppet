@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
       email: 1,
       phone: 1,
       type: 1,
+      cookies: 1,
     });
 
     return { data: res, message: '' } as ApiResponse<[], string>;

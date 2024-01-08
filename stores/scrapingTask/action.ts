@@ -85,7 +85,7 @@ export const arsipkanTask = async (id: any) => {
   }
 };
 
-export const jobstreetFetchPosition = async (id: any) => {
+export const jobstreetFetchPosition = async (account: any) => {
   try {
     const { $useApiFetch, $pinia } = useNuxtApp();
 
@@ -99,18 +99,30 @@ export const jobstreetFetchPosition = async (id: any) => {
       message: 'Loading fetch data...',
     });
 
-    const { data: optJobtreetPosition, error: errorFetch } = await $useApiFetch(
-      `/api/scraping/task/position/${id}`,
-      {
-        method: 'post',
-      },
-    );
+    if (account.type === 'kupu') {
+      const { data: optProviderKupu, error: errorProviderKupu } =
+        await $useApiFetch(`/api/scraping/task/kupu/provider`, {
+          method: 'post',
+          body: { cookies: account.cookies },
+        });
 
-    if (errorFetch.value !== null) {
-      throw errorFetch.value?.data;
+      if (errorProviderKupu.value !== null) {
+        throw errorProviderKupu.value?.data;
+      }
+
+      return optProviderKupu.value;
+    } else {
+      const { data: optJobtreetPosition, error: errorFetch } =
+        await $useApiFetch(`/api/scraping/task/position/${account.value}`, {
+          method: 'post',
+        });
+
+      if (errorFetch.value !== null) {
+        throw errorFetch.value?.data;
+      }
+
+      return optJobtreetPosition.value;
     }
-    Loading.hide();
-    return optJobtreetPosition.value;
   } catch (err) {
     Loading.hide();
     Dialog.create({
@@ -119,6 +131,8 @@ export const jobstreetFetchPosition = async (id: any) => {
       html: true,
     });
     throw err;
+  } finally {
+    Loading.hide();
   }
 };
 
