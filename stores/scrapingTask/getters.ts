@@ -47,15 +47,30 @@ export const getOptPosition = (state: any) => {
 
 export const setOptPosition = (state: any) => (payload: any) => {
   const optList = [];
-
+  const isKupuAccount = isKupuAccout(state);
   for (let i = 0; i < payload.length; i++) {
-    if (payload[i].jobId != null)
+    if (payload[i].jobId != null && !isKupuAccount)
       optList.push({
         value: payload[i].jobId,
         label: `${payload[i].jobId} ${payload[i].title} (${payload[i].status})`,
         ...payload[i],
       });
+
+    if (isKupuAccount) {
+      optList.push({
+        value: payload[i].id,
+        label: payload[i].jobTitle,
+        ...payload[i],
+      });
+    }
   }
 
   state.optPosition = optList;
+};
+
+export const isKupuAccout = (state: any) => {
+  if (state.formInput.scraping_account?.type === 'kupu') {
+    return true;
+  }
+  return false;
 };

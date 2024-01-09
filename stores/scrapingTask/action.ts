@@ -148,7 +148,7 @@ export const jobstreetFetchBiller = async () => {
     const state = $pinia.state.value.scrapingTask.formInput;
 
     const { data: optJobtreetPosition, error: errorFetch } = await $useApiFetch(
-      `/api/scraping/task/biller/${state.scraping_account}`,
+      `/api/scraping/task/biller/${state.scraping_account._id}`,
       {
         method: 'post',
         body: { position_id: state.initial_id },

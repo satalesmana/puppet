@@ -48,10 +48,19 @@ const filterPositionId = async (val, update) => {
   });
 };
 
+const onChangeAccount = () => {
+  scrapingTask.setOptPosition([]);
+  scrapingTask.formInput.initial_id = '';
+  scrapingTask.formInput.positionId = '';
+  scrapingTask.formInput.totaldata = '';
+};
+
 const onChangePositionId = (value: any) => {
-  scrapingTask.formInput.positionId = value.positionId;
-  scrapingTask.formInput.totaldata = value.numberOfCandidates;
-  scrapingTask.jobstreetFetchBiller();
+  if (!scrapingTask.isKupuAccout) {
+    scrapingTask.formInput.positionId = value.positionId;
+    scrapingTask.formInput.totaldata = value.numberOfCandidates;
+    scrapingTask.jobstreetFetchBiller();
+  }
 };
 
 onNuxtReady(() => {
@@ -87,6 +96,7 @@ onNuxtReady(() => {
                     requird
                     :options="optScrapingAccount"
                     :options-dense="false"
+                    @update:model-value="onChangeAccount"
                   >
                     <template #no-option>
                       <q-item>
@@ -136,72 +146,74 @@ onNuxtReady(() => {
               </div>
             </div>
 
-            <div class="row q-mb-sm items-center">
-              <div
-                class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
-              >
-                <label>
-                  <b>Biller Id</b>
-                </label>
+            <div v-if="!scrapingTask.isKupuAccout">
+              <div class="row q-mb-sm items-center">
+                <div
+                  class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                >
+                  <label>
+                    <b>Biller Id</b>
+                  </label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                  <span class="custom-input-32">
+                    <q-input
+                      v-model="scrapingTask.formInput.biller_id"
+                      outlined
+                      dense
+                      filled
+                      disable
+                      hide-bottom-space
+                      requird
+                    />
+                  </span>
+                </div>
               </div>
-              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                <span class="custom-input-32">
-                  <q-input
-                    v-model="scrapingTask.formInput.biller_id"
-                    outlined
-                    dense
-                    filled
-                    disable
-                    hide-bottom-space
-                    requird
-                  />
-                </span>
-              </div>
-            </div>
 
-            <div class="row q-mb-sm items-center">
-              <div
-                class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
-              >
-                <label>
-                  <b>Total data</b>
-                </label>
+              <div class="row q-mb-sm items-center">
+                <div
+                  class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                >
+                  <label>
+                    <b>Total data</b>
+                  </label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                  <span class="custom-input-32">
+                    <q-input
+                      v-model="scrapingTask.formInput.totaldata"
+                      outlined
+                      dense
+                      filled
+                      disable
+                      hide-bottom-space
+                      requird
+                    />
+                  </span>
+                </div>
               </div>
-              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                <span class="custom-input-32">
-                  <q-input
-                    v-model="scrapingTask.formInput.totaldata"
-                    outlined
-                    dense
-                    filled
-                    disable
-                    hide-bottom-space
-                    requird
-                  />
-                </span>
-              </div>
-            </div>
 
-            <div class="row q-mb-sm items-center">
-              <div
-                class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
-              >
-                <label>
-                  <b>Position Id</b>
-                </label>
-              </div>
-              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                <span class="custom-input-32">
-                  <q-input
-                    v-model="scrapingTask.formInput.positionId"
-                    outlined
-                    dense
-                    filled
-                    disable
-                    hide-bottom-space
-                    requird
-                  />
-                </span>
+              <div class="row q-mb-sm items-center">
+                <div
+                  class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                >
+                  <label>
+                    <b>Position Id</b>
+                  </label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                  <span class="custom-input-32">
+                    <q-input
+                      v-model="scrapingTask.formInput.positionId"
+                      outlined
+                      dense
+                      filled
+                      disable
+                      hide-bottom-space
+                      requird
+                    />
+                  </span>
+                </div>
               </div>
             </div>
 
