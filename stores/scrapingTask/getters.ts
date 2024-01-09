@@ -74,3 +74,11 @@ export const isKupuAccout = (state: any) => {
   }
   return false;
 };
+
+export const getSubmitForm = (state: any) => {
+  return {
+    ...state.formInput,
+    scraping_account: state.formInput.scraping_account?._id,
+    initial_id: state.formInput.initial_id?.value,
+  };
+};

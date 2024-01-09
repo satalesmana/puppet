@@ -14,10 +14,17 @@ export const submitScrapingTask = async (payload: any) => {
     });
 
     const { $useApiFetch } = useNuxtApp();
-    const { data: scrapingTask } = await $useApiFetch('/api/scraping/task', {
-      method: 'post',
-      body: { ...payload },
-    });
+    const { data: scrapingTask, error: errorSubmit } = await $useApiFetch(
+      '/api/scraping/task',
+      {
+        method: 'post',
+        body: { ...payload },
+      },
+    );
+
+    if (errorSubmit.value !== null) {
+      throw errorSubmit.value?.data;
+    }
 
     Dialog.create({
       title: 'Info',

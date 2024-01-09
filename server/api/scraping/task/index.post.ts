@@ -16,15 +16,18 @@ export default defineEventHandler(async (event) => {
     const positionId = body.positionId;
 
     if (accountScraping === '') throw new Error('account harus di isi');
+    const scripingAccountId = new Types.ObjectId(accountScraping);
+    const scrapingAccount = await ScrapingAccount.findById(scripingAccountId);
+
     if (initialId === '') throw new Error('initial id harus di isi');
     if (initialPage === '') throw new Error('initial page harus di isi');
     if (counter === '') throw new Error('counter harus di isi');
     if (status === '') throw new Error('status harus di isi');
-    if (billerId === '') throw new Error('biller id harus di isi');
-    if (positionId === '') throw new Error('Position id harus di isi');
 
-    const scripingAccountId = new Types.ObjectId(accountScraping);
-    const scrapingAccount = await ScrapingAccount.findById(scripingAccountId);
+    if (scrapingAccount.type !== 'kupu') {
+      if (billerId === '') throw new Error('biller id harus di isi');
+      if (positionId === '') throw new Error('Position id harus di isi');
+    }
 
     const { id, name } = getMetadata(event);
 
@@ -43,6 +46,7 @@ export default defineEventHandler(async (event) => {
         name: scrapingAccount.name,
         type: scrapingAccount.type,
         email: scrapingAccount.email,
+        phone: scrapingAccount.phone,
       },
       created_by: {
         name,

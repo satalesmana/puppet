@@ -89,9 +89,20 @@ const onArsipkan = async (params: any) => {
         >
           <template #body-cell-scraping_account="props">
             <q-td :props="props">
-              <div class="text-body2 text-weight-medium">
+              <div
+                v-if="props.row.scraping_account.type !== 'kupu'"
+                class="text-body2 text-weight-medium"
+              >
                 {{ props.row.scraping_account.email }}
               </div>
+
+              <div
+                v-if="props.row.scraping_account.type === 'kupu'"
+                class="text-body2 text-weight-medium"
+              >
+                {{ props.row.scraping_account.phone }}
+              </div>
+
               <div class="text-caption">
                 {{ props.row.scraping_account.type }}
               </div>

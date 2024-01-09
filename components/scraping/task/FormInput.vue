@@ -29,8 +29,7 @@ const fetTchData = async () => {
 };
 
 const onSubmit = async () => {
-  const formInput = scrapingTask.getFormInput;
-  formInput.initial_id = scrapingTask.getFormInput.initial_id?.value;
+  const formInput = scrapingTask.getSubmitForm;
   await scrapingTask.submitScrapingTask(formInput);
   scrapingTask.clearFormInput();
   fetTchData();
