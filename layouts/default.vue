@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 definePageMeta({ middleware: 'auth' });
+const { data } = useAuth();
 
 const { signOut } = useAuth();
 const leftDrawerOpen = ref(false);
@@ -52,10 +53,17 @@ const onLogout = () => {
           <q-avatar size="56px" class="q-mb-sm">
             <img src="~/assets/img/boy-avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">Razvan Stoenescu</div>
-          <div>@rstoenescu</div>
+          <div class="text-weight-bold text-h6">{{ data?.name }}</div>
+          <div class="text-italic">{{ data?.id }}</div>
 
-          <q-btn @click="onLogout">Logout</q-btn>
+          <q-btn
+            class="full-width q-mt-lg"
+            rounded
+            color="red"
+            @click="onLogout"
+          >
+            Logout
+          </q-btn>
         </div>
       </q-img>
     </q-drawer>

@@ -4,17 +4,16 @@ import { useScrapingReportStore } from '~/stores/scrapingReport';
 const { $io } = useNuxtApp();
 const mailStore = useMailStore();
 const srapingTaskReort = useScrapingReportStore();
-const { getSession } = useAuth();
+const { data } = useAuth();
 
 const showModal = ref(false);
 const isInputManual = computed(() => mailStore.getIsinputManual);
 const optTask = computed(() => mailStore.getOptTask);
 
 const fetchTask = async () => {
-  const res = await getSession();
   const { value } = await srapingTaskReort.fetchScrapingTask({
     status: 'done',
-    'created_by.email': res?.id,
+    'created_by.email': data?.id,
   });
   mailStore.setOptTask(value?.data);
 };

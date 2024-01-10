@@ -11,6 +11,7 @@
 <script setup>
 const collapsed = ref(false);
 const miniMenu = ref(false);
+const { data } = useAuth();
 
 const testMenu = [
   {
@@ -45,10 +46,15 @@ const testMenu = [
     icon: { class: 'material-symbols-outlined', text: 'Email' },
     href: '/mail',
   },
-  {
-    name: 'User Account',
-    icon: { class: 'material-symbols-outlined', text: 'manage_accounts' },
-    href: '/account',
-  },
 ];
+
+onMounted(() => {
+  if (data.value?.role === 'admin') {
+    testMenu.push({
+      name: 'User Account',
+      icon: { class: 'material-symbols-outlined', text: 'manage_accounts' },
+      href: '/account',
+    });
+  }
+});
 </script>
