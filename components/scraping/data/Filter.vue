@@ -21,6 +21,11 @@ const onChangeStatus = async (val: any) => {
   scrapingReport.setOptScrapingTask(value?.data);
 };
 
+const onChangeAccount = () => {
+  scrapingReport.formFilter.task = '';
+  scrapingReport.formFilter.task_status = '';
+};
+
 const onSubmit = () => {
   emits('on-submit-filter');
 };
@@ -70,6 +75,7 @@ onNuxtReady(() => {
                       requird
                       :options="optScrapingAccount"
                       :options-dense="false"
+                      @update:model-value="onChangeAccount"
                     >
                       <template #no-option>
                         <q-item>
