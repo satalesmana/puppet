@@ -8,8 +8,8 @@ export const jobstreetLoginAccount = async (
   _id: string,
 ) => {
   browser[_id] = await launch({
-    headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: 'new',
+    args: ['--enable-gpu'],
     slowMo: 20,
   });
 

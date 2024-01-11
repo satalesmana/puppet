@@ -4,8 +4,8 @@ const browser: any = {};
 
 export const kupuLoginAccount = async (_id: string, phone: string) => {
   browser[_id] = await launch({
-    headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: 'new',
+    args: ['--enable-gpu'],
     slowMo: 20,
   });
 
