@@ -1,13 +1,25 @@
+import fs from 'fs';
 import { launch } from 'puppeteer';
 const page: any = {};
 const browser: any = {};
 
 export const kupuLoginAccount = async (_id: string, phone: string) => {
-  browser[_id] = await launch({
-    headless: 'new',
-    args: ['--enable-gpu'],
-    slowMo: 20,
-  });
+  if (fs.existsSync('/usr/bin/chromium')) {
+    console.log('tes-browser');
+
+    browser[_id] = await launch({
+      headless: false,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/usr/bin/chromium',
+      slowMo: 20,
+    });
+  } else {
+    browser[_id] = await launch({
+      headless: false,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      slowMo: 20,
+    });
+  }
 
   page[_id] = await browser[_id].newPage();
 

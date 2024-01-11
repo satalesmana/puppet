@@ -7,11 +7,22 @@ export const jobstreetLoginAccount = async (
   password: string,
   _id: string,
 ) => {
-  browser[_id] = await launch({
-    headless: 'new',
-    args: ['--enable-gpu'],
-    slowMo: 20,
-  });
+  if (fs.existsSync('/usr/bin/chromium')) {
+    console.log('tes-browser');
+
+    browser[_id] = await launch({
+      headless: false,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/usr/bin/chromium',
+      slowMo: 20,
+    });
+  } else {
+    browser[_id] = await launch({
+      headless: false,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      slowMo: 20,
+    });
+  }
 
   page[_id] = await browser[_id].newPage();
   await page[_id].setDefaultNavigationTimeout(1000000);
