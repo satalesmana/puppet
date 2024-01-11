@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { launch } from 'puppeteer';
 const page: any = {};
 const browser: any = {};
@@ -11,10 +12,10 @@ export const jobstreetLoginAccount = async (
     console.log('tes-browser');
 
     browser[_id] = await launch({
-      headless: false,
+      // headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: '/usr/bin/chromium',
-      slowMo: 20,
+      // slowMo: 20,
     });
   } else {
     browser[_id] = await launch({

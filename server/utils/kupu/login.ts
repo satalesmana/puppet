@@ -8,10 +8,10 @@ export const kupuLoginAccount = async (_id: string, phone: string) => {
     console.log('tes-browser');
 
     browser[_id] = await launch({
-      headless: false,
+      // headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: '/usr/bin/chromium',
-      slowMo: 20,
+      // slowMo: 20,
     });
   } else {
     browser[_id] = await launch({
