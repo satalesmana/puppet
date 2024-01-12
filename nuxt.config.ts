@@ -79,3 +79,5 @@ export default defineNuxtConfig({
     },
   },
 });
+
+// ngrok http --domain=present-pleasing-vervet.ngrok-free.app 3000
