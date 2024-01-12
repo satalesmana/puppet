@@ -7,6 +7,10 @@ import { jobstreetFetchPelamar } from './utils/jobstreet/getPelamar';
 import { jobstreetUpdatePelamar } from './utils/jobstreet/updatePelamar';
 import { useSendMail } from './utils/mailer/sendMail';
 import { MailMessages, MailStatus } from './models/MailMessages.model';
+import { getResumeList } from './utils/kupu/appliedResumeList';
+import { getResumeDetail } from './utils/kupu/resumeDetail';
+import { getSaveRecord } from './utils/kupu/saveRecord';
+import { ScrapingPelamarKupu } from './models/ScrapingPelamarKupu.model';
 
 connect(
   'mongodb+srv://satalesmana:SY1COKkW7A98vSzk@cluster0.oe59k.mongodb.net/puppet',
@@ -66,33 +70,86 @@ export default function (io: Server) {
 
           io.emit(
             'create logs',
-            useLogMessages(`${task.code}: collecting data`),
+            useLogMessages(`${task.code}: collecting data \n`),
           );
 
           for (let i = 0; i < task.counter; i++) {
-            io.emit('loading start');
-            const pelamar = await jobstreetFetchPelamar({
-              initialId: task.initial_id,
-              billerId: task.biller_id,
-              cookies: account.cookies,
-              taskId: task._id,
-              positionId: task.positionId,
-            });
-            io.emit('loading end');
+            if (task.scraping_account.type === 'jobstreet') {
+              io.emit('loading start');
+              const pelamar = await jobstreetFetchPelamar({
+                initialId: task.initial_id,
+                billerId: task.biller_id,
+                cookies: account.cookies,
+                taskId: task._id,
+                positionId: task.positionId,
+              });
+              io.emit('loading end');
 
-            io.emit(
-              'create logs',
-              useLogMessages(`${task.code}: moving to NOT_SUITABLE (${i + 1})`),
-            );
+              io.emit(
+                'create logs',
+                useLogMessages(
+                  `${task.code}: moving to NOT_SUITABLE (${i + 1})`,
+                ),
+              );
 
-            io.emit('loading start');
-            const res = await jobstreetUpdatePelamar({
-              prospectData: pelamar?.data,
-              positionId: task.positionId,
-              cookies: account.cookies,
-            });
-            io.emit('loading end');
-            io.emit('create logs', useLogMessages(`${task.code}: ${res} \n`));
+              io.emit('loading start');
+              const res = await jobstreetUpdatePelamar({
+                prospectData: pelamar?.data,
+                positionId: task.positionId,
+                cookies: account.cookies,
+              });
+              io.emit('loading end');
+              io.emit('create logs', useLogMessages(`${task.code}: ${res} \n`));
+            }
+
+            if (task.scraping_account.type === 'kupu') {
+              const kupuList = await getResumeList({
+                cookies: account.cookies,
+                jobId: task.initial_id,
+              });
+
+              io.emit(
+                'create logs',
+                useLogMessages(
+                  `${task.code}: found ${kupuList.length} rows \n`,
+                ),
+              );
+
+              kupuList.forEach(async (resume: any) => {
+                const kupuData = await getResumeDetail({
+                  cookies: account.cookies,
+                  jobId: task.initial_id,
+                  userId: resume.userRoleId,
+                });
+
+                if (kupuData) {
+                  await ScrapingPelamarKupu.create({
+                    ...kupuData,
+                    scraping_task: task,
+                  });
+                }
+
+                io.emit(
+                  'create logs',
+                  useLogMessages(
+                    `${task.code}: saving data ${resume.realName} \n`,
+                  ),
+                );
+
+                await getSaveRecord({
+                  cookies: account.cookies,
+                  applyId: resume.applyJobId,
+                  jobId: task.initial_id,
+                });
+
+                io.emit(
+                  'create logs',
+                  useLogMessages(
+                    `${task.code}: mark as read ${resume.realName} \n`,
+                  ),
+                );
+              });
+            }
           }
           await updatingTaskStatus(task._id, 'done');
         });

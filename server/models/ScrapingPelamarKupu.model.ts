@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { ScrapingTaskSchema } from './ScrapingTask.model';
 
 export const ScrapingPelamarKupuSchema = new Schema({
   realName: { type: String, default: null },
@@ -36,6 +37,7 @@ export const ScrapingPelamarKupuSchema = new Schema({
   bindReferralType: { type: String, default: null },
   currentAddress: { type: String, default: null },
   ageFmt: { type: String, default: null },
+  scraping_task: { type: ScrapingTaskSchema },
 });
 
 export const ScrapingPelamarKupu = model<any>(

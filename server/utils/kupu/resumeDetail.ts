@@ -1,3 +1,4 @@
+import { objToParam } from '../helpers';
 interface ResumeDetail {
   realName: String;
   gender: String;
@@ -38,17 +39,17 @@ interface ResumeDetail {
 
 export const getResumeDetail = async ({ cookies, jobId, userId }: any) => {
   try {
-    const param = {
+    const param = objToParam({
       jobId,
       userId,
       searchInterviewVideo: 1,
       sourceName: 'applied',
-    };
+    });
 
     const response = await fetch(
       `https://bisnis.kupu.id/prod-api/resume/v2/getResumeDetail?${param}`,
       {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${cookies}`,
