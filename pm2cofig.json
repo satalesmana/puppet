@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "puppet-app",
+      "instances": 1,
+      "exec_mode": "cluster",
+      "script": "npm",
+      "args" : "start",
+      "watch": ["server", "client"],
+      "watch_delay": 1000,
+      "ignore_watch": ["[\\/\\\\]\\./", "node_modules"]
+    }
+  ]
+}
