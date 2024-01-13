@@ -57,13 +57,15 @@ export const fetchScrapingData = async (form: any) => {
     };
 
     const { $useApiFetch } = useNuxtApp();
-    const { data: scrapingTask } = await $useApiFetch(
-      '/api/scraping/jobstreet/data',
-      {
-        method: 'post',
-        body: { filter: { ...filter } },
-      },
-    );
+    const url =
+      form.scraping_account.type === 'kupu'
+        ? '/api/scraping/kupu/data'
+        : '/api/scraping/jobstreet/data';
+
+    const { data: scrapingTask } = await $useApiFetch(url, {
+      method: 'post',
+      body: { filter: { ...filter } },
+    });
     return scrapingTask;
   } catch (err) {
     console.error('[ERR fetchScrapingAccount]', err);
@@ -85,13 +87,15 @@ export const fetchDownload = async (form: any) => {
     };
 
     const { $useApiFetch } = useNuxtApp();
-    const { data: scrapingTask } = await $useApiFetch(
-      '/api/scraping/task/export-excel',
-      {
-        method: 'post',
-        body: { filter: { ...filter } },
-      },
-    );
+    const url =
+      form.scraping_account.type === 'kupu'
+        ? '/api/scraping/task/export-excel-kupu'
+        : '/api/scraping/task/export-excel';
+
+    const { data: scrapingTask } = await $useApiFetch(url, {
+      method: 'post',
+      body: { filter: { ...filter } },
+    });
     return scrapingTask;
   } catch (err) {
     console.error('[ERR fetchScrapingAccount]', err);

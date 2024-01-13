@@ -69,7 +69,6 @@ onNuxtReady(() => {
                       v-model="scrapingReport.formFilter.scraping_account"
                       outlined
                       dense
-                      emit-value
                       map-options
                       hide-bottom-space
                       requird
