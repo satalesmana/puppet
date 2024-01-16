@@ -1,18 +1,18 @@
 import nodemailer from 'nodemailer/lib/nodemailer';
 const transporter = nodemailer.createTransport({
-  host: 'mail.pt-gkm.co.id',
+  host: 'mail.system-recruitment.online',
   port: 465,
   secure: true,
   auth: {
-    user: 'system@pt-gkm.co.id',
-    pass: 'Welcome123#@!',
+    user: 'hrd@system-recruitment.online',
+    pass: 'Wan261100',
   },
 });
 
 export const useSendMail = async ({ to, subject, messages }: any) => {
   try {
     const res = await transporter.sendMail({
-      from: '"Recruitment System 👻" <system@pt-gkm.co.id>', // sender address
+      from: '"Recruitment System 👻" <hrd@system-recruitment.online>', // sender address
       to,
       subject,
       text: messages,
