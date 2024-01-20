@@ -38,6 +38,7 @@ export const ScrapingPelamarKupuSchema = new Schema({
   currentAddress: { type: String, default: null },
   ageFmt: { type: String, default: null },
   scraping_task: { type: ScrapingTaskSchema },
+  sync_status: { type: String, default: null },
 });
 
 export const ScrapingPelamarKupu = model<any>(

@@ -18,6 +18,7 @@ export const ScrapingJobstreetPelamarSchema = new Schema({
   profile: { type: Object },
   scraping_task: { type: ScrapingTaskSchema },
   updateBucket: { type: String },
+  sync_status: { type: String, default: null },
 });
 
 export const ScrapingJobstreetPelamar = model<any>(
