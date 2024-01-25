@@ -27,9 +27,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     saltRounds: 10,
-    mongodbUri:
-      process.env.MONGODB_URI ||
-      'mongodb+srv://satalesmana:SY1COKkW7A98vSzk@cluster0.oe59k.mongodb.net/puppet',
+    mongodbUri: process.env.MONGODB_URI,
     secretKey: process.env.SECRET_KEY || 'asdf',
   },
   modules: [
