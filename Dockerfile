@@ -5,20 +5,10 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
 
-RUN npm install \
-  --prefer-offline \
-  --frozen-lockfile \
-  --non-interactive \
-  --production=false
-
-RUN npm run build
-
-RUN rm -rf node_modules && \
-  NODE_ENV=production npm install \
-  --prefer-offline \
-  --pure-lockfile \
-  --non-interactive \
-  --production=true
+RUN npm install -g -s --no-progress yarn && \
+    yarn && \
+    yarn run build && \
+    yarn cache clean
 
 FROM node:20.11.0-alpine3.19
 
@@ -29,4 +19,4 @@ COPY --from=builder /usr/src/app/  .
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
