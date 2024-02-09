@@ -5,8 +5,9 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
 
-RUN npm install -g yarn && \
-    yarn && \
+RUN apk add yarn
+
+RUN yarn && \
     yarn run build && \
     yarn cache clean
 
