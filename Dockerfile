@@ -5,8 +5,7 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
 
-RUN yarn install --production
-RUN yarn build
+RUN apk add yarn && yarn install --production && yarn build
 
 ENV HOST 0.0.0.0
 EXPOSE 3000
