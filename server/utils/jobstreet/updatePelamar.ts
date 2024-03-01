@@ -4,34 +4,30 @@ export const jobstreetUpdatePelamar = async ({
   cookies,
 }: any) => {
   const requestBody = {
-    operationName: 'UpdateStatusForProspectsWithContext',
+    operationName: 'UpdateApplicationsStatus',
     variables: {
       input: {
         prospectData,
-        positionId,
         bucket: 'NOT_SUITABLE',
         statusChangeLocation: 'CandidateList',
       },
     },
     query:
-      'mutation UpdateStatusForProspectsWithContext($input: UpdateStatusForProspectsWithContextInput!) {\n  updateStatusForProspectsWithContext(input: $input) {\n    success\n    __typename\n  }\n}',
+      'mutation UpdateApplicationsStatus($input: UpdateApplicationsStatusInput!) {\n  updateApplicationsStatus(input: $input) {\n    success\n    __typename\n  }\n}',
   };
 
-  const response = await fetch(
-    'https://id.employer.seek.com/cm-graphql-api/graphql',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${cookies}`,
-      },
-      body: JSON.stringify(requestBody),
+  const response = await fetch('https://id.employer.seek.com/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${cookies}`,
     },
-  );
+    body: JSON.stringify(requestBody),
+  });
   const resJson = await response.json();
-  if (resJson.errors) {
-    throw new Error(resJson.errors[0].message);
-  }
+  // if (resJson?.errors) {
+  //   throw new Error(resJson.errors[0].message);
+  // }
 
   return JSON.stringify(resJson);
 };
