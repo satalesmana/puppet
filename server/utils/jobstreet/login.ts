@@ -1,5 +1,7 @@
 import fs from 'fs';
 import { launch } from 'puppeteer';
+import { useSleep } from '../helpers';
+
 const page: any = {};
 const browser: any = {};
 
@@ -9,8 +11,6 @@ export const jobstreetLoginAccount = async (
   _id: string,
 ) => {
   if (fs.existsSync('/usr/bin/chromium')) {
-    console.log('tes-browser');
-
     browser[_id] = await launch({
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -39,7 +39,7 @@ export const jobstreetLoginAccount = async (
   await page[_id].waitForSelector('#password');
   await page[_id].type('#password', password);
   await page[_id].click(`button[type='submit']`);
-
+  useSleep();
   await page[_id].screenshot({ path: `./public/assets/${_id}.jpg` });
 
   await page[_id].waitForNavigation();

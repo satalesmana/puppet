@@ -82,7 +82,7 @@ onNuxtReady(() => {
 .height {
   min-height: 79vh;
 }
-::v-deep .q-list {
+:deep(.q-list) {
   .q-item__label--header {
     padding-bottom: 0px !important;
   }

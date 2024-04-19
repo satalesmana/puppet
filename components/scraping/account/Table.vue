@@ -106,7 +106,7 @@ const onLoaginAccount = async (row: any) => {
 </template>
 
 <style lang="scss" scoped>
-::v-deep .q-card__section--vert {
+:deep(.q-card__section--vert) {
   padding: 0;
 }
 </style>
