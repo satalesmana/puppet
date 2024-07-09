@@ -11,11 +11,10 @@ export default defineEventHandler(async (event) => {
     });
 
     const requestBody = {
-      operationName: 'GetDashboardJobs',
-      variables: {},
-      query:
-        'query GetDashboardJobs { hirerDashboardJobs(input: {maxResults: 5}) {   jobs {title,status,kind,positionId,listingId,jobId,draftId,numberOfCandidates,numberOfNewCandidates,startDateUtc,canBeRefreshed,daysRemaining,location {        description        __typename      }      performanceRating {        status        score        __typename      }      listPosition      talentSearchJobHref      __typename    }    lastDraft {      title      draftId      location {        description        __typename      }      __typename    }    directCounts {      draft      posted      expired      __typename    }    indirectCounts {      draft      posted      expired      __typename    }    __typename  }}',
-    };
+      "operationName": "GetDashboardJobs",
+      "variables": {},
+      "query": "query GetDashboardJobs {\n  hirerDashboardJobs(input: {maxResults: 5}) {\n    jobs {\n      ...HirerDashboardDraftItem\n      ...HirerDashboardJobItem\n      __typename\n    }\n    lastDraft {\n      title\n      draftId\n      location {\n        description\n        __typename\n      }\n      __typename\n    }\n    directCounts {\n      draft\n      posted\n      expired\n      __typename\n    }\n    indirectCounts {\n      draft\n      posted\n      expired\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment HirerDashboardDraftItem on HirerDashboardDraftItem {\n  title\n  draftId\n  kind\n  draftLocation: location {\n    description\n    __typename\n  }\n  __typename\n}\n\nfragment HirerDashboardJobItem on HirerDashboardJobItem {\n  title\n  status\n  kind\n  positionId\n  listingId\n  jobId\n  numberOfCandidates\n  numberOfNewCandidates\n  startDateUtc\n  canBeRefreshed\n  canBeUpgraded\n  daysRemaining\n  location {\n    description\n    __typename\n  }\n  performanceRating {\n    status\n    score\n    __typename\n  }\n  listPosition\n  talentSearchJobHref\n  __typename\n}"
+    }
     const response = await fetch('https://id.employer.seek.com/graphql', {
       method: 'POST',
       headers: {
