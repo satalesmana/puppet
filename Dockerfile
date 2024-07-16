@@ -5,9 +5,9 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
 
-RUN npm install && npm run build
+RUN yarn  && yarn build
 
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
