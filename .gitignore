@@ -28,3 +28,4 @@ logs
 typings/
 
 public/downloads/*
+public/assets/screenshot/*

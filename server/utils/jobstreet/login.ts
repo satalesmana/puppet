@@ -10,25 +10,27 @@ export const jobstreetLoginAccount = async (
   password: string,
   _id: string,
 ) => {
+  const headless = false; // new , false, true
   if (fs.existsSync('/usr/bin/chromium')) {
     browser[_id] = await launch({
-      headless: 'new',
+      headless: headless,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: '/usr/bin/chromium',
       slowMo: 20,
     });
   } else {
     browser[_id] = await launch({
-      headless: 'new',
+      headless: headless,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       slowMo: 20,
     });
   }
 
   page[_id] = await browser[_id].newPage();
-  const USER_AGENT =
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
-  await page[_id].setUserAgent(USER_AGENT);
+  if(headless){
+    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
+    await page[_id].setUserAgent(USER_AGENT);
+  }
   await page[_id].setJavaScriptEnabled(true);
 
   await page[_id].setDefaultNavigationTimeout(1000000);
@@ -40,7 +42,7 @@ export const jobstreetLoginAccount = async (
   await page[_id].type('#password', password);
   await page[_id].click(`button[type='submit']`);
   useSleep();
-  await page[_id].screenshot({ path: `./public/assets/${_id}.jpg` });
+  await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}.jpg` });
 
   await page[_id].waitForNavigation();
   await page[_id].waitForTimeout(10000);
