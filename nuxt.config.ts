@@ -76,6 +76,11 @@ export default defineNuxtConfig({
       getSession: { path: '/api/auth/user' },
     },
   },
+  hooks: {
+    close: () => {
+      process.exit(0)
+    },
+  },
 });
 
 // ngrok http --domain=present-pleasing-vervet.ngrok-free.app 3000
