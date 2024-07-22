@@ -7,7 +7,8 @@ COPY . /usr/src/app/
 
 RUN yarn  && yarn build
 
-ENV HOST 0.0.0.0
+# ENV HOST 0.0.0.0
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+# CMD ["yarn", "start"]
+ENTRYPOINT ["node", ".output/server/index.mjs"]
