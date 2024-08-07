@@ -10,25 +10,25 @@ export const jobstreetLoginAccount = async (
   password: string,
   _id: string,
 ) => {
-  const headless = false; // new , false, true
-  if (fs.existsSync('/usr/bin/chromium')) {
+  const config = useRuntimeConfig();
+  if (fs.existsSync(config.browserPath)) {
     browser[_id] = await launch({
-      headless: headless,
+      headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      executablePath: '/usr/bin/chromium',
+      executablePath: config.browserPath,
       slowMo: 20,
     });
   } else {
     browser[_id] = await launch({
-      headless: headless,
+      headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       slowMo: 20,
     });
   }
 
   page[_id] = await browser[_id].newPage();
-  if(headless){
-    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36';
+  if(config.browserPath){
+    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36';
     await page[_id].setUserAgent(USER_AGENT);
   }
   await page[_id].setJavaScriptEnabled(true);

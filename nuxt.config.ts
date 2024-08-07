@@ -24,11 +24,16 @@ export default defineNuxtConfig({
   ],
   nitro: {
     plugins: ['~/server/index.ts'],
+    output: {
+      dir: '../puppet-build'
+    }
+
   },
   runtimeConfig: {
     saltRounds: 10,
-    mongodbUri: process.env.MONGODB_URI,
-    secretKey: process.env.SECRET_KEY || 'asdf',
+    mongodbUri: process.env.NUXT_MONGODB_URI,
+    secretKey: process.env.NUXT_SECRET_KEY || 'rahasia',
+    browserPath: process.env.NUXT_BROWSER_PATH,
   },
   modules: [
     'nuxt-quasar-ui',
