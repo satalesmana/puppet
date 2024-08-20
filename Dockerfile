@@ -12,9 +12,11 @@ RUN cd ./tmp && yarn  && yarn build
 
 RUN rm -rf /usr/src/app/tmp
 
+WORKDIR /usr/src/app/puppet-build
+
 # ENV HOST 0.0.0.0
 EXPOSE 3000
 
 # CMD ["/bin/sh"]
 # CMD ["yarn", "start"]
-ENTRYPOINT ["node", "./puppet-build/server/index.mjs"]
+ENTRYPOINT ["node", "./server/index.mjs"]

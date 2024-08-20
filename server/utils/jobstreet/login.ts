@@ -20,7 +20,7 @@ export const jobstreetLoginAccount = async (
     });
   } else {
     browser[_id] = await launch({
-      headless: false,
+      headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       slowMo: 20,
     });
