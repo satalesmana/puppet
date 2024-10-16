@@ -24,9 +24,9 @@ export default defineNuxtConfig({
   ],
   nitro: {
     plugins: ['~/server/index.ts'],
-    output: {
-      dir: '../puppet-build'
-    }
+    // output: {
+    //   dir: '../puppet-build'
+    // }
 
   },
   runtimeConfig: {
