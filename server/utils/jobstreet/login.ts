@@ -1,6 +1,8 @@
 import fs from 'fs';
 import { launch } from 'puppeteer';
 import { useSleep } from '../helpers';
+import chromium  from 'chrome-aws-lambda';
+import playwright from 'playwright-core'
 
 const page: any = {};
 const browser: any = {};
@@ -11,20 +13,24 @@ export const jobstreetLoginAccount = async (
   _id: string,
 ) => {
   const config = useRuntimeConfig();
-  if (fs.existsSync(config.browserPath)) {
-    browser[_id] = await launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      executablePath: config.browserPath,
+  // if (fs.existsSync(config.browserPath)) {
+  //   browser[_id] = await launch({
+  //     headless: 'new',
+  //     args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  //     executablePath: config.browserPath,
+  //     slowMo: 20,
+  //   });
+  // } else {
+  const tes = await chromium.executablePath
+  console.log('tes', tes)
+    browser[_id] = await playwright.chromium.launch({
+      headless: chromium.headless,
+      args: chromium.args,
+      // defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
       slowMo: 20,
     });
-  } else {
-    browser[_id] = await launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      slowMo: 20,
-    });
-  }
+  // }
 
   page[_id] = await browser[_id].newPage();
   if(config.browserPath){
