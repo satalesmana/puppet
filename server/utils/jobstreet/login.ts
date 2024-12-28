@@ -22,7 +22,6 @@ export const jobstreetLoginAccount = async (
         slowMo: 20,
       });
     } else {
-      console.warn('chromium.args', chromium.args)
       browser[_id] = await puppeteer.launch({
         args: chromium.args,
         ignoreDefaultArgs: ['--disable-extensions','--single-process'],
@@ -37,23 +36,24 @@ export const jobstreetLoginAccount = async (
 
     page[_id] = await browser[_id].newPage();
 
-    await page[_id].setJavaScriptEnabled(true);
+    // await page[_id].setJavaScriptEnabled(true);
     // await page[_id].setDefaultNavigationTimeout(1000000);
-    useSleep();
-    await page[_id].setViewport({ width: 1000, height: 600 });
-    await page[_id].goto('https://id.employer.seek.com/id/oauth/login/');
+    // useSleep();
+    // await page[_id].setViewport({ width: 1000, height: 600 });
+    await page[_id].goto('https://id.employer.seek.com/id/oauth/login/',{ waitUntil: "networkidle0" });
     await page[_id].waitForSelector('#emailAddress');
     await page[_id].type('#emailAddress', username);
     await page[_id].waitForSelector('#password');
     await page[_id].type('#password', password);
     await page[_id].click(`button[type='submit']`);
     // await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
-
+    console.log("INFO Chromium:", await browser.version());
+    console.log("INFO Page Title:", await page.title());
     useSleep();
     // await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
 
-    await page[_id].waitForNavigation();
-    await page[_id].waitForTimeout(10000);
+    // await page[_id].waitForNavigation();
+    // await page[_id].waitForTimeout(10000);
     const authSession = await page[_id].evaluate(() => {
       let token;
       for (let i = 0; i < localStorage.length; i++) {
