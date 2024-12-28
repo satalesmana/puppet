@@ -1,6 +1,6 @@
 import fs from 'fs';
-const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium-min");
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium-min";
 import { useSleep } from '../helpers';
 
 const page: any = {};
