@@ -27,8 +27,9 @@ export const jobstreetLoginAccount = async (
         slowMo: 20,
       });
     } else {
+      console.warn('chromium.args', chromium.args)
       browser[_id] = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        args: chromium.args,
         ignoreDefaultArgs: ['--disable-extensions'],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(
