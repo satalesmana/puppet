@@ -12,11 +12,6 @@ export const jobstreetLoginAccount = async (
   _id: string,
 ) => {
   try{
-    // console.log('__dirname', __dirname)
-    // var dir = './public/assets/screenshot';
-    // if (!fs.existsSync(dir)){
-    //     fs.mkdirSync(dir, { recursive: true });
-    // }
 
     const config = useRuntimeConfig();
     if (fs.existsSync(config.browserPath)) {
@@ -43,7 +38,8 @@ export const jobstreetLoginAccount = async (
     page[_id] = await browser[_id].newPage();
 
     await page[_id].setJavaScriptEnabled(true);
-    await page[_id].setDefaultNavigationTimeout(1000000);
+    // await page[_id].setDefaultNavigationTimeout(1000000);
+    useSleep();
     await page[_id].setViewport({ width: 1000, height: 600 });
     await page[_id].goto('https://id.employer.seek.com/id/oauth/login/');
     await page[_id].waitForSelector('#emailAddress');
