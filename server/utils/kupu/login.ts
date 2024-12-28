@@ -1,23 +1,27 @@
 import fs from 'fs';
-import { launch } from 'puppeteer';
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium-min");
 const page: any = {};
 const browser: any = {};
 
 export const kupuLoginAccount = async (_id: string, phone: string) => {
   if (fs.existsSync('/usr/bin/chromium')) {
-    console.log('tes-browser');
-
-    browser[_id] = await launch({
+    browser[_id] = await puppeteer.launch({
       // headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: '/usr/bin/chromium',
       // slowMo: 20,
     });
   } else {
-    browser[_id] = await launch({
-      headless: false,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      slowMo: 20,
+    browser[_id] = await puppeteer.launch({
+      args: chromium.args,
+      ignoreDefaultArgs: ['--disable-extensions'],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(
+        "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+      ),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
   }
 

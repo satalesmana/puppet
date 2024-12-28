@@ -37,6 +37,8 @@
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
     "@quasar/extras": "^1.16.8",
+    "@sparticuz/chromium-min": "110.0.1",
+    "puppeteer-core": "19.6.3",
     "bcryptjs": "^2.4.3",
     "chrome-aws-lambda": "^10.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -44,8 +46,6 @@
     "nodemailer": "^6.9.8",
     "nuxt-internal-socket": "^1.0.3",
     "playwright-core": "^1.48.1",
-    "puppeteer": "^21.5.2",
-    "puppeteer-core": "^23.6.0",
     "quasar": "^2.14.0",
     "vue-awesome-sidebar": "^1.2.3",
     "write-excel-file": "^1.4.27"
