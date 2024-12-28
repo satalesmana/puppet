@@ -1,7 +1,0 @@
-{
-  "destination": {
-    "server/api/scraping/account/login/*": {
-      "maxDuration": 50
-    }
-  }
-}
