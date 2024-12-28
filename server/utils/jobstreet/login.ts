@@ -12,10 +12,11 @@ export const jobstreetLoginAccount = async (
   _id: string,
 ) => {
   try{
-    var dir = './public/assets/screenshot';
-    if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir, { recursive: true });
-    }
+    // console.log('__dirname', __dirname)
+    // var dir = './public/assets/screenshot';
+    // if (!fs.existsSync(dir)){
+    //     fs.mkdirSync(dir, { recursive: true });
+    // }
 
     const config = useRuntimeConfig();
     if (fs.existsSync(config.browserPath)) {
@@ -49,10 +50,10 @@ export const jobstreetLoginAccount = async (
     await page[_id].waitForSelector('#password');
     await page[_id].type('#password', password);
     await page[_id].click(`button[type='submit']`);
-    await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
+    // await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
 
     useSleep();
-    await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
+    // await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
 
     await page[_id].waitForNavigation();
     await page[_id].waitForTimeout(10000);
