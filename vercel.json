@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/scraping/account/login/*": {
+      "maxDuration": 50
+    }
+  }
+}

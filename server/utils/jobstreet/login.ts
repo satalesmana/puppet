@@ -5,6 +5,8 @@ import { useSleep } from '../helpers';
 
 const page: any = {};
 const browser: any = {};
+export const maxDuration = 50; // This function can run for a maximum of 5 seconds
+export const dynamic = 'force-dynamic';
 
 export const jobstreetLoginAccount = async (
   username: string,
