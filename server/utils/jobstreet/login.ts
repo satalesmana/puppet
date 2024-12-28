@@ -30,7 +30,7 @@ export const jobstreetLoginAccount = async (
       console.warn('chromium.args', chromium.args)
       browser[_id] = await puppeteer.launch({
         args: chromium.args,
-        ignoreDefaultArgs: ['--disable-extensions'],
+        ignoreDefaultArgs: ['--disable-extensions','--single-process'],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(
           "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
