@@ -43,14 +43,18 @@ export const jobstreetLoginAccount = async (
     // useSleep();
     // await page[_id].setViewport({ width: 1000, height: 600 });
     await page[_id].goto('https://id.employer.seek.com/id/oauth/login/',{ waitUntil: "networkidle0" });
+
+    console.log("INFO Chromium:", await browser[_id].version());
+    console.log("INFO Page Title:", await page[_id].title());
+
     await page[_id].waitForSelector('#emailAddress');
     await page[_id].type('#emailAddress', username);
     await page[_id].waitForSelector('#password');
     await page[_id].type('#password', password);
     await page[_id].click(`button[type='submit']`);
     // await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
-    console.log("INFO Chromium:", await browser.version());
-    console.log("INFO Page Title:", await page.title());
+    console.log("INFO Chromium:", await browser[_id].version());
+    console.log("INFO Page Title:", await page[_id].title());
     useSleep();
     // await page[_id].screenshot({ path: `./public/assets/screenshot/${_id}${new Date()}.jpg` });
 
