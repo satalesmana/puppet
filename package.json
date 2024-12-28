@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "get:browser": "node getBrowser.js",
     "build": "nuxt build",
     "start": "nuxt start",
     "dev": "nuxt dev",
