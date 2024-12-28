@@ -73,7 +73,7 @@ export const jobstreetLoginAccount = async (
     // browser.close();
     return authSession;
   }catch(err){
-    console.log('err', err)
+    console.error('err', err)
   }
 };
 
