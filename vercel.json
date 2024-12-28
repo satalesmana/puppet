@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/scraping/account/login/*": {
+    "server/api/scraping/account/login/*": {
       "maxDuration": 50
     }
   }
