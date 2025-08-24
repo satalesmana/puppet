@@ -15,23 +15,44 @@ export const jobstreetLoginAccount = async (
 ) => {
   try{
 
-    const config = useRuntimeConfig();
-    const useCustomeBrowser = fs.existsSync(config.browserPath);
-    if (useCustomeBrowser) {
-      browser[_id] = await puppeteer.launch({
-        headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', "--disable-blink-features=AutomationControlled"],
-        executablePath: config.browserPath,
-        slowMo: 20,
-      });
-    } else {
-       browser[_id] = await puppeteer.launch({
-        headless: false,
-        args: ['--start-maximized', "--disable-blink-features=AutomationControlled"],
-        channel: "chrome",
-        slowMo: 20,
-      });
-    }
+    if (fs.existsSync('/usr/bin/chromium')) {
+    browser[_id] = await puppeteer.launch({
+      // headless: false,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/usr/bin/chromium',
+      // slowMo: 20,
+    });
+  } else {
+
+    browser[_id] = await puppeteer.launch({
+      args: chromium.args,
+      ignoreDefaultArgs: ['--disable-extensions'],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(
+        "https://github.com/Sparticuz/chromium/releases/download/v110.0.1/chromium-v110.0.1-pack.tar"
+      ),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    });
+  }
+
+    // const config = useRuntimeConfig();
+    // const useCustomeBrowser = fs.existsSync(config.browserPath);
+    // if (useCustomeBrowser) {
+    //   browser[_id] = await puppeteer.launch({
+    //     headless: false,
+    //     args: ['--no-sandbox', '--disable-setuid-sandbox', "--disable-blink-features=AutomationControlled"],
+    //     executablePath: config.browserPath,
+    //     slowMo: 20,
+    //   });
+    // } else {
+    //    browser[_id] = await puppeteer.launch({
+    //     headless: false,
+    //     args: ['--start-maximized', "--disable-blink-features=AutomationControlled"],
+    //     channel: "chrome",
+    //     slowMo: 20,
+    //   });
+    // }
 
     page[_id] = await browser[_id].newPage();
     await page[_id].goto('https://id.employer.seek.com/id/oauth/login/',{ waitUntil: "networkidle0" });
