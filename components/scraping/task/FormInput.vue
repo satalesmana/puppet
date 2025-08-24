@@ -56,8 +56,8 @@ const onChangeAccount = () => {
 
 const onChangePositionId = (value: any) => {
   if (!scrapingTask.isKupuAccout) {
-    scrapingTask.formInput.positionId = value.positionId;
-    scrapingTask.formInput.totaldata = value.numberOfCandidates;
+    scrapingTask.formInput.positionId = value.id;
+    scrapingTask.formInput.totaldata = value.candidatesCount;
     scrapingTask.jobstreetFetchBiller();
   }
 };

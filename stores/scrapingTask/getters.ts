@@ -1,3 +1,4 @@
+import type { Edge,  } from "~/server/types/jobsResponse.interface";
 export const getFormInput = (state: any) => {
   return state.formInput;
 };
@@ -45,15 +46,16 @@ export const getOptPosition = (state: any) => {
   return state.optPosition;
 };
 
-export const setOptPosition = (state: any) => (payload: any) => {
+export const setOptPosition = (state: any) => (payload: Edge[] | any) => {
   const optList = [];
+  console.log('payload', payload);
   const isKupuAccount = isKupuAccout(state);
   for (let i = 0; i < payload.length; i++) {
-    if (payload[i].jobId != null && !isKupuAccount)
+    if (!isKupuAccount)
       optList.push({
-        value: payload[i].jobId,
-        label: `${payload[i].jobId} ${payload[i].title} (${payload[i].status})`,
-        ...payload[i],
+        value: payload[i].node.id,
+        label: `${payload[i].node.id} ${payload[i].node.title} (${payload[i].node.status})`,
+        ...payload[i].node,
       });
 
     if (isKupuAccount) {

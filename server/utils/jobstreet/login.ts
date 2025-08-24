@@ -19,15 +19,16 @@ export const jobstreetLoginAccount = async (
     const useCustomeBrowser = fs.existsSync(config.browserPath);
     if (useCustomeBrowser) {
       browser[_id] = await puppeteer.launch({
-        headless: 'new',
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        headless: false,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', "--disable-blink-features=AutomationControlled"],
         executablePath: config.browserPath,
+        // userDataDir: config.browserData,
         slowMo: 20,
       });
     } else {
        browser[_id] = await puppeteer.launch({
         headless: false,
-        args: [ '--start-maximized'],
+        args: ['--start-maximized', "--disable-blink-features=AutomationControlled"],
         channel: "chrome",
         slowMo: 20,
       });
