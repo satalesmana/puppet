@@ -22,7 +22,6 @@ export const jobstreetLoginAccount = async (
         headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox', "--disable-blink-features=AutomationControlled"],
         executablePath: config.browserPath,
-        // userDataDir: config.browserData,
         slowMo: 20,
       });
     } else {
