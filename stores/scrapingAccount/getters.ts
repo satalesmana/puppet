@@ -2,6 +2,10 @@ export const getFormInput = (state: any) => {
   return state.formInput;
 };
 
+export const setFormInput = (state: any) => (payload: any) => {
+  state.formInput = { ...state.formInput, ...payload };
+};
+
 export const getOptAccountType = (state: any) => {
   return state.optAccountType;
 };

@@ -1,4 +1,5 @@
 interface FormInput {
+  _id: String | null;
   name: String;
   type: String;
   email: String;
@@ -25,6 +26,7 @@ interface State {
 export default function (): State {
   return {
     formInput: {
+      _id: null,
       name: '',
       type: '',
       email: '',

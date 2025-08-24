@@ -57,15 +57,6 @@ export const submitUser = async (payload: any) => {
 
 export const deleteScrapingAccount = async (id: any) => {
   try {
-    // const confirm =  Dialog.create({
-    //   title: 'Confirm',
-    //   message: 'Would you like to delete this data?',
-    //   cancel: true,
-    //   persistent: true,
-    // }).onOk(() => {
-    //   return true;
-    // });
-
     Loading.show({
       spinner: QSpinnerFacebook,
       message: 'Loading deleting data...',

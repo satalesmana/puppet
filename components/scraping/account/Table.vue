@@ -25,8 +25,20 @@ const fetTchData = async () => {
 };
 
 const onDeleteItem = async (params: any) => {
-  await scrapingAccount.deleteScrapingAccount(params.value);
-  fetTchData();
+  Dialog.create({
+    title: 'Confirm',
+    message: 'Would you like to delete this data?',
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    await scrapingAccount.deleteScrapingAccount(params.value);
+    fetTchData();
+  });
+};
+
+const onEditItem = (params: any) => {
+  console.log('params', params);
+  scrapingAccount.setFormInput(params);
 };
 
 const onLoaginAccount = async (row: any) => {
@@ -78,7 +90,11 @@ const onLoaginAccount = async (row: any) => {
                 @click="onLoaginAccount(props.row)"
               >
                 <q-list>
-                  <q-item v-close-popup clickable>
+                  <q-item
+                    v-close-popup
+                    clickable
+                    @click="onEditItem(props.row)"
+                  >
                     <q-item-section side>
                       <q-icon name="edit" />
                     </q-item-section>
