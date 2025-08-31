@@ -21,7 +21,8 @@ export default defineEventHandler(async (event) => {
                     "ACTIVE",
                     "BLOCKED",
                     "PENDING_ACCOUNT_APPROVAL",
-                    "SUSPENDED"
+                    "SUSPENDED",
+                    "EXPIRED"
                 ],
                 "language": "en"
             }
