@@ -86,7 +86,7 @@ export const jobstreetFetchPelamar = async ({
         const res: any = [];
         const data = resJson.data.applications.result.map(
           (item: any, index: any) => {
-            res.push({ prospectId: item.id, positionInList: index + 1 });
+            res.push({ prospectId: item.adcentreProspectId, positionInList: index + 1 });
             return {
               ...item,
               scraping_task: {
