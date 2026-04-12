@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
     if (counter === '') throw new Error('counter harus di isi');
     if (status === '') throw new Error('status harus di isi');
 
-    if (scrapingAccount.type !== 'kupu') {
+    if (scrapingAccount.type == 'jobstreet') {
       if (billerId === '') throw new Error('biller id harus di isi');
       if (positionId === '') throw new Error('Position id harus di isi');
     }
