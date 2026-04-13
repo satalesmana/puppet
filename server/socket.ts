@@ -9,6 +9,7 @@ import { useSendMail } from './utils/mailer/sendMail';
 import { MailMessages, MailStatus } from './models/MailMessages.model';
 import { getResumeList } from './utils/kupu/appliedResumeList';
 import { getResumeDetail } from './utils/kupu/resumeDetail';
+import { onFetchGlintsAplicant } from './utils/glins/index';
 import { getSaveRecord } from './utils/kupu/saveRecord';
 import { ScrapingPelamarKupu } from './models/ScrapingPelamarKupu.model';
 
@@ -149,6 +150,24 @@ export default function (io: Server) {
                   ),
                 );
               });
+            }
+
+            if (task.scraping_account.type === 'glints') {
+              const glintsData = await onFetchGlintsAplicant({
+                cookies: account.cookies,
+                jobId: task.initial_id,
+                taskId: task._id,
+              });
+
+              console.log('glintsData', glintsData)
+
+              io.emit(
+                'create logs',
+                useLogMessages(
+                  `${task.code}: moving to REJECTED (${i + 1})`,
+                ),
+              );
+
             }
           }
           await updatingTaskStatus(task._id, 'done');
