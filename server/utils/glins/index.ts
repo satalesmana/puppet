@@ -3,15 +3,15 @@ import type { ApiResponse } from '~/server/types/apiresponse.interface';
 import { ScrapingGlintsPelamar } from '../../models/ScrapingPelamarGlints.model';
 import { RootFetchPelamar, Application } from "../../types/glintsFetchApplicantResponse.interface"
 
-export const onFetchGlintsAplicant = async ({ cookies, jobId, taskId }: any) => {
+export const onFetchGlintsAplicant = async ({ cookies, jobId, taskId, status }: any) => {
   try {
       const param = objToParam({
         includeApplication:true,
         includeStatusBreakdown:true,
         limit: 25,
-        offset:0,
+        offset: 0,
         order: "createdAt DESC",
-        where: JSON.stringify({"JobId":jobId,"status":"IN_REVIEW"})
+        where: JSON.stringify({"JobId":jobId, "status":status })
       });
 
 
@@ -37,12 +37,14 @@ export const onFetchGlintsAplicant = async ({ cookies, jobId, taskId }: any) => 
                 phoneNumber: item.whatsAppDetails.whatsAppNumber,
                 email: item.Applicant.email,
                 scraping_task: {
-                _id: taskId,
-              },
+                  _id: taskId,
+                },
               };
             },
           );
-          ScrapingGlintsPelamar.insertMany(data);
+          if("IN_REVIEW" === status) {
+            await ScrapingGlintsPelamar.insertMany(data);
+          }
           return { data: res };
         }
       }
@@ -51,7 +53,8 @@ export const onFetchGlintsAplicant = async ({ cookies, jobId, taskId }: any) => 
     }
 };
 
-export const onUpdateGlintsAplicant = async ({ cookies, jobId, applicationIds }: any) => {
+// REJECTED IN_REVIEW
+export const onUpdateGlintsAplicant = async ({ cookies, jobId, applicationIds, status }: any) => {
   try {
       const body = {
         data:{
@@ -63,7 +66,7 @@ export const onUpdateGlintsAplicant = async ({ cookies, jobId, applicationIds }:
 
       applicationIds.forEach((id: any) => body.data.updates.push({
         applicationId: id,
-        status: "REJECTED",
+        status: status,
         rejectionReasons: ["OTHER"]
       }))
 
@@ -75,10 +78,10 @@ export const onUpdateGlintsAplicant = async ({ cookies, jobId, applicationIds }:
         },
         body: JSON.stringify(body),
       });
-
       const data = await res.json();
       return { data, message: '' } as ApiResponse<[], string>;
     } catch (error) {
+      console.log(error)
       return error as ApiResponse<[], string>;
     }
 }

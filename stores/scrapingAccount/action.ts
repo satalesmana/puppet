@@ -210,3 +210,43 @@ export const logOutScrapingAccount = async (id: any) => {
     throw err;
   }
 };
+
+export const updateAccountToken = async (payload:any) => {
+  try {
+    Loading.show({
+      spinner: QSpinnerFacebook,
+      message: 'Updating data...',
+    });
+
+    const { $useApiFetch } = useNuxtApp();
+    const { data: scrapingAccount,  error: errSubmit } = await $useApiFetch(
+      '/api/scraping/account/update-token',
+      {
+        method: 'post',
+        body: { ...payload },
+      },
+    );
+    Loading.hide();
+    if (errSubmit.value !== null) {
+      throw errSubmit.value?.data;
+    }
+
+    Dialog.create({
+      title: 'Info',
+      message: scrapingAccount.value.message,
+    }).onOk(async () => {
+      await fetchScrapingAccount();
+    });
+
+  } catch (err) {
+    Loading.hide();
+    Dialog.create({
+      title: 'Error',
+      message: `<span class="text-red">${err.message}</span>`,
+      html: true,
+    }).onOk(async () => {
+      await fetchScrapingAccount();
+    });
+    return err;
+  }
+};

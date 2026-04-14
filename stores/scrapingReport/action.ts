@@ -57,10 +57,14 @@ export const fetchScrapingData = async (form: any) => {
     };
 
     const { $useApiFetch } = useNuxtApp();
-    const url =
-      form.scraping_account.type === 'kupu'
-        ? '/api/scraping/kupu/data'
-        : '/api/scraping/jobstreet/data';
+    let url = '/api/scraping/jobstreet/data' ;
+    if(form.scraping_account.type === 'kupu'){
+      url = '/api/scraping/kupu/data';
+    }
+
+    if(form.scraping_account.type === 'glints'){
+      url = '/api/scraping/glints/data';
+    }
 
     const { data: scrapingTask } = await $useApiFetch(url, {
       method: 'post',
@@ -87,10 +91,14 @@ export const fetchDownload = async (form: any) => {
     };
 
     const { $useApiFetch } = useNuxtApp();
-    const url =
-      form.scraping_account.type === 'kupu'
-        ? '/api/scraping/task/export-excel-kupu'
-        : '/api/scraping/task/export-excel';
+    let url = '/api/scraping/task/export-excel' ;
+    if(form.scraping_account.type === 'kupu'){
+      url = '/api/scraping/task/export-excel-kupu';
+    }
+
+    if(form.scraping_account.type === 'glints'){
+      url = '/api/scraping/task/export-excel-glints';
+    }
 
     const { data: scrapingTask } = await $useApiFetch(url, {
       method: 'post',
