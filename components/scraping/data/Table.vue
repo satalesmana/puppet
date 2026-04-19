@@ -46,6 +46,45 @@ const setColums = (type: string) => {
         align: 'left',
       },
     ];
+  } else if (type === 'glints') {
+    columns.value = [
+      {
+        name: 'firstName',
+        label: 'FIRST NAME',
+        field: 'firstName',
+        align: 'left',
+      },
+      {
+        name: 'lastName',
+        label: 'LAST NAME',
+        field: 'lastName',
+        align: 'left',
+      },
+      {
+        name: 'email',
+        label: 'EMAIL',
+        field: 'email',
+        align: 'left',
+      },
+      {
+        name: 'phoneNumber',
+        label: 'PHONE / WHATSAPP',
+        field: 'phoneNumber',
+        align: 'left',
+      },
+      {
+        name: 'gender',
+        label: 'GENDER',
+        field: 'gender',
+        align: 'left',
+      },
+      {
+        name: 'location',
+        label: 'LOCATION',
+        field: 'location',
+        align: 'left',
+      },
+    ];
   } else {
     columns.value = [
       {

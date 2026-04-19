@@ -40,6 +40,7 @@ export default function (): State {
     optAccountType: [
       { label: 'Jobstreet.com', value: 'jobstreet' },
       { label: 'kupu.id', value: 'kupu' },
+      { label: 'Glints', value: 'glints' },
     ],
   };
 }

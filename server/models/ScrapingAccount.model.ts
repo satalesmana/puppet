@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { UserSchema } from './User.model';
 
-export const allowType = ['jobstreet', 'facebook', 'kupu'];
+export const allowType = ['jobstreet', 'facebook', 'kupu','glints'];
 
 export const ScrapingAccountSchema = new Schema({
   name: { type: String },
@@ -10,6 +10,7 @@ export const ScrapingAccountSchema = new Schema({
   phone: { type: String, default: null },
   password: { type: String },
   cookies: { type: String, default: null },
+  account_id:{ type: String, default: null },
   created_by: { type: UserSchema },
 });
 

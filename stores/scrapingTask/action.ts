@@ -118,6 +118,20 @@ export const jobstreetFetchPosition = async (account: any) => {
       }
 
       return optProviderKupu.value;
+    }else if (account.type === 'glints') {
+      const { data: optProviderGlints, error: errorProviderGlints } = await $useApiFetch(`/api/scraping/task/glints-job`,{
+        method: 'post',
+        body: {
+          cookies: account.cookies,
+          account_id: account.account_id,
+        },
+      });
+
+      if (errorProviderGlints.value !== null) {
+        throw errorProviderGlints.value?.data;
+      }
+
+      return optProviderGlints.value;
     } else {
       const { data: optJobtreetPosition, error: errorFetch } =
         await $useApiFetch(`/api/scraping/task/position/${account.value}`, {
@@ -131,12 +145,13 @@ export const jobstreetFetchPosition = async (account: any) => {
       return optJobtreetPosition.value;
     }
   } catch (err) {
+    console.log('err', err);
     Loading.hide();
-    Dialog.create({
-      title: 'Error',
-      message: `<span class="text-red">${err.message}</span>`,
-      html: true,
-    });
+    // Dialog.create({
+    //   title: 'Error',
+    //   message: `<span class="text-red">${err.message}</span>`,
+    //   html: true,
+    // });
     throw err;
   } finally {
     Loading.hide();

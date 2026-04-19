@@ -9,6 +9,7 @@ import { useSendMail } from './utils/mailer/sendMail';
 import { MailMessages, MailStatus } from './models/MailMessages.model';
 import { getResumeList } from './utils/kupu/appliedResumeList';
 import { getResumeDetail } from './utils/kupu/resumeDetail';
+import { onFetchGlintsAplicant, onUpdateGlintsAplicant } from './utils/glins/index';
 import { getSaveRecord } from './utils/kupu/saveRecord';
 import { ScrapingPelamarKupu } from './models/ScrapingPelamarKupu.model';
 
@@ -149,6 +150,59 @@ export default function (io: Server) {
                   ),
                 );
               });
+            }
+
+            if (task.scraping_account.type === 'glints') {
+              const glintsData = await onFetchGlintsAplicant({
+                cookies: account.cookies,
+                jobId: task.initial_id,
+                taskId: task._id,
+                status: "NEW"
+              });
+
+              if(glintsData?.data.length > 0){
+                io.emit(
+                  'create logs',
+                  useLogMessages(
+                    `${task.code}: moving to IN_REVIEW (${i + 1})`,
+                  ),
+                );
+
+               const res =  await onUpdateGlintsAplicant({
+                  cookies: account.cookies,
+                  jobId: task.initial_id,
+                  applicationIds: glintsData?.data,
+                  status: "IN_REVIEW"
+                });
+                io.emit('loading end');
+                io.emit('create logs', useLogMessages(`${task.code}: ${JSON.stringify(res)} \n`));
+              }
+
+              const glintsDataInReview = await onFetchGlintsAplicant({
+                cookies: account.cookies,
+                jobId: task.initial_id,
+                taskId: task._id,
+                status: "IN_REVIEW"
+              });
+
+              if(glintsDataInReview?.data.length > 0){
+                io.emit(
+                  'create logs',
+                  useLogMessages(
+                    `${task.code}: moving to REJECTED (${i + 1})`,
+                  ),
+                );
+
+               const resReject =  await onUpdateGlintsAplicant({
+                  cookies: account.cookies,
+                  jobId: task.initial_id,
+                  applicationIds: glintsData?.data,
+                  status: "REJECTED"
+                });
+                io.emit('loading end');
+                io.emit('create logs', useLogMessages(`${task.code}: ${JSON.stringify(resReject)} \n`));
+              }
+
             }
           }
           await updatingTaskStatus(task._id, 'done');

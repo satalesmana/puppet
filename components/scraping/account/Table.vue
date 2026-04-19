@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useScrapingAccountStore } from '~/stores/scrapingAccount';
+
 const scrapingAccount = useScrapingAccountStore();
 const rowTable = computed(() => scrapingAccount.getListData);
 const columns = ref([
@@ -37,7 +38,6 @@ const onDeleteItem = async (params: any) => {
 };
 
 const onEditItem = (params: any) => {
-  console.log('params', params);
   scrapingAccount.setFormInput(params);
 };
 
@@ -50,10 +50,75 @@ const onLoaginAccount = async (row: any) => {
 
   fetTchData();
 };
+
+const updateTokenModal = ref(false);
+const updateData = ref({
+  _id: null,
+  name: null,
+  cookies: null,
+  account_id: null,
+});
+
+const onUpdateToken = () => {
+  updateTokenModal.value = false;
+  scrapingAccount.updateAccountToken(updateData.value);
+};
+
+const onShowDialogUpdateToken = (params: any) => {
+  updateTokenModal.value = true;
+  updateData.value.account_id = params.account_id;
+  updateData.value.cookies = params.cookies;
+  updateData.value._id = params._id;
+  updateData.value.name = params.name;
+};
 </script>
 
 <template>
   <div class="q-pa-lg">
+    <q-dialog
+      v-model="updateTokenModal"
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+    >
+      <q-card style="width: 400px">
+        <q-card-section>
+          <div class="text-h6 q-pa-sm">Update Token: {{ updateData.name }}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <div class="q-pa-sm">
+            <q-form class="q-gutter-md" @submit="onUpdateToken">
+              <q-input
+                v-model="updateData.account_id"
+                filled
+                label="User Id"
+                lazy-rules
+                :rules="[
+                  (val) => (val && val.length > 0) || 'Please type something',
+                ]"
+              />
+
+              <q-input
+                v-model="updateData.cookies"
+                filled
+                label="New Token"
+                lazy-rules
+                :rules="[
+                  (val) => (val && val.length > 0) || 'Please type something',
+                ]"
+              />
+            </q-form>
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn v-close-popup flat label="Cancel" />
+          <q-btn flat label="OK" @click="onUpdateToken" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <q-card class="my-card">
       <q-card-section>
         <q-table
@@ -90,6 +155,19 @@ const onLoaginAccount = async (row: any) => {
                 @click="onLoaginAccount(props.row)"
               >
                 <q-list>
+                  <q-item
+                    v-close-popup
+                    clickable
+                    @click="onShowDialogUpdateToken(props.row)"
+                  >
+                    <q-item-section side>
+                      <q-icon name="edit" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>Update Token</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
                   <q-item
                     v-close-popup
                     clickable

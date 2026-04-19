@@ -48,23 +48,30 @@ export const getOptPosition = (state: any) => {
 
 export const setOptPosition = (state: any) => (payload: Edge[] | any) => {
   const optList = [];
-  console.log('payload', payload);
   const isKupuAccount = isKupuAccout(state);
+  const isGlintsAcc = isGlintsAccount(state);
   for (let i = 0; i < payload.length; i++) {
-    if (!isKupuAccount)
-      optList.push({
-        value: payload[i].node.id,
-        label: `${payload[i].node.id} ${payload[i].node.title} (${payload[i].node.status})`,
-        ...payload[i].node,
-      });
-
     if (isKupuAccount) {
       optList.push({
         value: payload[i].id,
         label: payload[i].jobTitle,
         ...payload[i],
       });
+    }else if (isGlintsAcc) {
+      optList.push({
+        value: payload[i].id,
+        label: payload[i].title,
+        ...payload[i],
+      });
+    }else {
+      optList.push({
+        value: payload[i].node.id,
+        label: `${payload[i].node.id} ${payload[i].node.title} (${payload[i].node.status})`,
+        ...payload[i].node,
+      });
     }
+
+
   }
 
   state.optPosition = optList;
@@ -72,6 +79,20 @@ export const setOptPosition = (state: any) => (payload: Edge[] | any) => {
 
 export const isKupuAccout = (state: any) => {
   if (state.formInput.scraping_account?.type === 'kupu') {
+    return true;
+  }
+  return false;
+};
+
+export const isGlintsAccount = (state: any) => {
+  if (state.formInput.scraping_account?.type === 'glints') {
+    return true;
+  }
+  return false;
+};
+
+export const isJobstreetAccount = (state: any) => {
+  if (state.formInput.scraping_account?.type === 'jobstreet') {
     return true;
   }
   return false;
