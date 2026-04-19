@@ -27,5 +27,5 @@ logs
 # TypeScript v1 declaration files
 typings/
 
-public/downloads/*
+public/downloads/*.xlsx
 public/assets/screenshot/*
