@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       {
         column: 'Telpon',
         type: String,
-        value: (val: any) => val.phoneNumber.replace(/\s/g, ''),
+        value: (val: any) => val.phoneNumber ? val.phoneNumber.replace(/\s/g, '') : '',
       },
       {
         column: 'Name',
