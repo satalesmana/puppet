@@ -22,8 +22,8 @@ export default defineEventHandler(async (event) => {
       if (email === '') throw new Error('email harus di isi');
       if (password === '') throw new Error('password harus di isi');
 
-      const cekMail = await ScrapingAccount.findOne({ email, type });
-      if (cekMail) throw new Error('email already exist');
+      // const cekMail = await ScrapingAccount.findOne({ email, type });
+      // if (cekMail) throw new Error('email already exist');
     }
 
     const { id, name } = getMetadata(event);
