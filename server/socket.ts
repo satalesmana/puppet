@@ -13,9 +13,17 @@ import { onFetchGlintsAplicant, onUpdateGlintsAplicant } from './utils/glins/ind
 import { getSaveRecord } from './utils/kupu/saveRecord';
 import { ScrapingPelamarKupu } from './models/ScrapingPelamarKupu.model';
 
-connect(
-  'mongodb+srv://satalesmana:SY1COKkW7A98vSzk@cluster0.oe59k.mongodb.net/puppet',
-);
+const mongoUri = process.env.NUXT_MONGODB_URI || process.env.MONGODB_URI;
+
+if (!mongoUri) {
+  throw new Error(
+    'Missing MongoDB connection string. Set NUXT_MONGODB_URI or MONGODB_URI in your environment.',
+  );
+}
+
+connect(mongoUri).catch((error) => {
+  console.error('MongoDB connection failed:', error);
+});
 
 export default function (io: Server) {
   const getActiveAccount = async () => {
