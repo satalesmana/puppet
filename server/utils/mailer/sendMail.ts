@@ -1,4 +1,5 @@
-import nodemailer from 'nodemailer/lib/nodemailer';
+import nodemailer from 'nodemailer';
+
 const transporter = nodemailer.createTransport({
   host: 'mail.system-recruitment.online',
   port: 465,
@@ -19,7 +20,10 @@ export const useSendMail = async ({ to, subject, messages }: any) => {
       html: messages,
     });
     return res;
-  } catch (error) {
-    throw error?.messate;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw error.message;
+    }
+    throw 'Unknown error';
   }
 };

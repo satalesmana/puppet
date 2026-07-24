@@ -1,3 +1,4 @@
+import { Server as EngineServer } from 'engine.io';
 import { Server, Socket } from 'socket.io';
 import { connect } from 'mongoose';
 import { useLogMessages, useSleep } from './utils/helpers';
@@ -13,7 +14,7 @@ import { onFetchGlintsAplicant, onUpdateGlintsAplicant } from './utils/glins/ind
 import { getSaveRecord } from './utils/kupu/saveRecord';
 import { ScrapingPelamarKupu } from './models/ScrapingPelamarKupu.model';
 
-const mongoUri = process.env.NUXT_MONGODB_URI || process.env.MONGODB_URI;
+const mongoUri = process.env.NUXT_MONGODB_URI;
 
 if (!mongoUri) {
   throw new Error(
@@ -25,26 +26,37 @@ connect(mongoUri).catch((error) => {
   console.error('MongoDB connection failed:', error);
 });
 
-export default function (io: Server) {
-  const getActiveAccount = async () => {
-    const res = await ScrapingAccount.find({ cookies: { $ne: null } });
-    return res;
-  };
+// Nitro's production HTTP server is created outside of Nuxt's `listen` hook,
+// so this can't rely on a host server being handed to us. Instead we bind our
+// own engine.io instance and forward requests to it manually from a Nitro
+// plugin (server/plugins/socket.ts), using long-polling only since that
+// requires no access to the raw HTTP server's `upgrade` event.
+export const io = new Server();
+io.bind(
+  new EngineServer({
+    transports: ['polling'],
+  }),
+);
 
-  const findTaskByAccount = async (account: String) => {
-    const res = await ScrapingTask.find({
-      'scraping_account._id': account,
-      status: 'open',
-    });
-    return res;
-  };
+const getActiveAccount = async () => {
+  const res = await ScrapingAccount.find({ cookies: { $ne: null } });
+  return res;
+};
 
-  const updatingTaskStatus = async (taskId: String, status: String) => {
-    const res = await ScrapingTask.updateOne({ _id: taskId }, { status });
-    return res;
-  };
+const findTaskByAccount = async (account: String) => {
+  const res = await ScrapingTask.find({
+    'scraping_account._id': account,
+    status: 'open',
+  });
+  return res;
+};
 
-  io.on('connection', (socket: Socket) => {
+const updatingTaskStatus = async (taskId: String, status: String) => {
+  const res = await ScrapingTask.updateOne({ _id: taskId }, { status });
+  return res;
+};
+
+io.on('connection', (socket: Socket) => {
     socket.on('start scraping', async () => {
       io.emit('create logs', useLogMessages(': starting...\n'));
       useSleep();
@@ -248,4 +260,5 @@ export default function (io: Server) {
       });
     });
   });
-}
+
+export default io;
