@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
       if (cekPhone) throw new Error('phone already exist');
     } else {
       if (email === '') throw new Error('email harus di isi');
-      if (password === '') throw new Error('password harus di isi');
+      // if (password === '') throw new Error('password harus di isi');
 
       // const cekMail = await ScrapingAccount.findOne({ email, type });
       // if (cekMail) throw new Error('email already exist');
