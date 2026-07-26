@@ -129,14 +129,14 @@ const onArsipkan = async (params: any) => {
                 @click="onArsipkan(props)"
               >
                 <q-list>
-                  <q-item v-close-popup clickable>
+                  <!-- <q-item v-close-popup clickable>
                     <q-item-section side>
                       <q-icon name="edit" />
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Edit</q-item-label>
                     </q-item-section>
-                  </q-item>
+                  </q-item> -->
 
                   <q-item v-close-popup clickable @click="onDeleteItem(props)">
                     <q-item-section side>

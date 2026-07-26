@@ -47,12 +47,15 @@ const updateIdModal = ref<string | null>(null);
 const onLoaginAccount = async (row: any) => {
   if (row.cookies != null) {
     await scrapingAccount.logOutScrapingAccount(row._id);
+    fetTchData();
   } else {
     updateSessionModal.value = true;
     updateIdModal.value = row._id;
-    // await scrapingAccount.loginScrapingAccount(row);
   }
+};
 
+const onLoginJobstreet = async (row: any) => {
+  await scrapingAccount.loginScrapingAccount(row);
   fetTchData();
 };
 
@@ -209,6 +212,20 @@ const onShowDialogUpdateToken = (params: any) => {
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>Manual Update Token</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    v-if="props.row.type === 'jobstreet'"
+                    v-close-popup
+                    clickable
+                    @click="onLoginJobstreet(props.row)"
+                  >
+                    <q-item-section side>
+                      <q-icon name="login" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>Login Jobstreet</q-item-label>
                     </q-item-section>
                   </q-item>
 

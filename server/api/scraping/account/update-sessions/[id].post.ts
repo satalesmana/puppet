@@ -41,6 +41,19 @@ export default defineEventHandler(async (event) => {
       updateData.cookies = getCookieHeader(sessionData.cookies, cookiesTaken) as string
     }
 
+    if(res.type==='jobstreet'){
+      const authKey = Object.keys(sessionData.localStorage).find(
+        key =>
+          key.includes('@@auth0spajs@@') &&
+          key.includes('https://seek/api/talent')
+      )
+
+      if(authKey){
+        const data = JSON.parse(sessionData.localStorage[authKey])
+        updateData.cookies = data.body?.access_token ?? null;
+      }
+    }
+
     await ScrapingAccount.updateOne({ _id: params?.id }, updateData)
 
     return { data: [], message: 'update success' } as ApiResponse<[], string>;
