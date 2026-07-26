@@ -132,6 +132,16 @@ export const jobstreetFetchPosition = async (account: any) => {
       }
 
       return optProviderGlints.value;
+    }else if(account.type === 'indeed'){
+      const { data: optProviderIndeed, error: errorProviderIndeed } = await $useApiFetch(`/api/scraping/task/indeed/${account._id}`,{
+        method: 'post',
+      });
+
+      if (errorProviderIndeed.value !== null) {
+        throw errorProviderIndeed.value?.data;
+      }
+
+      return optProviderIndeed.value;
     } else {
       const { data: optJobtreetPosition, error: errorFetch } =
         await $useApiFetch(`/api/scraping/task/position/${account.value}`, {

@@ -69,6 +69,11 @@ const onUpdateToken = () => {
   scrapingAccount.updateAccountToken(updateData.value);
 };
 
+const onUploaded = () => {
+  updateSessionModal.value = false;
+  fetTchData();
+};
+
 const onShowDialogUpdateToken = (params: any) => {
   updateTokenModal.value = true;
   updateData.value.account_id = params.account_id;
@@ -148,6 +153,7 @@ const onShowDialogUpdateToken = (params: any) => {
               text-color="black"
               accept=".json"
               style="width: 100%"
+              @uploaded="onUploaded"
             />
           </div>
         </q-card-section>
