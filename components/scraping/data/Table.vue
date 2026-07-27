@@ -46,7 +46,7 @@ const setColums = (type: string) => {
         align: 'left',
       },
     ];
-  } else if (type === 'glints') {
+  } else if (type === 'glints' || type === 'indeed') {
     columns.value = [
       {
         name: 'firstName',

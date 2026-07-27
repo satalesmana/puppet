@@ -85,7 +85,7 @@ export default defineEventHandler(async (event) => {
               "elapsedTime": 125
           }
       },
-      "query": "query JobCardListMfe_EmployerJobSearch($input: FindEmployerJobsInput!) { findEmployerJobs(input: $input) { results { employerJob { jobData { title id ... on HostedJobPost { legacyId } __typename }}} }}"
+      "query": "query JobCardListMfe_EmployerJobSearch($input: FindEmployerJobsInput!) { findEmployerJobs(input: $input) { results { employerJob { id jobData { title id ... on HostedJobPost { legacyId } __typename }}} }}"
     }
 
 
@@ -107,8 +107,9 @@ export default defineEventHandler(async (event) => {
 
     const output = data.findEmployerJobs.results.map(
         ({ employerJob }:any) => ({
-          id: employerJob.jobData.id,
-          title: employerJob.jobData.title
+          jobDataId: employerJob.jobData.id,
+          title: employerJob.jobData.title,
+          id: employerJob.id
         })
       )
 

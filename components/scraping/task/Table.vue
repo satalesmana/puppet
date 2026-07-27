@@ -15,12 +15,12 @@ const columns = ref([
     field: '_id',
     align: 'left',
   },
-  {
-    name: 'initial_id',
-    label: 'INITIAL ID',
-    field: 'initial_id',
-    align: 'left',
-  },
+  // {
+  //   name: 'initial_id',
+  //   label: 'INITIAL ID',
+  //   field: 'initial_id',
+  //   align: 'left',
+  // },
   {
     name: 'initial_page',
     label: 'INITIAL PAGE',
