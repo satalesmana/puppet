@@ -29,17 +29,38 @@ connect(mongoUri).catch((error) => {
   console.error('MongoDB connection failed:', error);
 });
 
+const socketDisabled = Boolean(
+  process.env.VERCEL ||
+    process.env.VERCEL_ENV ||
+    process.env.NUXT_DISABLE_SOCKET === 'true',
+);
+
 // Nitro's production HTTP server is created outside of Nuxt's `listen` hook,
 // so this can't rely on a host server being handed to us. Instead we bind our
 // own engine.io instance and forward requests to it manually from a Nitro
 // plugin (server/plugins/socket.ts), using long-polling only since that
-// requires no access to the raw HTTP server's `upgrade` event.
-export const io = new Server();
-io.bind(
-  new EngineServer({
-    transports: ['polling'],
-  }),
-);
+// requires no access to the raw HTTP server's `upgrade` event. On Vercel and
+// other serverless platforms, this transport cannot stay alive across requests,
+// so we disable it there and keep the client in a safe no-op mode.
+export const io: any = socketDisabled
+  ? {
+      emit: () => undefined,
+      on: () => undefined,
+      engine: {
+        handleRequest: () => undefined,
+      },
+    }
+  : new Server();
+
+export const socketServerEnabled = !socketDisabled;
+
+if (!socketDisabled) {
+  io.bind(
+    new EngineServer({
+      transports: ['polling'],
+    }),
+  );
+}
 
 const getActiveAccount = async () => {
   const res = await ScrapingAccount.find({ cookies: { $ne: null } });
@@ -59,7 +80,8 @@ const updatingTaskStatus = async (taskId: String, status: String) => {
   return res;
 };
 
-io.on('connection', (socket: Socket) => {
+if (!socketDisabled) {
+  io.on('connection', (socket: Socket) => {
     socket.on('start scraping', async () => {
       io.emit('create logs', useLogMessages(': starting...\n'));
       useSleep();
@@ -288,5 +310,6 @@ io.on('connection', (socket: Socket) => {
       });
     });
   });
+}
 
 export default io;
