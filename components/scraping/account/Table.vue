@@ -41,13 +41,21 @@ const onEditItem = (params: any) => {
   scrapingAccount.setFormInput(params);
 };
 
+const updateSessionModal = ref(false);
+const updateIdModal = ref<string | null>(null);
+
 const onLoaginAccount = async (row: any) => {
   if (row.cookies != null) {
     await scrapingAccount.logOutScrapingAccount(row._id);
+    fetTchData();
   } else {
-    await scrapingAccount.loginScrapingAccount(row);
+    updateSessionModal.value = true;
+    updateIdModal.value = row._id;
   }
+};
 
+const onLoginJobstreet = async (row: any) => {
+  await scrapingAccount.loginScrapingAccount(row);
   fetTchData();
 };
 
@@ -62,6 +70,11 @@ const updateData = ref({
 const onUpdateToken = () => {
   updateTokenModal.value = false;
   scrapingAccount.updateAccountToken(updateData.value);
+};
+
+const onUploaded = () => {
+  updateSessionModal.value = false;
+  fetTchData();
 };
 
 const onShowDialogUpdateToken = (params: any) => {
@@ -116,6 +129,40 @@ const onShowDialogUpdateToken = (params: any) => {
           <q-btn v-close-popup flat label="Cancel" />
           <q-btn flat label="OK" @click="onUpdateToken" />
         </q-card-actions>
+        <q-card-section class="q-pt-none"> </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog
+      v-model="updateSessionModal"
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+    >
+      <q-card style="width: 400px">
+        <q-card-section>
+          <div class="text-h6 q-pa-sm">
+            Upload Session: {{ updateData.name }}
+          </div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <div class="q-pa-sm">
+            <q-uploader
+              :url="`/api/scraping/account/update-sessions/${updateIdModal}`"
+              method="POST"
+              field-name="session"
+              label="Session JSON"
+              color="amber"
+              text-color="black"
+              accept=".json"
+              style="width: 100%"
+              @uploaded="onUploaded"
+            />
+          </div>
+        </q-card-section>
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn v-close-popup flat label="Cancel" />
+        </q-card-actions>
       </q-card>
     </q-dialog>
 
@@ -149,7 +196,7 @@ const onShowDialogUpdateToken = (params: any) => {
                 :label="
                   props.row.cookies != null
                     ? 'Log Out Account'
-                    : 'Log In Account'
+                    : 'Upload Session'
                 "
                 :icon="props.row.cookies != null ? 'logout' : 'login'"
                 @click="onLoaginAccount(props.row)"
@@ -161,10 +208,24 @@ const onShowDialogUpdateToken = (params: any) => {
                     @click="onShowDialogUpdateToken(props.row)"
                   >
                     <q-item-section side>
-                      <q-icon name="edit" />
+                      <q-icon name="settings" />
                     </q-item-section>
                     <q-item-section>
-                      <q-item-label>Update Token</q-item-label>
+                      <q-item-label>Manual Update Token</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item
+                    v-if="props.row.type === 'jobstreet'"
+                    v-close-popup
+                    clickable
+                    @click="onLoginJobstreet(props.row)"
+                  >
+                    <q-item-section side>
+                      <q-icon name="login" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>Login Jobstreet</q-item-label>
                     </q-item-section>
                   </q-item>
 

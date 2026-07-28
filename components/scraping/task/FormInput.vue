@@ -60,6 +60,10 @@ const onChangePositionId = (value: any) => {
     scrapingTask.formInput.totaldata = value.candidatesCount;
     scrapingTask.jobstreetFetchBiller();
   }
+
+  if (scrapingTask.isIndeedAccount) {
+    scrapingTask.formInput.positionId = value.jobDataId;
+  }
 };
 
 onNuxtReady(() => {

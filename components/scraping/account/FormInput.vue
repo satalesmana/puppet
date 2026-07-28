@@ -129,7 +129,7 @@ const isValidEmail = (email) => {
                 </div>
               </div>
 
-              <div
+              <!-- <div
                 v-if="!scrapingAccount.isKupuAccout"
                 class="row q-mb-sm items-center"
               >
@@ -156,7 +156,7 @@ const isValidEmail = (email) => {
                     />
                   </span>
                 </div>
-              </div>
+              </div> -->
 
               <div class="row q-mb-sm items-center">
                 <div
