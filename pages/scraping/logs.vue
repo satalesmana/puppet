@@ -51,6 +51,11 @@ const pollLogs = async () => {
       scraingTaskTableRef.value.fetTchData();
       loadingEnd();
     }
+
+    if (data.value.status === 'error') {
+      scraingTaskTableRef.value.fetTchData();
+      startScraping();
+    }
   } catch (err) {
     // ignore polling errors
     // console.error('pollLogs', err);

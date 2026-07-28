@@ -1,6 +1,6 @@
 export interface RootApplications {
-  data: Data,
-  errors: Error[]
+  data: Data
+  errors:any
 }
 
 export interface Data {
@@ -30,7 +30,7 @@ export interface Result {
   statusFolder: string
   isRead: boolean
   isPriorityApply: boolean
-  metadata: Metadata
+  emailCount: EmailCount
   candidateStats: CandidateStats
   rating: Rating
   source: string
@@ -41,20 +41,21 @@ export interface Result {
   questionnaireSubmission: QuestionnaireSubmission
   profile: Profile
   fit: Fit
+  fitLevelV2: any
+  candidateHighlights: CandidateHighlights
+  fitGeneration: FitGeneration
+  noteCount: NoteCount
+  voiceScreeningInvitationStatus: VoiceScreeningInvitationStatus
   __typename: string
 }
 
-export interface Metadata {
+export interface EmailCount {
   result: Result2
   __typename: string
 }
 
 export interface Result2 {
-  emailCount: number
-  noteCount: number
-  hasResume: boolean
-  hasCoverLetter: boolean
-  hasSelectionCriteria: boolean
+  value: number
   __typename: string
 }
 
@@ -153,7 +154,7 @@ export interface Education {
   id: string
   name: string
   completed: boolean
-  completionDate?: CompletionDate
+  completionDate: CompletionDate
   highlights?: string
   institute: string
   credential: any[]
@@ -170,12 +171,12 @@ export interface CompletionDate {
 export interface Licence {
   id: string
   name: string
-  issuingOrganisation?: string
-  issueDate?: IssueDate
+  issuingOrganisation: string
+  issueDate: IssueDate
   expiryDate?: ExpiryDate
   noExpiryDate: boolean
   description?: string
-  formattedExpiryDate?: string
+  formattedExpiryDate: string
   credential: any[]
   verification: any
   __typename: string
@@ -243,11 +244,22 @@ export interface Verifications2 {
 }
 
 export interface Result7 {
-  verifiedIdentity: any
+  verifiedIdentity?: VerifiedIdentity
   workHistory: any[]
   education: any[]
   licences: any[]
   rightToWork: any[]
+  __typename: string
+}
+
+export interface VerifiedIdentity {
+  viewFields: ViewField[]
+  __typename: string
+}
+
+export interface ViewField {
+  label: string
+  value: string[]
   __typename: string
 }
 
@@ -270,6 +282,32 @@ export interface ReferenceChecksStats {
 export interface Fit {
   result: any
   __typename: string
+}
+
+export interface CandidateHighlights {
+  result: Result8
+  __typename: string
+}
+
+export interface Result8 {
+  highlights: string[]
+  id: string
+  __typename: string
+}
+
+export interface FitGeneration {
+  result: any
+  __typename: string
+}
+
+export interface NoteCount {
+  result: number
+  __typename: string
+}
+
+export interface VoiceScreeningInvitationStatus {
+  __typename: string
+  result: any
 }
 
 export interface PageInfo {
