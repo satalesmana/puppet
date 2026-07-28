@@ -1,10 +1,5 @@
 import writeXlsxFile from "write-excel-file/node";
-import { randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-
 import { ScrapingIndeedPelamar } from "~/server/models/ScrapingPelamarIndeed.model";
-import type { ApiResponse } from "~/server/types/apiresponse.interface";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -18,7 +13,7 @@ export default defineEventHandler(async (event) => {
         column: "Telpon",
         type: String,
         value: (row: any) =>
-          row.phoneNumber ? row.phoneNumber.replace(/\s/g, "") : "",
+          row.phoneNumber?.replace(/\s/g, "") ?? "",
       },
       {
         column: "Name",
@@ -33,33 +28,34 @@ export default defineEventHandler(async (event) => {
       },
     ];
 
-    // Pastikan folder tersedia
-    const downloadDir = join(process.cwd(), "public", "downloads");
-    await mkdir(downloadDir, { recursive: true });
-
-    // Nama file unik
-    const fileName = `phone_${Date.now()}_${randomUUID()}.xlsx`;
-    const outputPath = join(downloadDir, fileName);
-
-    // Generate buffer Excel
+    // Generate Excel ke memory (Buffer)
     const buffer = await writeXlsxFile(data, {
       schema,
       buffer: true,
     });
 
-    // Simpan ke file
-    await writeFile(outputPath, buffer);
+    // Header download
+    setHeader(
+      event,
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
 
-    return {
-      data: `downloads/${fileName}`,
-      message: "",
-    } as ApiResponse<string, string>;
+    setHeader(
+      event,
+      "Content-Disposition",
+      `attachment; filename="phone_${Date.now()}.xlsx"`
+    );
+
+    setHeader(event, "Content-Length", buffer.length);
+
+    return buffer;
   } catch (error: any) {
     console.error(error);
 
-    return {
-      data: "",
-      message: error.message ?? "Failed to generate excel",
-    } as ApiResponse<string, string>;
+    throw createError({
+      statusCode: 500,
+      statusMessage: error.message || "Failed to generate excel",
+    });
   }
 });
