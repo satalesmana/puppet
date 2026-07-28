@@ -13,6 +13,9 @@ import { getResumeDetail } from './utils/kupu/resumeDetail';
 import { onFetchGlintsAplicant, onUpdateGlintsAplicant } from './utils/glins/index';
 import { getSaveRecord } from './utils/kupu/saveRecord';
 import { ScrapingPelamarKupu } from './models/ScrapingPelamarKupu.model';
+import { indeedFetchPelamar } from './utils/indeed/fetchPelamar';
+import { indeedUpdatePelamar } from './utils/indeed/updatePelamar';
+
 
 const mongoUri = process.env.NUXT_MONGODB_URI;
 
@@ -223,6 +226,31 @@ io.on('connection', (socket: Socket) => {
                 io.emit('create logs', useLogMessages(`${task.code}: ${JSON.stringify(resReject)} \n`));
               }
 
+            }
+
+            if(task.scraping_account.type ==='indeed'){
+             const resIndeed =  await indeedFetchPelamar({
+                cookies: account.cookies,
+                positionId: task.positionId,
+                initial_id: task.initial_id,
+                taskId: task._id,
+              })
+
+              if(resIndeed.length > 0){
+                io.emit(
+                  'create logs',
+                  useLogMessages(
+                    `${task.code}: moving to REJECTED (${i + 1})`,
+                  ),
+                );
+                const resRejectIndeed = await indeedUpdatePelamar({
+                  cookies: account.cookies,
+                  candidateSubmissionEmployerJobIdPairs: resIndeed
+                })
+
+                io.emit('loading end');
+                io.emit('create logs', useLogMessages(`${task.code}: ${JSON.stringify(resRejectIndeed)} \n`));
+              }
             }
           }
           await updatingTaskStatus(task._id, 'done');

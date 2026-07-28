@@ -66,6 +66,10 @@ export const fetchScrapingData = async (form: any) => {
       url = '/api/scraping/glints/data';
     }
 
+    if(form.scraping_account.type === 'indeed'){
+      url = '/api/scraping/indeed/data';
+    }
+
     const { data: scrapingTask } = await $useApiFetch(url, {
       method: 'post',
       body: { filter: { ...filter } },
@@ -98,6 +102,10 @@ export const fetchDownload = async (form: any) => {
 
     if(form.scraping_account.type === 'glints'){
       url = '/api/scraping/task/export-excel-glints';
+    }
+
+    if(form.scraping_account.type === 'indeed'){
+      url = '/api/scraping/task/export-excel-indeed';
     }
 
     const { data: scrapingTask } = await $useApiFetch(url, {

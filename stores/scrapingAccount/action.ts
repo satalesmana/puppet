@@ -26,10 +26,12 @@ export const submitUser = async (payload: any) => {
       message: 'Loading submit data...',
     });
     const { $useApiFetch } = useNuxtApp();
-    const { data: scrapingAccount, error: errSubmit } = await $useApiFetch(
-      '/api/scraping/account',
-      {
-        method: 'post',
+
+    const url = payload?._id ? `/api/scraping/account/${payload._id}`: '/api/scraping/account';
+    const method =  payload?._id ? 'PUT': 'POST'
+
+    const { data: scrapingAccount, error: errSubmit } = await $useApiFetch(url, {
+        method: method,
         body: { ...payload },
       },
     );

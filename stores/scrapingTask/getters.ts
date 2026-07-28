@@ -50,6 +50,7 @@ export const setOptPosition = (state: any) => (payload: Edge[] | any) => {
   const optList = [];
   const isKupuAccount = isKupuAccout(state);
   const isGlintsAcc = isGlintsAccount(state);
+  const isIndeedAcc = isIndeedAccount(state);
   for (let i = 0; i < payload.length; i++) {
     if (isKupuAccount) {
       optList.push({
@@ -58,6 +59,12 @@ export const setOptPosition = (state: any) => (payload: Edge[] | any) => {
         ...payload[i],
       });
     }else if (isGlintsAcc) {
+      optList.push({
+        value: payload[i].id,
+        label: payload[i].title,
+        ...payload[i],
+      });
+    } else if (isIndeedAcc) {
       optList.push({
         value: payload[i].id,
         label: payload[i].title,
@@ -86,6 +93,13 @@ export const isKupuAccout = (state: any) => {
 
 export const isGlintsAccount = (state: any) => {
   if (state.formInput.scraping_account?.type === 'glints') {
+    return true;
+  }
+  return false;
+};
+
+export const isIndeedAccount = (state: any) => {
+  if (state.formInput.scraping_account?.type === 'indeed') {
     return true;
   }
   return false;
