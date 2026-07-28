@@ -19,7 +19,6 @@ export default defineNuxtConfig({
   plugins: [
     { src: '~/plugins/fetch-api.ts', mode: 'client' },
     { src: '~/plugins/vue-awesome-sidebar.ts', mode: 'client' },
-    { src: '~/plugins/socket.ts', mode: 'client' },
   ],
   nitro: {
     plugins: ['~/server/index.ts'],

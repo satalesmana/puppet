@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useMailStore } from '~/stores/mail';
 import { useScrapingReportStore } from '~/stores/scrapingReport';
-const { $io } = useNuxtApp();
+const { $useApiFetch } = useNuxtApp();
 const mailStore = useMailStore();
 const srapingTaskReort = useScrapingReportStore();
 const { data } = useAuth();
@@ -30,7 +30,11 @@ const onSendMail = async () => {
     await mailStore.submitSendMail(formInput);
 
     showModal.value = false;
-    $io.emit('start sendmail');
+    try {
+      await $useApiFetch('/api/mail/start-send', { method: 'post' });
+    } catch (err) {
+      console.error('failed to start sendmail', err);
+    }
   } catch {}
 };
 </script>
