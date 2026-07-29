@@ -107,10 +107,10 @@ const handleFileUpload = async (files: UploaderFile[]) => {
       }
 
       onUploaded();
-    } catch (err) {
+    } catch (err: any) {
       Notify.create({
         color: 'negative',
-        message: 'Invalid session data',
+        message: err?.message ? err.message : 'Invalid session data',
       });
       onUploaded();
       console.error('handleFileUpload', err);

@@ -14,6 +14,8 @@ export default defineEventHandler(async (event) => {
         .join('; ')
     }
 
+    const updateData:any = { cookies: null, account_id: null }
+
     if(body.session){
       const sessionData = body.session;
 
@@ -25,11 +27,6 @@ export default defineEventHandler(async (event) => {
           statusCode: 404,
           statusMessage: "Invalid fetch data account",
         });
-      }
-
-      const updateData:any = {
-        cookies: null,
-        account_id: null
       }
 
       if(res.type==='glints'){
@@ -59,6 +56,11 @@ export default defineEventHandler(async (event) => {
 
       await ScrapingAccount.updateOne({ _id: params?.id }, updateData)
     }
+
+    if(!updateData.cookies){
+      throw new Error('No data session updated, check your session data and account type')
+    }
+
     return { data: [], message: 'update success' } as ApiResponse<[], string>;
   } catch (error) {
     // return error as ApiResponse<[], string>;
