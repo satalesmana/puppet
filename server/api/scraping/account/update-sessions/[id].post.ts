@@ -24,6 +24,14 @@ export default defineEventHandler(async (event) => {
     const sessionData = JSON.parse(fileText);
     const sessionId = params?.id as string
     const res = await ScrapingAccount.findOne({_id: new Types.ObjectId(sessionId)});
+
+    if (!res) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Invalid fetch data account",
+      });
+    }
+
     const updateData:any = {
       cookies: null,
       account_id: null
@@ -58,6 +66,11 @@ export default defineEventHandler(async (event) => {
 
     return { data: [], message: 'update success' } as ApiResponse<[], string>;
   } catch (error) {
-    return error as ApiResponse<[], string>;
+    // return error as ApiResponse<[], string>;
+    console.log('[update-session]', JSON.stringify(error) )
+    throw createError({
+      statusCode: 500,
+      statusMessage: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 });
