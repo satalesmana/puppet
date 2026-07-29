@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Notify } from 'quasar';
 import { useScrapingAccountStore } from '~/stores/scrapingAccount';
 
 const scrapingAccount = useScrapingAccountStore();
@@ -25,7 +26,7 @@ const fetTchData = async () => {
   scrapingAccount.setListData(value?.data);
 };
 
-const onDeleteItem = async (params: any) => {
+const onDeleteItem = (params: any) => {
   Dialog.create({
     title: 'Confirm',
     message: 'Would you like to delete this data?',
@@ -75,6 +76,43 @@ const onUpdateToken = () => {
 const onUploaded = () => {
   updateSessionModal.value = false;
   fetTchData();
+};
+
+function onFailed(info) {
+  Notify.create({
+    color: 'negative',
+    message: 'Invalid session data',
+  });
+  onUploaded();
+}
+
+function onFactoryFailed(err, files) {
+  console.error('Factory function error:', err);
+}
+
+const factoryFn = async (file: File[]) => {
+  const parsedFiles = await Promise.all(
+    file.map(async (file) => {
+      try {
+        const fileText = await file.text();
+        const jsonContent = JSON.parse(fileText);
+
+        return {
+          fileName: file.name,
+          data: jsonContent,
+        };
+      } catch (err) {
+        console.error(`Failed to parse ${file.name}:`, err);
+        return { fileName: file.name, error: 'Invalid JSON file' };
+      }
+    }),
+  );
+
+  return {
+    url: `/api/scraping/account/update-sessions/${updateIdModal.value}`,
+    method: 'POST',
+    formFields: [{ name: 'session', value: JSON.stringify(parsedFiles) }],
+  };
 };
 
 const onShowDialogUpdateToken = (params: any) => {
@@ -148,15 +186,13 @@ const onShowDialogUpdateToken = (params: any) => {
         <q-card-section class="q-pt-none">
           <div class="q-pa-sm">
             <q-uploader
-              :url="`/api/scraping/account/update-sessions/${updateIdModal}`"
-              method="POST"
-              field-name="session"
               label="Session JSON"
-              color="amber"
-              text-color="black"
-              accept=".json"
+              accept=".json, application/json"
+              :factory="factoryFn"
               style="width: 100%"
               @uploaded="onUploaded"
+              @failed="onFailed"
+              @factory-failed="onFactoryFailed"
             />
           </div>
         </q-card-section>
