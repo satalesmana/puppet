@@ -20,13 +20,6 @@ export default defineNuxtConfig({
     { src: '~/plugins/fetch-api.ts', mode: 'client' },
     { src: '~/plugins/vue-awesome-sidebar.ts', mode: 'client' },
   ],
-  nitro: {
-    plugins: ['~/server/index.ts'],
-    // output: {
-    //   dir: '../puppet-build'
-    // }
-
-  },
   runtimeConfig: {
     saltRounds: 10,
     mongodbUri: process.env.NUXT_MONGODB_URI,
