@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 
 export default defineEventHandler(async (event) => {
   try{
-    const body = await readFormData(event);
+    const body = await readBody(event);
     const { params } = event.context;
 
     const  getCookieHeader=(session: any[], cookiesTaken:string[]) => {
@@ -14,10 +14,8 @@ export default defineEventHandler(async (event) => {
         .join('; ')
     }
 
-    const session = body.get('session') as string;
-
-    if(session){
-      const sessionData = JSON.parse(session)[0];
+    if(body.session){
+      const sessionData = body.session;
 
       const sessionId = params?.id as string
       const res = await ScrapingAccount.findOne({_id: new Types.ObjectId(sessionId)});
@@ -35,7 +33,7 @@ export default defineEventHandler(async (event) => {
       }
 
       if(res.type==='glints'){
-        const glintsEmployersApp = JSON.parse(sessionData.data.localStorage.glintsEmployersApp)
+        const glintsEmployersApp = JSON.parse(sessionData.localStorage.glintsEmployersApp)
 
         updateData.cookies = glintsEmployersApp.session.token;
         updateData.account_id = glintsEmployersApp.session.data.company.id;
@@ -43,18 +41,18 @@ export default defineEventHandler(async (event) => {
 
       if(res.type==='indeed'){
         const cookiesTaken = ['__Secure-PassportAuthProxy-BearerToken', 'PPID', '__Secure-PassportAuthProxy-OauthExpires', '__Secure-PassportAuthProxy-OauthHMAC', '__Secure-PassportAuthProxy-RefreshToken','__cf_bm']
-        updateData.cookies = getCookieHeader(sessionData.data.cookies, cookiesTaken) as string
+        updateData.cookies = getCookieHeader(sessionData.cookies, cookiesTaken) as string
       }
 
       if(res.type==='jobstreet'){
-        const authKey = Object.keys(sessionData.data.localStorage).find(
+        const authKey = Object.keys(sessionData.localStorage).find(
           key =>
             key.includes('@@auth0spajs@@') &&
             key.includes('https://seek/api/talent')
         )
 
         if(authKey){
-          const data = JSON.parse(sessionData.data.localStorage[authKey])
+          const data = JSON.parse(sessionData.localStorage[authKey])
           updateData.cookies = data.body?.access_token ?? null;
         }
       }

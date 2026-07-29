@@ -78,41 +78,45 @@ const onUploaded = () => {
   fetTchData();
 };
 
-function onFailed(info) {
-  Notify.create({
-    color: 'negative',
-    message: 'Invalid session data',
-  });
-  onUploaded();
-}
+const { $useApiFetch } = useNuxtApp();
 
-function onFactoryFailed(err, files) {
-  console.error('Factory function error:', err);
-}
+type UploaderFile = File & {
+  __status?: 'uploaded' | 'failed';
+  __uploaded?: number;
+};
 
-const factoryFn = async (file: File[]) => {
-  const parsedFiles = await Promise.all(
-    file.map(async (file) => {
-      try {
-        const fileText = await file.text();
-        const jsonContent = JSON.parse(fileText);
+const handleFileUpload = async (files: UploaderFile[]) => {
+  for (const file of files) {
+    try {
+      const text = await file.text();
+      const jsonContent = JSON.parse(text);
 
-        return {
-          fileName: file.name,
-          data: jsonContent,
-        };
-      } catch (err) {
-        console.error(`Failed to parse ${file.name}:`, err);
-        return { fileName: file.name, error: 'Invalid JSON file' };
+      const { data: uploadSession, error: errUploadSession } =
+        await $useApiFetch(
+          `/api/scraping/account/update-sessions/${updateIdModal.value}`,
+          {
+            method: 'POST',
+            body: {
+              session: jsonContent,
+            },
+          },
+        );
+
+      if (errUploadSession.value !== null) {
+        throw errUploadSession.value?.data;
       }
-    }),
-  );
 
-  return {
-    url: `/api/scraping/account/update-sessions/${updateIdModal.value}`,
-    method: 'POST',
-    formFields: [{ name: 'session', value: JSON.stringify(parsedFiles) }],
-  };
+      onUploaded();
+    } catch (err) {
+      Notify.create({
+        color: 'negative',
+        message: 'Invalid session data',
+      });
+      onUploaded();
+      console.error('handleFileUpload', err);
+      file.__status = 'failed';
+    }
+  }
 };
 
 const onShowDialogUpdateToken = (params: any) => {
@@ -188,11 +192,10 @@ const onShowDialogUpdateToken = (params: any) => {
             <q-uploader
               label="Session JSON"
               accept=".json, application/json"
-              :factory="factoryFn"
               style="width: 100%"
+              hide-upload-btn
               @uploaded="onUploaded"
-              @failed="onFailed"
-              @factory-failed="onFactoryFailed"
+              @added="handleFileUpload"
             />
           </div>
         </q-card-section>
