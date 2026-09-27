@@ -58,7 +58,7 @@ const onChangePositionId = (value: any) => {
   if (scrapingTask.isJobstreetAccount) {
     scrapingTask.formInput.positionId = value.id;
     scrapingTask.formInput.totaldata = value.candidatesCount;
-    scrapingTask.jobstreetFetchBiller();
+    // scrapingTask.jobstreetFetchBiller();
   }
 
   if (scrapingTask.isIndeedAccount) {
@@ -150,7 +150,7 @@ onNuxtReady(() => {
             </div>
 
             <div v-if="scrapingTask.isJobstreetAccount">
-              <div class="row q-mb-sm items-center">
+              <!-- <div class="row q-mb-sm items-center">
                 <div
                   class="text-right q-pr-md col-lg-4 col-md-4 col-sm-4 col-xs-12"
                 >
@@ -171,7 +171,7 @@ onNuxtReady(() => {
                     />
                   </span>
                 </div>
-              </div>
+              </div> -->
 
               <div class="row q-mb-sm items-center">
                 <div

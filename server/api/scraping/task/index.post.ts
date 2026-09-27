@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     const accountScraping = body.scraping_account as string;
     const initialId = body.initial_id;
     const initialPage = body.initial_page;
-    const billerId = body.biller_id;
+    // const billerId = body.biller_id;
     const counter = body.counter;
     const status = body.status;
     const positionId = body.positionId;
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     if (status === '') throw new Error('status harus di isi');
 
     if (scrapingAccount.type == 'jobstreet') {
-      if (billerId === '') throw new Error('biller id harus di isi');
+      // if (billerId === '') throw new Error('biller id harus di isi');
       if (positionId === '') throw new Error('Position id harus di isi');
     }
 
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
       code,
       initial_id: initialId,
       initial_page: initialPage,
-      biller_id: billerId,
+      biller_id: null,
       positionId,
       counter,
       status,
