@@ -5,7 +5,7 @@ import type { RootApplications } from '~/server/types/application.interface'
 
 export const jobstreetFetchPelamar = async ({
   initialId,
-  billerId,
+  // billerId,
   cookies,
   taskId,
   positionId,
@@ -17,7 +17,7 @@ export const jobstreetFetchPelamar = async ({
             "input": {
                 "jobId": initialId,
                 "pagination": {
-                    "pageNumber": 2
+                    "pageNumber": 1
                 },
                 "sort": {
                     "sortField": "APPLICATION_DATE",
@@ -79,7 +79,7 @@ export const jobstreetFetchPelamar = async ({
               ...item,
               scraping_task: {
                 _id: taskId,
-                biller_id: billerId,
+                // biller_id: billerId,
                 initial_id: initialId,
               },
             };

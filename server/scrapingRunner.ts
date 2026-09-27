@@ -74,7 +74,7 @@ export const runScraping = async () => {
             pushLog('loading start');
             const pelamar = await jobstreetFetchPelamar({
               initialId: task.initial_id,
-              billerId: task.biller_id,
+              // billerId: task.biller_id,
               cookies: account.cookies,
               taskId: task._id,
               positionId: task.positionId,
