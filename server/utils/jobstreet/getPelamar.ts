@@ -74,7 +74,7 @@ export const jobstreetFetchPelamar = async ({
         const res: any = [];
         const insertData = data.applications.result.map(
           (item: any, index: any) => {
-            res.push({ prospectId: item.adcentreProspectId, positionInList: index + 1 });
+            res.push({ id: item.id, prospectId: item.adcentreProspectId, positionInList: index + 1 });
             return {
               ...item,
               scraping_task: {

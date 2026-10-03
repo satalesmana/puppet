@@ -3,18 +3,25 @@ export const jobstreetUpdatePelamar = async ({
   positionId,
   cookies,
 }: any) => {
+  const ids = prospectData.map((item: any) => item.id);
+
   const requestBody = {
-    operationName: 'UpdateApplicationsStatus',
-    variables: {
-      input: {
-        prospectData,
-        bucket: 'NOT_SUITABLE',
-        statusChangeLocation: 'CandidateList',
+      "operationName": "BulkUpdateApplicationStatus",
+      "variables": {
+          "input": {
+              "jobId": positionId,
+              "statusFolder": "NOT_SUITABLE",
+              "ids": ids
+          }
       },
-    },
-    query:
-      'mutation UpdateApplicationsStatus($input: UpdateApplicationsStatusInput!) {\n  updateApplicationsStatus(input: $input) {\n    success\n    __typename\n  }\n}',
-  };
+      "extensions": {
+          "clientLibrary": {
+              "name": "@apollo/client",
+              "version": "4.2.12"
+          }
+      },
+      "query": "mutation BulkUpdateApplicationStatus($input: BulkUpdateApplicationStatusInput!) {\n  bulkUpdateApplicationStatus(input: $input) {\n    ... on BulkUpdateApplicationStatusResponseSuccess {\n      failureCount\n      successCount\n      __typename\n    }\n    ... on ResponseError {\n      error\n      __typename\n    }\n    __typename\n  }\n}"
+  }
 
   const response = await fetch('https://id.employer.seek.com/graphql', {
     method: 'POST',
@@ -25,9 +32,6 @@ export const jobstreetUpdatePelamar = async ({
     body: JSON.stringify(requestBody),
   });
   const resJson = await response.json();
-  // if (resJson?.errors) {
-  //   throw new Error(resJson.errors[0].message);
-  // }
 
   return JSON.stringify(resJson);
 };
